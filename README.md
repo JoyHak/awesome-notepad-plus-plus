@@ -1,6 +1,6 @@
 ![](https://github.com/JoyHak/awesome-notepad-plus-plus/blob/main/images/banner.png)
 
-[Awesome Notepad++](https://github.com/JoyHak/awesome-notepad-plus-plus/releases) это современная версия известного текстового редактора, которая дает всем пользователям не только расширенные возможности "из коробки", но и позволяет настроить редактор под себя. Используйте красивую подсветку синтаксиса в уже существующих пользовательских языках, изучайте на их примере как добавить свой язык, пишите код с красивой подсветкой синтаксиса и запускайте его прямо из Notepad++ (скоро: для разных языков). [Скачать можно здесь](https://github.com/JoyHak/awesome-notepad-plus-plus/releases).
+[Awesome Notepad++](https://github.com/JoyHak/awesome-notepad-plus-plus/releases) это современная портативная версия известного текстового редактора, которая дает всем пользователям не только расширенные возможности "из коробки", но и позволяет настроить редактор под себя. Используйте красивую подсветку синтаксиса в уже существующих пользовательских языках, изучайте на их примере как добавить свой язык, пишите код с красивой подсветкой синтаксиса и запускайте его прямо из Notepad++ (скоро: для разных языков). [Скачать можно здесь](https://github.com/JoyHak/awesome-notepad-plus-plus/releases).
 
 ![](https://github.com/JoyHak/awesome-notepad-plus-plus/blob/main/images/toolbar.png)
 ![](https://github.com/JoyHak/awesome-notepad-plus-plus/blob/main/images/class.png)
