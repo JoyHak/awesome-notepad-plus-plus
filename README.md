@@ -30,9 +30,32 @@ You can always contribute to the project or add new features for yourself. Detai
 
 ## Powerful AutoHotkey
 - Syntax highlighting fully shows how the string and keys will be interpreted by commands like `Send`. For this purpose, I [invented my own Regex](https://github.com/JoyHak/RegEx-loop) to use the [EnahnceAnyLexer](https://github.com/Ekopalypse/EnhanceAnyLexer) plugin to its full potential!
+![image](https://github.com/user-attachments/assets/cfa361fe-cc59-4a5f-a0a6-62444274e8f9)
+![send](https://github.com/user-attachments/assets/3e954375-323f-4c9c-b8d6-bf8aa3a0d7b7)
+
 - Added highlighting of negation of variables, functions, and integer expressions to quickly distinguish elements of logic algebra.
+![image](https://github.com/user-attachments/assets/d5209044-c0f5-4b88-8f28-5db550ccab28)
+![class](https://github.com/user-attachments/assets/39d8fcb1-29c2-48a7-af26-5f70af6166dd)
+
 - Different colors have been added for different states and variable values.
+![locals](https://github.com/user-attachments/assets/118eb993-83ec-48b2-ad9d-e56f65b4310e)
+![unset](https://github.com/user-attachments/assets/89756412-5c1e-4ced-aea6-ab4aa5d035c0)
+![ByRef](https://github.com/user-attachments/assets/3dd4e815-251c-4dcd-9dc3-4968b7d1d7e1)
+
 - The individual colors have file paths, relative paths, extensions, module names, and included files.
+![run](https://github.com/user-attachments/assets/3fc6ec6f-ee18-41d5-885e-2de2a047bfc9)
+![include](https://github.com/user-attachments/assets/aacd3d9c-b62b-4809-bc8d-5cb30dd0fa3f)
+- Highlighted different levels of logging and error detection
+![log](https://github.com/user-attachments/assets/9006a8e1-bef7-4ef2-afc5-3455249850bc)
+![log (2)](https://github.com/user-attachments/assets/5b9cf40a-3798-434c-84dd-8db4a76c4ffe)
+![throw](https://github.com/user-attachments/assets/8d7d2978-d2da-4229-bc3b-b2d6b9e92f0b)
+
+## Colorful Powershell
+There are a lot of expressions, functions, and output redirection in this language. Therefore, this language has the largest number of colors!
+![](https://github.com/JoyHak/awesome-notepad-plus-plus/blob/main/images/toolbar.png)
+![funcs](https://github.com/user-attachments/assets/fbdf222f-2143-45c0-9832-2984b5e8bec7)
+![gh create](https://github.com/user-attachments/assets/0ca9d61d-58ee-47d5-825f-49d7b46c84d4)
+
 
 ## Customization
 All settings are in individual files. Each plugin has an intuitive interface and is easy to set up. Below is a list of files and dirs that contain various customization elements. *Please read the comments in the files and the links to the plugins listed below. They will help you add something of your own or change the available parameters.*
