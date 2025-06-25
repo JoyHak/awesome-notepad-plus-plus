@@ -6,6 +6,8 @@
 ![](https://github.com/JoyHak/awesome-notepad-plus-plus/blob/main/images/class.png)
 [![]([https://youtu.be/Xaz8yMx-N9Y](https://www.youtube.com/watch?v=Xaz8yMx-N9Y))](https://www.youtube.com/watch?v=Xaz8yMx-N9Y)
 
+You can always contribute to the project or add new features for yourself. Details on how to customize everything and where the settings are located are [described here](https://github.com/JoyHak/awesome-notepad-plus-plus/edit/main/README.md#customization).
+
 ## Improvements
 
 - Added high-quality syntax highlighting for [Assembly](https://en.wikipedia.org/wiki/X86_assembly_language), [Xyplorer](https://www.xyplorer.com/tour.php?page=scripting), [Nilesoft Shell](https://nilesoft.org/docs), [Autohotkey](https://www.autohotkey.com/docs/v2/Program.htm), [Batch](https://en.wikipedia.org/wiki/Batch_file) (and DOS), [PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7.5) and [Regex](https://en.wikipedia.org/wiki/Regular_expression). 
@@ -20,9 +22,9 @@
 - Modern versions of useful plugins are installed.
 
 ## New icons
- - created a new fluent icon design on the toolbar
- - added new buttons for pre-installed plugins
- - added launch, compile and debug buttons.
+- Buttons have been added to the toolbar settings menu for all plugins. You can always turn on the desired button in the special menu by clicking on the gear in the left corner of the toolbar.
+ - Сreated a new fluent icon design on the toolbar
+ - Added new buttons for pre-installed plugins and internal commands.
  - The font in the "Search/Replace" window has been enlarged and all labels have been simplified to a minimum.
  - Added a new application icon from the Lumicons set from niivu.
 
@@ -31,5 +33,21 @@
 - Added highlighting of negation of variables, functions, and integer expressions to quickly distinguish elements of logic algebra.
 - Different colors have been added for different states and variable values.
 - The individual colors have file paths, relative paths, extensions, module names, and included files.
+
+## Customization
+All settings are in individual files. Each plugin has an intuitive interface and is easy to set up. Below is a list of files and dirs that contain various customization elements. *Please read the comments in the files and the links to the plugins listed below. They will help you add something of your own or change the available parameters.*
+- Syntax highlighting is configured by files in two directories
+ - The internal syntax highlighting of basic keywords, operators, and functions is found in the files here: `C:\Users\ToYu\Notepad++\userDefineLangs`. *[Here](https://npp-user-manual.org/docs/user-defined-language-system/) you can find how to configure internal syntax highlighting using user-defines languages.* 
+ - Syntax highlighting using the [Regex plugin](https://github.com/Ekopalypse/EnhanceAnyLexer) is configured in the file: `C:\Users\ToYu\Notepad++\plugins\Config\EnhanceAnyLexer\EnhanceAnyLexerConfig.ini`. *The directory contains finished languages. To add your own syntax highlghting, read the comments in the file and look at my regexes. You can find new languages [here](https://github.com/notepad-plus-plus/userDefinedLanguages).*
+- The buttons on the toolbar were added using the [plugin](https://sourceforge.net/projects/npp-customize/) and are located in the file: `C:\Users\ToYu\Notepad++\plugins\Config\CustomizeToolbar.btn`
+- All the button icons for plugins are here: `C:\Users\ToYu\Notepad++\plugins\Config\icons`
+- Launch, compilation, and debugging buttons is configured using the [plugin](https://github.com/d0vgan/nppexec) and is located in the file: `C:\Users\ToYu\Notepad++\plugins\Config\npes_saved.txt`. *Please read the [documentation](https://github.com/d0vgan/nppexec/blob/master/docs/NppExec_HelpAll.txt) to add new buttons.*
+
+
+## Why Notepad++
+
+I know that VScode is really popular, but for me, Notepad++ is just as good. You can do so much more with it, like customising the syntax highlighting, adding a programming language and a lot of hotkeys, writing a plugin,  and more. It's a super versatile text editor. But what I really want to do is make it an efficient editor that will be a handy tool for the different languages I use (xyplorer, autohotkey, Syncovery logs, php...).
+
+I've tried other IDEs, but they're just not as flexible. Jetbrains (which I still work in) and VScode require me to write a plugin for powerful syntax highlighting in the new language, which is a bit of a pain. The existing plugins have very poor syntax highlighting. I've tried Notepad+, SciTE, AkelPad and other Notepad forks, but they don't have an ecosystem of useful plugins, and the ability to customise syntax highlighting without knowing the structure of their special files is a bit of a challenge.
 
 
