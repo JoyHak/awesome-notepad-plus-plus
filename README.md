@@ -42,6 +42,51 @@ All settings are in individual files. Each plugin has an intuitive interface and
 - The buttons on the toolbar were added using the [plugin](https://sourceforge.net/projects/npp-customize/) and are located in the file: `C:\Users\ToYu\Notepad++\plugins\Config\CustomizeToolbar.btn`
 - All the button icons for plugins are here: `C:\Users\ToYu\Notepad++\plugins\Config\icons`
 - Launch, compilation, and debugging buttons is configured using the [plugin](https://github.com/d0vgan/nppexec) and is located in the file: `C:\Users\ToYu\Notepad++\plugins\Config\npes_saved.txt`. *Please read the [documentation](https://github.com/d0vgan/nppexec/blob/master/docs/NppExec_HelpAll.txt) to add new buttons.*
+- There are separate files for individual file extensions: `C:\Users\ToYu\Notepad++\plugins\Config\NppExecScripts`. *Files are started from npes_saved if the extension of the current file in Notepad++ matches the name of one of the files in this directory. If I am working with a `.ahk` file and want to run it, NppExec will search for a file named `.ahk.exec` in this directory.*
+
+<details><summary>Details</summary>
+Depending on the selected button, the file will start with arguments. For example, the `run` button will pass the `-run` argument to the file.
+
+```javascript
+// npes_saves.txt
+::Run
+    set local CONFIG = $(NPP_DIRECTORY)\plugins\Config\NppExecScripts\$(EXT_PART).exec
+    set exists ~ fileexists $(CONFIG)
+    if $(exists) == 1 then
+        NPP_EXEC $(CONFIG) -run
+```
+Further, these arguments can be processed as desired in the file. I chose the option of [jumping](https://en.wikipedia.org/wiki/Goto) to the args:
+
+```javascript
+// .ahk.exec
+// Jump to the label that matches the arg
+goto $(ARGV)
+
+:-run
+    // Run using Windows file assoc.
+    NPP_RUN "$(FULL_CURRENT_PATH)"
+    exit
+
+:-compile-run       
+    :-compile
+        // Kill running script & exe silently before compiling
+        taskkill /f /t /im "$(NAME_PART)*"                      // .exe
+        taskkill /fi "WINDOWTITLE eq $(FULL_CURRENT_PATH)*"     // .ahk
+
+        $(COMPILER) /in "$(FILE_NAME)" /silent
+
+        if $(ARGV) == -compile then
+            exit            
+        endif
+     
+    // Run only after success
+    if $(EXITCODE) == 0 then
+        set exists ~ fileexists $(OUTPUTL)
+        if $(exists) == 1 then
+            NPP_RUN $(OUTPUTL)
+        ...
+```
+</details>
 
 
 ## Why Notepad++
