@@ -37,8 +37,8 @@ You can always contribute to the project or add new features for yourself. Detai
 ## Customization
 All settings are in individual files. Each plugin has an intuitive interface and is easy to set up. Below is a list of files and dirs that contain various customization elements. *Please read the comments in the files and the links to the plugins listed below. They will help you add something of your own or change the available parameters.*
 - Syntax highlighting is configured by files in two directories
- - The internal syntax highlighting of basic keywords, operators, and functions is found in the files here: `C:\Users\ToYu\Notepad++\userDefineLangs`. *[Here](https://npp-user-manual.org/docs/user-defined-language-system/) you can find how to configure internal syntax highlighting using user-defines languages.* 
- - Syntax highlighting using the [Regex plugin](https://github.com/Ekopalypse/EnhanceAnyLexer) is configured in the file: `C:\Users\ToYu\Notepad++\plugins\Config\EnhanceAnyLexer\EnhanceAnyLexerConfig.ini`. *The directory contains finished languages. To add your own syntax highlghting, read the comments in the file and look at my regexes. You can find new languages [here](https://github.com/notepad-plus-plus/userDefinedLanguages).*
+ - The internal syntax highlighting of basic keywords, operators, and functions is found in the files here: `.\Notepad++\userDefineLangs`. *[Here](https://npp-user-manual.org/docs/user-defined-language-system/) you can find how to configure internal syntax highlighting using user-defines languages.* 
+ - Syntax highlighting using the [Regex plugin](https://github.com/Ekopalypse/EnhanceAnyLexer) is configured in the file: `.\Notepad++\plugins\Config\EnhanceAnyLexer\EnhanceAnyLexerConfig.ini`. *The directory contains finished languages. To add your own syntax highlghting, read the comments in the file and look at my regexes. You can find new languages [here](https://github.com/notepad-plus-plus/userDefinedLanguages).*
 <details><summary>Details</summary>
 
 ```fsharp
@@ -59,10 +59,43 @@ All settings are in individual files. Each plugin has an intuitive interface and
 ```
 </details>
 
-- The buttons on the toolbar were added using the [plugin](https://sourceforge.net/projects/npp-customize/) and are located in the file: `C:\Users\ToYu\Notepad++\plugins\Config\CustomizeToolbar.btn`
-- All the button icons for plugins are here: `C:\Users\ToYu\Notepad++\plugins\Config\icons`
-- Launch, compilation, and debugging buttons is configured using the [plugin](https://github.com/d0vgan/nppexec) and is located in the file: `C:\Users\ToYu\Notepad++\plugins\Config\npes_saved.txt`. *Please read the [documentation](https://github.com/d0vgan/nppexec/blob/master/docs/NppExec_HelpAll.txt) to add new buttons.*
-- There are separate files for individual file extensions: `C:\Users\ToYu\Notepad++\plugins\Config\NppExecScripts`. *Files are started from npes_saved if the extension of the current file in Notepad++ matches the name of one of the files in this directory. If I am working with a `.ahk` file and want to run it, NppExec will search for a file named `.ahk.exec` in this directory.*
+- The buttons on the toolbar were added using the [plugin](https://sourceforge.net/projects/npp-customize/) and are located in the file: `.\Notepad++\plugins\Config\CustomizeToolbar.btn`
+- All the button icons for plugins are here: `.\Notepad++\plugins\Config\icons`
+<details><summary>Details</summary>
+
+```ini
+; Each custom button definiton comprises 7 comma separated fields:
+; Menu1, Submenu1, Submenu2, Submenu3, name.bmp, light.ico, dark.ico
+;  
+; Some fields are optional:
+;   .bmp and .ico
+;   after the last visible SubmenuN, the SubmenuN+1 fields become optional 
+;  
+; If .bmp or .ico file names are present, the files must be located 
+; in the Notepad++ configuration sub-folder: ..\plugins\config
+;  
+;  
+; Quick codes can be used instead of file names: *color:label 
+; A quick code comprises:
+; an * followed by either a color code letter/hex color value
+; label
+;  
+;  
+; EXAMPLES
+; Define custom button using file names:
+Edit,Select_All,,,standard-1.bmp,fluentlight-1.ico,fluentdark-1.ico
+; Redefine existing button using file names:
+Plugins,Compare,Navigation_Bar,,standard-3.bmp,fluentlight-3.ico,fluentdark-3.ico
+; Run and compile
+Plugins,NppExec,Debug,,,icons\debug.ico
+Plugins,NppExec,Compile,,,icons\compile.ico
+Plugins,NppExec,Run,,,icons\run.ico
+ 
+```
+</details>
+
+- Launch, compilation, and debugging buttons is configured using the [plugin](https://github.com/d0vgan/nppexec) and is located in the file: `.\Notepad++\plugins\Config\npes_saved.txt`. *Please read the [documentation](https://github.com/d0vgan/nppexec/blob/master/docs/NppExec_HelpAll.txt) to add new buttons.*
+- There are separate files for individual file extensions: `.\Notepad++\plugins\Config\NppExecScripts`. *Files are started from npes_saved if the extension of the current file in Notepad++ matches the name of one of the files in this directory. If I am working with a `.ahk` file and want to run it, NppExec will search for a file named `.ahk.exec` in this directory.*
 <details><summary>Details</summary>
 Depending on the selected button, the file will start with arguments. For example, the `run` button will pass the `-run` argument to the file.
 
@@ -107,6 +140,10 @@ goto $(ARGV)
 ```
 </details>
 
+- Context menu: `.\Notepad++\contextMenu.xml`
+- Functions in current file: `.\Notepad++\functionList`
+- Auto-complete: `.\Notepad++\autoCompletion`
+- Colorful dark theme: `.\Notepad++\themes\Colorful dark.xml`
 
 ## Why Notepad++
 
