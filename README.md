@@ -39,11 +39,30 @@ All settings are in individual files. Each plugin has an intuitive interface and
 - Syntax highlighting is configured by files in two directories
  - The internal syntax highlighting of basic keywords, operators, and functions is found in the files here: `C:\Users\ToYu\Notepad++\userDefineLangs`. *[Here](https://npp-user-manual.org/docs/user-defined-language-system/) you can find how to configure internal syntax highlighting using user-defines languages.* 
  - Syntax highlighting using the [Regex plugin](https://github.com/Ekopalypse/EnhanceAnyLexer) is configured in the file: `C:\Users\ToYu\Notepad++\plugins\Config\EnhanceAnyLexer\EnhanceAnyLexerConfig.ini`. *The directory contains finished languages. To add your own syntax highlghting, read the comments in the file and look at my regexes. You can find new languages [here](https://github.com/notepad-plus-plus/userDefinedLanguages).*
+<details><summary>Details</summary>
+
+```fsharp
+
+// Each configured lexer must have a section with its name
+//  followed by one or more lines with the syntax
+//  color[optional whitelist] = regular expression.
+//  A color is a number in the range 0 - 16777215.
+//  Examples:
+
+[Autohotkey]
+; Functions and classes: whole word and ( or {
+#6278df = \b\w+\b\.(call|bind|name)
+
+; Logging
+#abba41[4] = (?i)\b(Log\w*)\b
+#ff3e33[4,8] = (?i)\b(\w*Error|(Log)?Exception|throw)\b
+```
+</details>
+
 - The buttons on the toolbar were added using the [plugin](https://sourceforge.net/projects/npp-customize/) and are located in the file: `C:\Users\ToYu\Notepad++\plugins\Config\CustomizeToolbar.btn`
 - All the button icons for plugins are here: `C:\Users\ToYu\Notepad++\plugins\Config\icons`
 - Launch, compilation, and debugging buttons is configured using the [plugin](https://github.com/d0vgan/nppexec) and is located in the file: `C:\Users\ToYu\Notepad++\plugins\Config\npes_saved.txt`. *Please read the [documentation](https://github.com/d0vgan/nppexec/blob/master/docs/NppExec_HelpAll.txt) to add new buttons.*
 - There are separate files for individual file extensions: `C:\Users\ToYu\Notepad++\plugins\Config\NppExecScripts`. *Files are started from npes_saved if the extension of the current file in Notepad++ matches the name of one of the files in this directory. If I am working with a `.ahk` file and want to run it, NppExec will search for a file named `.ahk.exec` in this directory.*
-
 <details><summary>Details</summary>
 Depending on the selected button, the file will start with arguments. For example, the `run` button will pass the `-run` argument to the file.
 
