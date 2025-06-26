@@ -6,7 +6,7 @@
 ![](https://github.com/JoyHak/awesome-notepad-plus-plus/blob/main/images/class.png)
 [![]([https://youtu.be/Xaz8yMx-N9Y](https://www.youtube.com/watch?v=Xaz8yMx-N9Y))](https://www.youtube.com/watch?v=Xaz8yMx-N9Y)
 
-You can always contribute to the project or add new features for yourself. Details on how to customize everything and where the settings are located are [described here](https://github.com/JoyHak/awesome-notepad-plus-plus/edit/main/README.md#customization).
+You can always contribute to the project or add new features for yourself. Details on how to customize everything and where the settings are located are [described here](https://github.com/JoyHak/awesome-notepad-plus-plus?tab=readme-ov-file#customization).
 
 ## Improvements
 
