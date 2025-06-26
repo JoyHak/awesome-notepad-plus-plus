@@ -30,7 +30,7 @@ You can always contribute to the project or add new features for yourself. Detai
 ![image](https://github.com/user-attachments/assets/a87e7a9c-c723-4dab-923f-c763bcca9091)
 ![image](https://github.com/user-attachments/assets/122b1540-2522-41a9-bc95-027f347f8639)
 
-All the button icons for plugins are here: `.\Notepad++\plugins\Config\icons`. You can override / change them! Details are [described here](https://github.com/JoyHak/awesome-notepad-plus-plus/edit/main/README.md#customization).
+All the button icons for plugins are here: `.\Notepad++\plugins\Config\icons`. You can override / change them! Details are [described here](https://github.com/JoyHak/awesome-notepad-plus-plus?tab=readme-ov-file#customization).
 
 ## Powerful AutoHotkey
 - Syntax highlighting fully shows how the string and keys will be interpreted by commands like `Send`. For this purpose, I [invented my own Regex](https://github.com/JoyHak/RegEx-loop) to use the [EnahnceAnyLexer](https://github.com/Ekopalypse/EnhanceAnyLexer) plugin to its full potential!
