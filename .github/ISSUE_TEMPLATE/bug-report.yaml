@@ -1,0 +1,87 @@
+name: "Bug Report"
+description: Describe the bug 
+labels: ["bug"]
+
+- type: checkboxes
+  attributes:
+    label: Is the issue reproducible in Notepad++ without plugin?
+    description: |
+      If feasible, try launching Notepad++ without any plugins.
+      Running without plugins can help diagnose specific problems.
+      You can use cmdline `notepad++.exe -noPlugin`
+      or rename your plugin folder, usually ".\plugins\" to e.g. "...\plugins.bak\").
+    options:
+    - label: I have tried Notepad++ without plugins
+      required: false
+- type: checkboxes
+  attributes:
+    label: Does the issue affect official Notepad++?
+    description: |
+      This is an unofficial version of Notepad++. 
+      Try the official version if this modification is unstable: 
+      https://notepad-plus-plus.org/
+    options:
+    - label: I have tried official version
+      required: false
+- type: input
+  attributes:
+    label: Notepad++ version
+    description: If you tried official version, please append the build number.
+    placeholder: "Example: 8.7.1"
+  validations:
+    required: false
+- type: input
+  attributes:
+    label: Windows Build Number
+    description: Run "ver" at CMD (command prompt) or go to Windows Settings -> Systems -> About.
+    placeholder: "Example: 10.0.19043.1288"
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Description of the Issue
+    description: Provide a concise description to the issue itself.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Steps To Reproduce
+    description: Steps to reproduce the behavior.
+    placeholder: |
+      1.  
+      2.  
+      3.  
+      ...
+    value: |
+      1.  
+      2.  
+      3.  
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Expected Behavior
+    description: What did you expect to happen.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Debug Information
+    description: |
+      In your Notepad++, click on the "?" menu (found to the right of "Window" in the menu bar).
+      In the menu that drops down, choose "Debug Info...".
+      A dialog will open detailing specifics about your Notepad++ version, plugins, etc.
+      CLICK ON THE BUTTON "Copy debug info into clipboard".
+      Do a PASTE HERE
+    render: shell
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Anything else?
+    description: |
+      Links? References? Anything that will give us more context about the issue you are encountering!
+
+      Tip: You can attach images or relevant text files by clicking this area to highlight it and then dragging files in.
+  validations:
+    required: false
