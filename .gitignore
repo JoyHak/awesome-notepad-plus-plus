@@ -1,0 +1,12 @@
+.d[0-9]*-u[0-9]*
+session.xml
+session.xml.inCaseOfCorruption.bak
+nppLogNulContentCorruptionIssue.log
+nppLogNulContentCorruptionIssue.xml
+npec_cmdhistory.txt
+SourceCookifier.config.xml
+SourceCookifier.tags
+*.pyc
+__pycache__
+/Notepad++/AutoHotkey/Identify/test
+/Notepad++/autoCompletion/definitions
