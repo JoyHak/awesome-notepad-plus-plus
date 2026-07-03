@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.21">
+<title>Untitled</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="./docinfo/copy-to-clipboard.css">
+</head>
+<body class="article">
+<div id="header">
+</div>
+<div id="content">
+<div class="paragraph">
+<p>Back to the <a href="Home">DOSBox-X Wiki Welcome page</a>.</p>
+</div>
+<div class="paragraph">
+<p>DOSBox-X supports command-line options. You can start DOSBox-X without any option, or with any of the following options. Options like <strong>-c</strong> and <strong>-set</strong> can be used multiple times in the command line.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>-?</strong>, <strong>-h</strong> or <strong>-help</strong></p>
+<div class="paragraph">
+<p>Shows DOSBox-X&#8217;s help message.</p>
+</div>
+</li>
+<li>
+<p><strong>-editconf [program]</strong></p>
+<div class="paragraph">
+<p>Calls program with as first parameter the configuration file. You can specify this command more than once. In this case it will move to second program if the first one fails to start.</p>
+</div>
+</li>
+<li>
+<p><strong>-opencaptures [program]</strong></p>
+<div class="paragraph">
+<p>Calls program with as first parameter the location of the captures folder.</p>
+</div>
+</li>
+<li>
+<p><strong>-opensaves [program]</strong></p>
+<div class="paragraph">
+<p>Calls program with as first parameter the location of the saves folder.</p>
+</div>
+</li>
+<li>
+<p><strong>-eraseconf</strong> or <strong>-resetconf</strong></p>
+<div class="paragraph">
+<p>Erases DOSBox-X&#8217;s default config file.</p>
+</div>
+</li>
+<li>
+<p><strong>-printconf</strong></p>
+<div class="paragraph">
+<p>Generates DOSBox-X&#8217;s config file in the user directory and prints its location.</p>
+</div>
+</li>
+<li>
+<p><strong>-erasemapper</strong> or <strong>-resetmapper</strong></p>
+<div class="paragraph">
+<p>Erases the mapper file used by the default clean configuration file.</p>
+</div>
+</li>
+<li>
+<p><strong>-nogui</strong></p>
+<div class="paragraph">
+<p>Starts DOSBox-X without showing its GUI menu.</p>
+</div>
+</li>
+<li>
+<p><strong>-nomenu</strong></p>
+<div class="paragraph">
+<p>Starts DOSBox-X without showing its GUI menu.</p>
+</div>
+</li>
+<li>
+<p><strong>-userconf</strong></p>
+<div class="paragraph">
+<p>Loads the configuration file from the user&#8217;s profile or home directory.</p>
+</div>
+</li>
+<li>
+<p><strong>-conf [file]</strong></p>
+<div class="paragraph">
+<p>Uses the specified file as DOSBox-X&#8217;s config file. For example, <code>-conf test.conf</code> will let DOSBox-X use test.conf as its config file.</p>
+</div>
+</li>
+<li>
+<p><strong>-startui</strong> or <strong>-startgui</strong></p>
+<div class="paragraph">
+<p>Starts DOSBox-X with its graphical configuration tool, where you can review or change its settings.</p>
+</div>
+</li>
+<li>
+<p><strong>-startmapper</strong></p>
+<div class="paragraph">
+<p>Starts DOSBox-X and enters to the mapper editor directly, where you can change DOSBox-X’s key mappings.</p>
+</div>
+</li>
+<li>
+<p><strong>-showcycles</strong></p>
+<div class="paragraph">
+<p>Shows cycle count (FPS) on the DOSBox-X title bar.</p>
+</div>
+</li>
+<li>
+<p><strong>-showrt</strong></p>
+<div class="paragraph">
+<p>Shows emulation speed relative to realtime on the DOSBox-X title bar.</p>
+</div>
+</li>
+<li>
+<p><strong>-fullscreen</strong> or <strong>-fs</strong></p>
+<div class="paragraph">
+<p>Starts DOSBox-X in full-screen mode.</p>
+</div>
+</li>
+<li>
+<p><strong>-savedir [path]</strong></p>
+<div class="paragraph">
+<p>Uses the specified path as DOSBox-X&#8217;s save path, including the location for the saved states.</p>
+</div>
+</li>
+<li>
+<p><strong>-defaultdir [path]</strong></p>
+<div class="paragraph">
+<p>Uses the specified path as DOSBox-X&#8217;s default path (instead of the current directory which is usually the DOSBox-X program directory), the location for files including the dosbox-x.conf config file. If no path is specified, and it is the only/last command-line option, then the directory of the primary config file (if any) will be used as DOSBox-X&#8217;s default path.</p>
+</div>
+</li>
+<li>
+<p><strong>-defaultconf</strong></p>
+<div class="paragraph">
+<p>Uses the default config settings of DOSBox-X (do not try to load default config files such as dosbox-x.conf).</p>
+</div>
+</li>
+<li>
+<p><strong>-defaultmapper</strong></p>
+<div class="paragraph">
+<p>Uses the default key mappings for DOSBox-X (do not try to load a mapper file such as mapper-dosbox-x.map).</p>
+</div>
+</li>
+<li>
+<p><strong>-promptfolder</strong></p>
+<div class="paragraph">
+<p>Prompts for a folder which will become DOSBox-X&#8217;s working directory when it starts.</p>
+</div>
+</li>
+<li>
+<p><strong>-nopromptfolder</strong></p>
+<div class="paragraph">
+<p>Do not prompt for a folder to become the DOSBox-X working directory when it starts.</p>
+</div>
+</li>
+<li>
+<p><strong>-prerun</strong></p>
+<div class="paragraph">
+<p>If a program is provided in the command line, run it before (instead of after) the AUTOEXEC.BAT config section.</p>
+</div>
+</li>
+<li>
+<p><strong>-hostrun</strong></p>
+<div class="paragraph">
+<p>Enables launching Windows programs to run on the Windows host, and for all systems the addition of START command, long filenames support and shared clipboard communications via the CLIP$ device.</p>
+</div>
+</li>
+<li>
+<p><strong>-display2 &lt;color&gt;</strong></p>
+<div class="paragraph">
+<p>Enables standard (VGA/EGA/CGA) and monochrome dual-screen mode with the specified color: white, green, amber.</p>
+</div>
+</li>
+<li>
+<p><strong>-disable-numlock-check</strong></p>
+<div class="paragraph">
+<p>Disables check of the NumLock key (Windows version only).</p>
+</div>
+</li>
+<li>
+<p><strong>-date-host-forced</strong></p>
+<div class="paragraph">
+<p>Forces synchronization of date with the host system.</p>
+</div>
+</li>
+<li>
+<p><strong>-lang [message file]</strong> or <strong>-langcp [message file]</strong></p>
+<div class="paragraph">
+<p>Uses the specified language file instead of <code>language=</code> setting. For example, <code>-lang C:\message.txt</code> will use the file "C:\message.txt" as the language file. The <code>-langcp </code> option will also force the embedded code page if specified by the language file for the TrueType font (TTF) output or Chinese/Japanese/Korean languages.</p>
+</div>
+</li>
+<li>
+<p><strong>-machine [type]</strong></p>
+<div class="paragraph">
+<p>Starts DOSBox-X with the specified machine type.</p>
+</div>
+</li>
+<li>
+<p><strong>-nodpiaware</strong></p>
+<div class="paragraph">
+<p>Ignores (don&#8217;t signal) Windows DPI awareness. May be useful if DOSBox-X starts in a very small window on some computers.</p>
+</div>
+</li>
+<li>
+<p><strong>-securemode</strong></p>
+<div class="paragraph">
+<p>Enables DOSBox-X&#8217;s secure mode. The [config] and [autoexec] sections of the loaded configuration file will be skipped, and commands such as MOUNT and IMGMOUNT are disabled.</p>
+</div>
+</li>
+<li>
+<p><strong>-noconfig</strong></p>
+<div class="paragraph">
+<p>Skips the [config] section of the loaded configuration file.</p>
+</div>
+</li>
+<li>
+<p><strong>-noautoexec</strong></p>
+<div class="paragraph">
+<p>Skips the [autoexec] section of the loaded configuration file.</p>
+</div>
+</li>
+<li>
+<p><strong>-exit</strong></p>
+<div class="paragraph">
+<p>Exits after executing the [autoexec] section of the loaded configuration file.</p>
+</div>
+</li>
+<li>
+<p><strong>-o [option string]</strong></p>
+<div class="paragraph">
+<p>Provides command-line option(s)/argument(s) to pass to program(s), if specified in the command line. Make sure to surround the arguments in quotes to cover spaces. For example, <code>dosbox-x myapp.exe -o myopt</code> provides the “myopt” argument for the myapp.exe program.</p>
+</div>
+</li>
+<li>
+<p><strong>-c [command string]</strong></p>
+<div class="paragraph">
+<p>Executes the specified command in addition to the [autoexec] section of the loaded configuration file. Make sure to surround the command in quotes to cover spaces. For example, <code>-c "MOUNT C C:\\DOS"</code> will cause DOSBox-X to execute the command <code>MOUNT C C:\DOS</code> at start.</p>
+</div>
+</li>
+<li>
+<p><strong>-set &lt;section property=value&gt;</strong></p>
+<div class="paragraph">
+<p>Sets the specified config option, overriding such option (if exists) in the loaded configuration file. Make sure to surround the string in quotes to cover spaces. For example, <code>-set machine=pc98</code> will force DOSBox-X to start in PC-98 mode.</p>
+</div>
+</li>
+<li>
+<p><strong>-time-limit [n]</strong></p>
+<div class="paragraph">
+<p>Starts and terminates DOSBox-X after 'n' seconds.</p>
+</div>
+</li>
+<li>
+<p><strong>-fastlaunch</strong></p>
+<div class="paragraph">
+<p>Enables fast launch mode by skipping the BIOS pause and welcome banner when DOSBox-X starts. Especially use for launching a specific program or game at start.</p>
+</div>
+</li>
+<li>
+<p><strong>-silent</strong></p>
+<div class="paragraph">
+<p>Runs DOSBox-X silently without showing the DOSBox-X window and then automatically exits after executing AUTOEXEC.BAT. Useful for batch operations.</p>
+</div>
+</li>
+<li>
+<p><strong>-helpdebug</strong></p>
+<div class="paragraph">
+<p>Shows debug-related command-line options.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>The following are debug-related options:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>-debug</strong></p>
+<div class="paragraph">
+<p>Sets all logging levels to debug.</p>
+</div>
+</li>
+<li>
+<p><strong>-early-debug</strong></p>
+<div class="paragraph">
+<p>Logs early initialization messages in DOSBox-X (this option implies -console).</p>
+</div>
+</li>
+<li>
+<p><strong>-keydbg</strong></p>
+<div class="paragraph">
+<p>Logs all SDL key events (debugging).</p>
+</div>
+</li>
+<li>
+<p><strong>-break-start</strong></p>
+<div class="paragraph">
+<p>Starts DOSBox-X and breaks into its debugger directly.</p>
+</div>
+</li>
+<li>
+<p><strong>-console</strong></p>
+<div class="paragraph">
+<p>Starts DOSBox-X with the console window (Windows builds only).</p>
+</div>
+</li>
+<li>
+<p><strong>-noconsole</strong></p>
+<div class="paragraph">
+<p>Starts DOSBox-X without showing the console window (Windows debug builds only).</p>
+</div>
+</li>
+<li>
+<p><strong>-log-con</strong></p>
+<div class="paragraph">
+<p>Logs CON output to a log file.</p>
+</div>
+</li>
+<li>
+<p><strong>-log-int21</strong></p>
+<div class="paragraph">
+<p>Logs calls to INT 21h (debug level).</p>
+</div>
+</li>
+<li>
+<p><strong>-log-fileio</strong></p>
+<div class="paragraph">
+<p>Logs file I/O through INT 21h (debug level).</p>
+</div>
+</li>
+<li>
+<p><strong>-nolog</strong></p>
+<div class="paragraph">
+<p>Disables logging output.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<script src="./docinfo/copy-to-clipboard.js"></script>
+</body>
+</html>

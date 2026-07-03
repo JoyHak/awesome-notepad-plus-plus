@@ -1,0 +1,2355 @@
+
+
+                           #     #####                 
+                          # #   #     #  ######   #####
+                         #   #  #        #          #  
+                        #     #  #####   #####      #  
+                        #######       #  #          #  
+                        #     # #     #  #          #  
+                        #     #  #####   ######     #  
+
+
+
+
+You can get part of the following documentation by invoking the program with
+the switches -v, -h, or -H . See README.TXT for more information.
+
+-----------------------------------   -v   ------------------------------------
+ASET v1.0 -- Advanced SET command
+Copr (c) 1992,1993 Richard Breuer. ASET is freeware. No warranties.
+
+This is ASET/2 v1.0 - renamed to ASET (from RUTILS 4).
+
+Author: Richard Breuer
+        Brunssumstrasse 6
+        5100 Aachen
+        (after Jul 1, 1993: 52074 Aachen)
+        Germany
+        Europe
+
+Phone:  +49/241/85605
+Fax:    +49/241/8021329
+
+Email:  ricki@pool.informatik.rwth-aachen.de (Preferred!)
+
+-----------------------------------   -h   ------------------------------------
+ASET v1.0 -- Advanced SET command
+Copr (c) 1992,1993 Richard Breuer. ASET is freeware. No warranties.
+
+Usage:
+   ASET [-ef:hHnprv*] [target {=|:=} expression]
+
+Options (Combined options are not allowed; -e and -f are mutually exclusive):
+   -e       Set the ERRORLEVEL according to the result
+   -f[file] Read a list of statements from file rather than the command line;
+            if file is omitted, standard input is read
+   -h       Display this help screen
+   -H       Display another help screen with notes and examples
+   -n       Do not SET anything (if not -e, -n implies -p)
+   -p       Print the result on stdout (default is quiet operation)
+   -r       Repeat the assignment on stdout (default is quiet operation)
+   -v       Display version info and information about the author
+   -*       Display internal information (for debugging purposes)
+
+-----------------------------------   -H   ------------------------------------
+ASET v1.0 -- Advanced SET command
+Copr (c) 1992,1993 Richard Breuer. ASET is freeware. No warranties.
+
+Notes:
+   ASET is a powerful tool for batch files. Refer to the manual or the
+   quick reference for details about each function. Please note that ASET,
+   unlike the other RUTILS programs, does not accept combined options, ie.
+   -en is not allowed. You must use -e -n instead.
+
+Examples:
+   ASET BUF = BUFFERS
+      Assigns the value of the BUFFERS directive in CONFIG.SYS to the shell
+      variable BUF. Use %BUF% to access the value in your batch file.
+   ASET /fDEFAULT.SET
+      Reads DEFAULT.SET and sets the environment variables appropriately. The
+      file is expected to contain lines like "A := SIN(3*4-11)+COS(SIN(1))"
+      or "B = FEXPAND('.')".
+   ASET X:=SIN(%Y%)+%Z%*COS(%Y%)	/* assign X the result of a formula */
+   ASET -n -f                   	/* read assignments from stdin */
+   ASET -e -n X:=BUFFERS gt 20  	/* ERRORLEVEL 1, if condition holds */
+   ASET -p PWD=DIR              	/* assign PWD the current directory */
+   CMDGEN | ASET -f             	/* process CMDGEN's output */
+
+-------------------------------------------------------------------------------
+
+0   Introduction
+----------------
+  ASET/2 is an improved version of RUTILS 3.0's ASET command. I added an
+  expression parser which allows the construction of infix expressions as
+  in normal arithmetic expressions, like 1+2*3. It follows the standard
+  operator precedences.
+
+  The following documentation covers the following topics:
+
+        0   Introduction
+        1   Using ASET
+        2   Caveats and workarounds
+        3   The parser
+        4   The type concept in ASET
+        5   Intrinsic operators
+        6   Functions
+        7   Overview over ASETs functions
+        7.1   Alphabetic list of ASETs functions
+        7.2   List of ASETs functions, sorted by categories
+        8   Documentation of ASETs functions
+        9   Details
+        9.1   Evaluation Errors
+        9.2   Internal data representation
+        9.3   Further notes
+
+
+1   Using ASET
+--------------
+  ASET is designed as a utility to enhance DOS batch files, as well as kind
+  of a desktop calculator. Besides, it can help to install and configure your
+  software.
+
+  There are two modes of operation:
+
+  Command line operation:
+        This is the default mode, which is used whenever ASET is started
+        without the /f switch. Some examples for command line mode are
+
+                ASET LIB='C:\LIB'
+                ASET SORT=DOSPATH('SORT.EXE')
+                ASET RESULT=sin(%PHI%)+%X%*COS(%PHI%)
+
+        One disadvantage of this mode is that DOS must load ASET into memory
+        whenever it is invoked. This may become slow because of its size.
+        One way to avoid this, is the file operation mode (ASET will have to
+	be loaded only once for an arbitrary number of assignment operations).
+        Look below for the useful -r option.
+
+  File operation:
+        This mode is used if ASET is invoked with the /f switch. It then
+        reads its input from a file, not from the command line. This file
+        is expected to contains lines like the above. There can be an
+        arbitrary number of these lines. Empty lines or lines starting with
+        '#' are treated as comment lines, and ignored. Lines longer than
+        255 characters are truncated.
+
+        If you use /f without an argument, ASET reads commands from the
+        standard input. Examples:
+
+                ASET /fMYINST.CMD
+                CMDGEN | ASET /f /n
+                ASET /n /f
+
+        In the first example, ASET will read its commands from MYINST.CMD. This
+	gives you a nice possibilty to store several configuration settings in
+	different files, and let ASET execute one of them according to your
+	installment needs.
+
+        In the second example, CMDGEN is expected to write ASET commands on
+        standard output. ASET will then read these commands and execute them.
+
+        The third example shows how ASET can be used as a calculator. It reads
+        commands from the keyboard until you input Ctrl/Z. This behaviour is
+        due to the empty filename parameter of the /f switch. See below for
+        the /n switch.
+
+  Besides the /f option which switches between command line and file mode,
+  there are some other options:
+
+  -e    Normally, ASET sets a shell variable to a value which is calculated
+        in a certain formula. It then finishes operation. -e lets ASET set
+        the ERRORLEVEL in addition to the shell variable. The ERRORLEVEL can
+        only be set to values 0..255. This makes it necessary to make some
+        assumptions:
+          - if the result is not a number, the ERRORLEVEL is set to
+            the ASCII code of the first character. Consider a result
+            'Auto'. ERRORLEVEL would be set to 65 in this case.
+          - if the result is empty, ERRORLEVEL is set to 0.
+          - if the result is a negative number, 'abs' is applied to
+            the number and...
+          - if the number is greater than 255, number is set to 255 and...
+          - ERRORLEVEL is set to the number.
+
+        Note that -e makes it impossible to determine whether ASET has been
+        invoked with -h, -H, or -v (in these cases the ERRORLEVEL is set to 1)
+        or if a runtime error occurred (in which case it is set to 255).
+
+        The -e switch can be a powerful enhancement to your batch files.
+	Consider the following batch file:
+
+		REM
+		REM   Check if there's enough memory for the installation
+		REM
+                ASET -e -n DUMMY := DISKFREE('C:') gt 1000000
+                IF ERRORLEVEL 1 GOTO OKAY
+		ECHO Installation Error
+                ...
+
+        The above ASET command will compute the free bytes on drive C: and
+        check if the value is larger than 1 Megabyte. If this is so, DUMMY
+        is assigned the value 1 (for boolean TRUE), otherwise 0 (boolean
+        FALSE). The switch -e makes ASET set the ERRORLEVEL accordingly, ie.
+        in this case that ERRORLEVEL will be 1.
+
+        You may wonder why I built in the -e facility, because it would also
+        have been possible to write
+
+                REM
+		REM   Check if there's enough memory for the installation
+		REM
+                ASET DUMMY := DISKFREE('C:') gt 1000000
+                IF %DUMMY%==1 GOTO OKAY
+		ECHO Installation Error
+                ...
+
+        The problem with this is, however, that you assign a new shell variable
+        which may cause problems, (a) because you cannot be sure that the name
+        of the variable has already been used in the current environment (which
+        will result in a loss of the previous value) and, (b) if you invoke the
+        above batch file in a subshell, there is likely no more space in the
+        system environment table for a new variable. -e is the solution to both
+        problems.
+
+  -n    ASET will not modify the environment. It only calculates the result
+        and displays it, if -e is not specified. If -e is specified together
+        with -n, nothing is displayed (unless you force it with -p, of course).
+        -n is useful if you want to use ASET as a calculator only or if you
+        want ASET to set the ERRORLEVEL without modifying any environment
+        variables.
+
+  -p    ASET will show the result on standard output in addition to modifying
+        the environment.
+
+  -r    ASET will repeat the assignment on standard output before actually
+  	executing it. This eases debugging in file mode.
+
+
+2   Caveats and workarounds
+---------------------------
+  Please note that ASET does not accept combined options. If you want to
+  specify eg. both -e and -n (which means, that ASET does ONLY set the
+  ERRORLEVEL), you must invoke "ASET -e -n", not "ASET -en". The reason for
+  this behaviour is the fact that ASET parses the command line two times,
+  first for options and arguments, then for the command to be processed.
+  Between these two phases, ASET removes the options from the command line
+  (and it's much easier to remove single options than combined ones...).
+
+  The above parsing algorithm shows another possible problem of ASET. Consider
+  an assignment
+
+        ASET A := -*
+
+  which should assign the string "-*" to A. The reality is different, however.
+  You know, what happens, don't you? -* is treated as an option (debug mode).
+  After setting debug=true, -* is removed from the command line and
+
+        ASET A :=
+
+  remains, which will remove A from the list of environment variables. To
+  avoid this, you should always obey the following rule:
+
+      +-----------------------------------------------------------+
+      | ALL STRING VALUES PASSED TO ASET SHOULD BE QUOTED USING ' |
+      +-----------------------------------------------------------+
+
+  According to this rule, you should better invoke ASET like
+
+        ASET A := '-*'
+
+  which will do what you (hopefully :-)) want. Quoting strings avoids another
+  possible trap. Non-quoted strings are checked against a table which contains
+  all of ASETs function names, like SIN, COS, or whatever. Consider the
+  following situation in a batch file:
+
+        ASET A := fdir(fexpand('.'))
+        ASET B := 'D:\MYDIR' + %A%
+
+  The first assignment assigns A the name of the current directory without
+  the full path. The second assignment is supposed to assign B the value
+  "D:\MYDIR\dirname", with dirname being the above result. This will normally
+  be ok, but there are about 150 cases in which it will fail, namely whenever
+  dirname is one of ASETs function names, eg. SIN or COS. In these cases ASET
+  will try to evaluate the function, and in this case fail because of missing
+  arguments. Therefore, keeping the 'golden rule' in mind, the correct way is:
+
+        ASET A := fdir(fexpand('.'))
+        ASET B := 'D:\MYDIR' + '%A%'
+
+
+3   The parser
+--------------
+  ASET uses Lex and Yacc for Turbo Pascal (Version 2.0 by Albert Graef) to
+  scan and parse the input.
+
+  It's hard to describe the details of the parser in other words than lex's
+  and yacc's :-). Therefore I simply include the specifications here for
+  anybody who is interested in the details.
+
+  ---------------------------------------------------------------------------
+  special         [-+*/%(),!<>=^']
+
+  str0            [^-+*/%(),!<>=^' \t\n]+
+  str1            '[^'\n]*'
+
+  %%
+
+  ^#.*            ;
+
+  ":="            return(T_ASSIGN);
+  "**"            return(ord('^'));
+  "div"           return(ord(T_DIV));
+  "mod"           return(ord('%'));
+
+  "and"           return(T_AND);
+  "or"            return(T_OR);
+  "nand"          return(T_NAND);
+  "nor"           return(T_NOR);
+  "xor"           return(T_XOR);
+  "not"           return(T_NOT);
+
+  "!="            return(T_NE);
+  "=="            return(ord('='));
+  "ne"            return(T_NE);
+  "eq"            return(ord('='));
+  "lt"            return(ord('<'));
+  "gt"            return(ord('>'));
+  "le"            return(T_LE);
+  "ge"            return(T_GE);
+
+  ^{str0}         begin
+                    { the first value will never be treated as a function,
+                      because it is always the target of an assignment }
+                    Passign(yylval.strg,yytext);
+                    return(T_VALUE)
+                  end;
+
+  {str0}          begin
+                    if (lookup(yytext,yylval.func)) then
+                      return(T_FUNCTION)
+                    else begin
+                      Passign(yylval.strg,yytext);
+                      return(T_VALUE)
+                    end
+                  end;
+
+  {str1}          begin
+                    Passign(yylval.strg,copy(yytext,2,yyleng-2));
+                    return(T_VALUE)
+                  end;
+
+  [ \t]+          ;
+  {special}       return(ord(yytext[1]));
+  \n              return(ord(yytext[1]));
+
+  %%
+  ---------------------------------------------------------------------------
+  %union {
+    case boolean of
+      false: (func: integer);
+      true:  (strg: Pstrg);
+    }
+
+  %token <strg> T_VALUE
+  %type  <strg> expr
+  %type  <strg> optexpr
+  %token <func> T_FUNCTION
+  %token T_ASSIGN
+  %left  T_AND T_OR T_NAND T_NOR T_XOR
+  %left  '=' T_NE '<' T_LE '>' T_GE
+  %left  '+' '-'
+  %left  '^' '*' '/' '%' T_DIV
+  %right T_UMINUS T_UNOT
+  %token T_NOT
+
+  %%
+
+  input   : /* empty */
+          | T_VALUE assop expr
+          | T_VALUE assop
+          | T_VALUE
+          | error
+          ;
+
+  assop   : T_ASSIGN
+          | '='
+          ;
+
+  expr    : expr '+' expr                 
+          | expr '-' expr                 
+          | expr '*' expr                 
+          | expr '/' expr                 
+          | expr '%' expr                 
+          | expr '^' expr                 
+          | expr T_DIV expr               
+          | expr '=' expr                 
+          | expr '<' expr                 
+          | expr '>' expr                 
+          | expr T_NE expr                
+          | expr T_LE expr                
+          | expr T_GE expr                
+          | expr T_AND expr               
+          | expr T_OR expr                
+          | expr T_NAND expr              
+          | expr T_NOR expr               
+          | expr T_XOR expr               
+          | '(' expr ')'                  
+          | T_NOT expr %prec T_UNOT       
+          | '-' expr %prec T_UMINUS       
+          | T_VALUE                       
+          | T_VALUE T_VALUE               
+          | T_FUNCTION optpars            
+          ;
+
+  optpars : /* empty */
+          | '(' parlist ')'
+          ;
+
+  parlist : optexpr
+          | parlist "," optexpr
+          ;
+
+  optexpr : /* empty */
+          | expr
+          ;
+
+  %%
+  ---------------------------------------------------------------------------
+
+
+4   The type concept in ASET
+----------------------------
+  ASET has a variable built-in type concept. It is based on the fact that
+  each value can be interpreted in different ways, according to the underlying
+  basic data types. There are four basic data types, with the given semantics:
+
+        String          Each value is a string
+        Real            Some strings are real numbers
+        Integer         Some reals are integers
+        Boolean         Some integers are booleans
+
+  Consider some examples:
+
+        'Auto'          is a string, no real, no integer, no boolean
+        '1.4e-1'        is a string, a real, no integer, no boolean
+        '100'           is a string, a real, an integer, no boolean
+        '1'             is a string, a real, an integer, a boolean (true)
+        ''		is a string, no real, no integer, no boolean
+
+  The definition of valid reals and integers is the usual one. Note that they
+  are always unsigned, because the - is treated as an operator (unary -). The
+  definition of boolean values is:
+
+        0       represents the value false
+        1       represents the value true
+
+  Now we head towards an extension of this type concept: Consider the value
+  '1.4e-1' again. We can interpret this value as an integer by applying the
+  function 'round' to it, which makes it an integer 0. In a similar way we
+  define each integer to be a boolean value by applying the function 'signum',
+  which means: boolean is false, if integer is zero, and true, if integer is
+  not zero. Let's return to our example and show all possible interpretations:
+
+        String value    Real    Integer Boolean
+        'Auto'          0.0     0       false
+        '1.4e-1'        0.14    0       false
+        '100'           100.0   100     true
+        '1'             1.0     1       true
+        ''		0.0	0	false
+        '0.5'           0.5     1       true
+
+  The last entry shows the effect of the 'round' function which returns the
+  nearest integer and, if the number lies between two integers, takes the
+  larger one.
+
+  ASET will automagically choose the strongest lossless representation for the
+  results of operations. That means, that the result of '0.5'+'0.5' is inter-
+  preted as '1', ie. an integer value, not '1.0', a real value.
+
+
+5   Intrinsic operators
+-----------------------
+  The following operators are built-in (I will call them 'intrinsic' from now
+  on in contrast to the 'functions'). They are discussed in detail now.
+
+  +             The + operator adds its arguments, if they are real numbers.
+                If at least one string takes part in the operation, a con-
+                catenation is performed. Some examples
+
+                        1+1                     2
+                        1.5+1                   2.5
+                        1+'a'                   '1a'
+                        'abc'+'def'             'abcdef'
+                        'a '+' b'               'a  b'
+                        '+'+'+'			++
+
+  -             The - operator subtracts its arguments, if they are real
+                numbers. If at least one string takes part in the operation,
+                a replacement is performed. If the statement is s1-s2, all
+                occurences of s2 in s1 are removed. Some examples:
+
+                        1-1                     0
+                        1.5-1                   0.5
+                        1-'a'                   1
+                        'abc aba'-a             'bc b'
+                        '-'-'-'			''
+
+  *             This operator multiplies its arguments, if they are numbers,
+                otherwise '?' is returned. Some examples:
+
+                        1*1                     1
+                        1.5*2.5                 3.75
+                        1*'a'                   ?
+                        'abc'*' '               ?
+
+  /             divides the arguments, if they are both numbers. If one of the
+                arguments is not a number, or if the second number is zero, '?'
+                is returned. Examples:
+
+                        1/1                     1
+                        1.5/2.5                 0.6
+                        1/'a'                   ?
+                        'abc'/' '               ?
+
+  div           performs an integer division of the arguments. If one of them
+                is not a number or the second argument is zero, '?' is returned.
+                Note that reals are rounded according to ASETs type concept.
+
+                        1 div 1                 1
+                        10 div 3                3
+                        10.5 div 3.1            3       (= 11 div 3)
+                        10.5 div 3.5            2       (= 11 div 4)
+                        100a div 100            ?
+                        'ab' div ' '		?
+
+  mod, %        apply the mod function to the arguments. If one of them is
+                not a number or the second argument is zero, '?' is returned.
+                Note that reals are rounded according to ASETs type concept.
+                The '%' character is interpreted as a shell variable reference
+                in most DOS versions. Therefore you must use '%%' (or div, of
+                course) there. Some examples:
+
+                        1%1                     0
+                        10 mod 3                1
+                        10.5 mod 3.1            2       (= 11 mod 3)
+                        10.5%3.5                3       (= 11 mod 4)
+                        100a%100                ?
+                        'ab'%' '		?
+
+  ^, **		raise the first argument to the power of the second. These
+  		operators determine whether the exponent is integer or not and
+                choose the most efficient algorithm for the computation. They
+                return '?' if at least one non-real is involved or an error
+                occurs. An error occurs if the exponent is not an integer and
+                the first argument is less than zero. Examples:
+
+                	2^3			8
+                        2.5^2			6.25
+                        9**0.5			3
+                        -1^2			1
+                        -1^2.5			?
+                        a^1			?
+                        abc^' '			?
+
+  eq, =, ==	test if the arguments are equal. The equality is checked in a
+		different way for the different data types. If both arguments
+                are integers, the numbers are checked. If both are reals, the
+                numbers are checked using a built-in constant EPS (whose value
+                is returned by the generic function EPS). The check which is
+                performed, is "abs(r1-r2)<EPS", ie. the so-called absolute
+                error is checked. For strings the check is about literal
+                equality (each character must correspond).
+		The return value is boolean, ie. 1, if true, 0, if false.
+		Some examples:
+
+                	9==09			1	(integers)
+                        '9'=='09'		1	(still integers)
+                        'a'=='A'		0	(case is relevent)
+                        'a bc'='a bc'		1	(of course)
+			1.2 eq 1.3		0	(EPS is not THAT big)
+                        1.2 eq 1.20000001	1	(big enough for this)
+
+  ne, !=	The opposite of eq, making the same assumptions. Examples:
+
+                	9!=09			0
+                        '9'!='09'		0
+                        'a'!='A'		1
+                        'a bc'!='a bc'		0
+			1.2 ne 1.3		1
+                        1.2 ne 1.20000001	0
+
+  lt, gt, le, ge
+  		Self explanatory.
+
+  and, or, nand, nor, xor
+  		are the logical operators. Their meaning is defined in two
+                different ways, depending on the type of the arguments. If
+                both are boolean, the result is computed as if the values
+                true and false took part in the operation. If both are
+                integer (which includes one integer and one boolean), the
+                arguments are processed bitwise. Real numbers and strings
+                result in '?'. Some examples:
+
+                	1 and 1			1 (boolean)
+                        1 and 2			0 (integer)
+                        1 and 3                 1 (integer)
+                        a and 1			?
+                        1.2 and 0		?
+
+
+6   Functions
+-------------
+  ASET has a lot of built-in functions whose syntax is always
+
+        function(arg1,arg2,...)
+
+  or, in the cases of missing arguments, simply
+
+        function
+
+  Examples for function calls are
+
+        ASET A = min(-100,3,10)         # A = -100
+        ASET A = int(-3.4)              # A = -3
+        ASET A = sin(pi)                # A = 0; note the 2 function sin, pi
+        ASET A = pi                     # A = 3.141593
+        ASET A = line(1,'FOO.DAT')      # A = <line 1 of FOO.DAT>
+        ASET A = getstr(10)             # A = <you must input a string>
+
+  The next part of the documentation is generated automatically. It might
+  therefore be boring to read it :-) I recommend you use mainly the quick
+  reference, because the examples give a good overview, I believe.
+
+  Refer to the last section, "Details", if you wonder how the functions work
+  internally (that section is _not_ generated automatically).
+
+
+
+7   Overview over ASETs functions
+=================================
+
+7.1   Alphabetic list of ASETs functions
+----------------------------------------
+   abs acos acosd aif arccos arccosd arcsin arcsind arctan arctand args
+   arithif asc asin asind atan atand bootdrive bootdrv buffers char chr
+   concat copy cos cosd cosh count country date day dayofyear delete device
+   dfree dir diskfree disksize dospath dosver doy dsize e envcnt envcount
+   envused eps even exp fac fattr fcbsx fcbsy fdate fdir fdrive fexpand fext
+   fileattr filedate filedir filedrive fileext filename filenamex filepath
+   files filesize filetime fname fnamex fpath frac fsize ftime fullpath
+   getkey getline getnum getnumber getstr getstring hour if instr int isdir
+   key label lastdrive lastdrv leap leapyear left leftstr len length line ln
+   locase log lower max memfree mid min minute month monthn monthname nth
+   ntharg odd ord pi pick pickarg pos quote ramfree random right rightstr
+   rnd round second sgn shell sign sin sind sinh sqr sqrt stackx stacky
+   suball subst substall substone tan tand tanh time tmpname today trunc
+   type unique unquote upcase upper volume wday wdayn wdayname words year
+
+7.2   List of ASETs functions, sorted by categories
+---------------------------------------------------
+Math functions:
+   abs acos acosd arccos arccosd arcsin arcsind arctan arctand asin asind
+   atan atand cos cosd cosh e eps even exp fac frac int ln log odd pi random
+   rnd round sgn sign sin sind sinh sqr sqrt tan tand tanh trunc
+Functions returning information about files and disks:
+   dfree dir diskfree disksize dospath dsize fattr fdate fdir fdrive fexpand
+   fext fileattr filedate filedir filedrive fileext filename filenamex
+   filepath filesize filetime fname fnamex fpath fsize ftime fullpath isdir
+   label tmpname unique volume
+Functions accessing CONFIG.SYS:
+   buffers country device fcbsx fcbsy files lastdrive lastdrv shell stackx
+   stacky
+String handling:
+   asc char chr concat copy count delete instr left leftstr len length
+   locase lower mid nth ord pick pos quote right rightstr suball subst
+   substall substone unquote upcase upper words
+User and file interaction functions:
+   getkey getline getnum getnumber getstr getstring key line
+Time/date handling:
+   date day dayofyear doy hour leap leapyear minute month monthn monthname
+   second time today wday wdayn wdayname year
+Miscellanous functions:
+   aif args arithif bootdrive bootdrv dosver envcnt envcount envused if max
+   memfree min ntharg pickarg ramfree type
+
+
+
+8   Documentation of ASETs functions
+====================================
+
+-------------------------------------------------------------------------------
+ABS - Calculates the absolute value
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := ABS(-5.56)
+     X=5.56
+
+
+-------------------------------------------------------------------------------
+AIF - Arithmetic IF, returns arg2, if arg1<0, returns arg3, if arg1=0, returns
+      arg4 else
+-------------------------------------------------------------------------------
+   Argument(s): 4, Real String String String 
+   Result type: String 
+   Aliases    : ARITHIF
+   See also   : IF
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := AIF(0.5,'a','b','c')
+     X=c
+
+
+-------------------------------------------------------------------------------
+ARCCOS - Computes the radiant arcus cosinus
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Aliases    : ACOS
+   See also   : ARCCOSD ACOSD
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := ARCCOS(0.5)
+     X=1.047198
+
+
+-------------------------------------------------------------------------------
+ARCCOSD - Computes the degree arcus cosinus
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Aliases    : ACOSD
+   See also   : ARCCOS ACOS
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := ARCCOSD(0.5)
+     X=60
+
+
+-------------------------------------------------------------------------------
+ARCSIN - Computes the radiant arcus sinus
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Aliases    : ASIN
+   See also   : ARCSIND ASIND
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := ARCSIN(0.5)
+     X=0.523599
+
+
+-------------------------------------------------------------------------------
+ARCSIND - Computes the degree arcus sinus
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Aliases    : ASIND
+   See also   : ARCSIN ASIN
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := ARCSIND(0.5)
+     X=30
+
+
+-------------------------------------------------------------------------------
+ARCTAN - Computes the radiant arcus tangens
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Aliases    : ATAN
+   See also   : ARCTAND ATAND
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := ARCTAN(0.5)
+     X=0.463648
+
+
+-------------------------------------------------------------------------------
+ARCTAND - Computes the degree arcus tangens
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Aliases    : ATAND
+   See also   : ARCTAN ATAN
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := ARCTAND(0.5)
+     X=26.565051
+
+
+-------------------------------------------------------------------------------
+ARGS - Returns the number of arguments in a list
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 64, String 
+   Result type: Integer 
+   See also   : WORDS
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := ARGS(2,'Ricki',1.4)
+     X=3
+
+
+-------------------------------------------------------------------------------
+BOOTDRV - Determines from which drive the system was booted, needs DOS 4++ ('?'
+          on error)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: String 
+   Aliases    : BOOTDRIVE
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := BOOTDRV
+     X=C:
+
+
+-------------------------------------------------------------------------------
+BUFFERS - Returns BUFFERS or HIBUFFERS from CONFIG.SYS (15 on error)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   Category   : Functions accessing CONFIG.SYS
+
+   Example: 
+     C:> ASET -p X := BUFFERS
+     X=20
+
+
+-------------------------------------------------------------------------------
+CHR - Returns the character with the given ASCII code (? on error)
+-------------------------------------------------------------------------------
+   Argument(s): 1, Integer 
+   Result type: String 
+   Aliases    : CHAR
+   See also   : ORD
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := CHR(65)
+     X=A
+
+
+-------------------------------------------------------------------------------
+CONCAT - Returns the concatenation of the arguments
+-------------------------------------------------------------------------------
+   Argument(s): from 1 to 64, String 
+   Result type: String 
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := CONCAT(1,1,'a')
+     X=11a
+
+
+-------------------------------------------------------------------------------
+COPY - Returns a substring of a string (arguments are: string,start,length)
+-------------------------------------------------------------------------------
+   Argument(s): 3, String Integer Integer 
+   Result type: String 
+   Aliases    : MID
+   See also   : DELETE
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := COPY('ABCDE',3,2)
+     X=CD
+
+
+-------------------------------------------------------------------------------
+COS - Computes the radiant cosinus function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   See also   : COSD
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := COS(3.1415926535)
+     X=-1
+
+
+-------------------------------------------------------------------------------
+COSD - Computes the degree cosinus function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   See also   : COS
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := COSD(90)
+     X=0
+
+
+-------------------------------------------------------------------------------
+COSH - Computes the cosinus hyperbolicus function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := COSH(1)
+     X=1.543081
+
+
+-------------------------------------------------------------------------------
+COUNTRY - Returns the country code from CONFIG.SYS (001 on error)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   Category   : Functions accessing CONFIG.SYS
+
+   Example: 
+     C:> ASET -p X := COUNTRY
+     X=049
+
+
+-------------------------------------------------------------------------------
+DATE - Returns the current date in the form MM/DD/YYYY
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: String 
+   Aliases    : TODAY
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := DATE
+     X='06/21/1992'
+
+
+-------------------------------------------------------------------------------
+DAY - Determines the day in a month for a given date (default is today) (? on
+      error)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := DAY('12/04/1992')
+     X=4
+
+
+-------------------------------------------------------------------------------
+DELETE - Deletes a substring from a string (arguments are: string,start,length)
+-------------------------------------------------------------------------------
+   Argument(s): 3, String Integer Integer 
+   Result type: String 
+   See also   : COPY
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := DELETE('ABCDE',3,2)
+     X=ABE
+
+
+-------------------------------------------------------------------------------
+DEVICE - Returns the number of the line in CONFIG.SYS which contains the line
+         'DEVICE='argument (0 if none)
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: Integer 
+   Category   : Functions accessing CONFIG.SYS
+
+   Example: 
+     C:> ASET -p X := DEVICE('VDISK.SYS')
+     X=5
+
+
+-------------------------------------------------------------------------------
+DFREE - Returns the free bytes on a the current drive (default is the current
+        drive)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Aliases    : DISKFREE
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := DFREE('C:')
+     X=2654322
+
+
+-------------------------------------------------------------------------------
+DIR - Returns the current directory on a drive (default is the current drive)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := DIR('A:')
+     X=A:\
+
+
+-------------------------------------------------------------------------------
+DOSPATH - Locates a file in PATH and returns its full path
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: String 
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := DOSPATH('SORT.EXE')
+     X=C:\DOS\SORT.EXE
+
+
+-------------------------------------------------------------------------------
+DOSVER - Returns the DOS version
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: String 
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := DOSVER
+     X=3.30
+
+
+-------------------------------------------------------------------------------
+DOY - Returns the day in a year for a given date (default is today)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: Integer 
+   Aliases    : DAYOFYEAR
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := DOY()
+     X=135
+
+
+-------------------------------------------------------------------------------
+DSIZE - Returns the capacity of a drive (default is the current drive)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Aliases    : DISKSIZE
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := DSIZE('B:')
+     X=1457664
+
+
+-------------------------------------------------------------------------------
+E - The Euler constant
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Real 
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := E
+     X=2.718282
+
+
+-------------------------------------------------------------------------------
+ENVCNT - Determines the number of shell variables set (the current one has no
+         effect)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   Aliases    : ENVCOUNT
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := ENVCNT
+     X=10
+
+
+-------------------------------------------------------------------------------
+ENVUSED - Determines the number of bytes used by shell vars (the current one
+          has no effect)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := ENVUSED
+     X=876
+
+
+-------------------------------------------------------------------------------
+EPS - Returns the constant EPS, which ASET uses to classify two real numbers as
+      equal
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Real 
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := EPS
+     X=0.00001
+
+
+-------------------------------------------------------------------------------
+EVEN - Determines whether the argument is an even integer number
+-------------------------------------------------------------------------------
+   Argument(s): 1, Integer 
+   Result type: Boolean 
+   See also   : ODD
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := EVEN(2)
+     X=1
+
+
+-------------------------------------------------------------------------------
+EXP - Computes the exp function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   See also   : LN
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := EXP(1)
+     X=2.718282
+
+
+-------------------------------------------------------------------------------
+FAC - Compute the faculty function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Integer 
+   Result type: Integer 
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := FAC(5)
+     X=120
+
+
+-------------------------------------------------------------------------------
+FATTR - Returns a string representing the attributes of a file
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: String 
+   Aliases    : FILEATTR
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FATTR('C:\IBMBIO.COM')
+     X=rhsa
+
+
+-------------------------------------------------------------------------------
+FCBSX - Returns the number of contemporary open files from CONFIG.SYS (4 on
+        error)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   Category   : Functions accessing CONFIG.SYS
+
+   Example: 
+     C:> ASET -p X := FCBSX
+     X=4
+
+
+-------------------------------------------------------------------------------
+FCBSY - Returns the minimum number of kept-open files from CONFIG.SYS (0 on
+        error)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   Category   : Functions accessing CONFIG.SYS
+
+   Example: 
+     C:> ASET -p X := FCBSY
+     X=0
+
+
+-------------------------------------------------------------------------------
+FDATE - Returns the last modification date of a file (MM/DD/YYYY)
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: String 
+   Aliases    : FILEDATE
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FDATE('A.EXE')
+     X=06/21/1992
+
+
+-------------------------------------------------------------------------------
+FDIR - Returns the name of the deepest directory in a path
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Aliases    : FILEDIR
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FDIR('A:\BIN\B.BAT')
+     X=BIN
+
+
+-------------------------------------------------------------------------------
+FDRIVE - Extracts the drive specification from a path
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Aliases    : FILEDRIVE
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FDRIVE('A:\BIN\B.BAT')
+     X=A:
+
+
+-------------------------------------------------------------------------------
+FEXPAND - Returns the full path to a file
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: String 
+   Aliases    : FULLPATH
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FEXPAND('README.TXT')
+     X=C:\PROGS\ASET\README
+
+
+-------------------------------------------------------------------------------
+FEXT - Extracts the extension from a path
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: String 
+   Aliases    : FILEEXT
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FEXT('A:\BIN\B.BAT')
+     X=.BAT
+
+
+-------------------------------------------------------------------------------
+FILES - Returns the maximum number of file handles from CONFIG.SYS
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   Category   : Functions accessing CONFIG.SYS
+
+   Example: 
+     C:> ASET -p X := FILES
+     X=20
+
+
+-------------------------------------------------------------------------------
+FNAME - Extracts the name from a path
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: String 
+   Aliases    : FILENAME
+   See also   : FNAMEX
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FNAME('A:\BIN\B.BAT')
+     X=B
+
+
+-------------------------------------------------------------------------------
+FNAMEX - Extracts name+extension from a path
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: String 
+   Aliases    : FILENAMEX
+   See also   : FNAME FEXT
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FNAMEX('A:\BIN\B.BAT')
+     X=B.BAT
+
+
+-------------------------------------------------------------------------------
+FPATH - Extracts the directory specification from a path (default is the
+        current directory)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Aliases    : FILEPATH
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FPATH('A:\BIN\B.BAT')
+     X=A:\BIN\
+
+
+-------------------------------------------------------------------------------
+FRAC - Returns the fractional part of a real number
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   See also   : INT TRUNC
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := FRAC(5.56)
+     X=0.56
+
+
+-------------------------------------------------------------------------------
+FSIZE - Returns the size of a file in bytes
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: Integer 
+   Aliases    : FILESIZE
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FSIZE('A:\BIN\B.BAT')
+     X=807
+
+
+-------------------------------------------------------------------------------
+FTIME - Returns the last modification date of a file in the format HH:MM.SS
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: String 
+   Aliases    : FILETIME
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := FTIME('A.EXE')
+     X=12:10.01
+
+
+-------------------------------------------------------------------------------
+GETKEY - Asks you to press a key from a given key set w/o echo (the default key
+         set is all possible keys)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Aliases    : KEY
+   Category   : User and file interaction functions
+
+   Example: 
+     C:> ASET -p X := GETKEY('YyNn')
+     X=Y
+
+
+-------------------------------------------------------------------------------
+GETNUM - Asks you to input a real number (arguments are:
+         maxlen,default,row,col)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 4, Integer Real Integer Integer 
+   Result type: Real 
+   Aliases    : GETNUMBER
+   Category   : User and file interaction functions
+
+   Example: 
+     C:> ASET -p X := GETNUM(3,0,1,1)
+     X=123
+
+
+-------------------------------------------------------------------------------
+GETSTR - Asks you to input a string (arguments are: maxlen,default,row,col)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 4, Integer String Integer Integer 
+   Result type: String 
+   Aliases    : GETSTRING
+   Category   : User and file interaction functions
+
+   Example: 
+     C:> ASET -p X := GETSTR(3,'AB',1,1)
+     X=ABC
+
+
+-------------------------------------------------------------------------------
+HOUR - Returns the system hour
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   See also   : MINUTE SECOND
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := HOUR
+     X=12
+
+
+-------------------------------------------------------------------------------
+IF - Condition IF, returns arg2, if arg1=1, else returns arg3
+-------------------------------------------------------------------------------
+   Argument(s): 3, Boolean String String 
+   Result type: String 
+   See also   : ARITHIF AIF
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := IF(1 gt 0,'a','b')
+     X=a
+
+
+-------------------------------------------------------------------------------
+INSTR - Returns the position of a substring in a string (arguments are:
+        string,pattern)
+-------------------------------------------------------------------------------
+   Argument(s): 2, String String 
+   Result type: Integer 
+   See also   : POS
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := INSTR('ABCDE','C')
+     X=3
+
+
+-------------------------------------------------------------------------------
+INT - Returns the integer part of a real number
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Integer 
+   Aliases    : TRUNC
+   See also   : FRAC ROUND
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := INT(-4.9)
+     X=-4
+
+
+-------------------------------------------------------------------------------
+ISDIR - Returns if the argument is an existing directory (result is 0 or 1)
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: Boolean 
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := ISDIR('C:\BIN')
+     X=1
+
+
+-------------------------------------------------------------------------------
+LABEL - Returns the label of a disk (default is disk in the current drive) (?
+        on error)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Aliases    : VOLUME
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := LABEL('A:')
+     X=DISK001
+
+
+-------------------------------------------------------------------------------
+LASTDRV - Returns the LASTDRIVE from CONFIG.SYS (E on error)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: String 
+   Aliases    : LASTDRIVE
+   Category   : Functions accessing CONFIG.SYS
+
+   Example: 
+     C:> ASET -p X := LASTDRV
+     X=E
+
+
+-------------------------------------------------------------------------------
+LEAP - Determines whether a year is a leapyear (default is the current year)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, Integer 
+   Result type: Boolean 
+   Aliases    : LEAPYEAR
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := LEAP(1992)
+     X=1
+
+
+-------------------------------------------------------------------------------
+LEFT - Extracts the leftmost part of a str (arguments are: string,length)
+-------------------------------------------------------------------------------
+   Argument(s): 2, String Integer 
+   Result type: String 
+   Aliases    : LEFTSTR
+   See also   : RIGHT
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := LEFT('ABCDE',2)
+     X=AB
+
+
+-------------------------------------------------------------------------------
+LEN - Returns the length of a string in characters
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: Integer 
+   Aliases    : LENGTH
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := LEN('ABCD')
+     X=4
+
+
+-------------------------------------------------------------------------------
+LINE - Returns the argument1-th line from the file with the name argument2
+       (default line is 1, default file is standard input) (? on error)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 2, Integer String 
+   Result type: String 
+   Aliases    : GETLINE
+   Category   : User and file interaction functions
+
+   Example: 
+     C:> ASET -p X := LINE(1,'CONFIG.SYS')
+     X=FILES=30
+
+
+-------------------------------------------------------------------------------
+LN - Computes the natural logarithm function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   See also   : EXP LOG
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := LN(2.718282)
+     X=1
+
+
+-------------------------------------------------------------------------------
+LOCASE - Converts a string to lowercase
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Aliases    : LOWER
+   See also   : UPCASE UPPER
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := LOCASE('AbCdE')
+     X=abcde
+
+
+-------------------------------------------------------------------------------
+LOG - Computes the logarithm of the second argument to the base of the first
+      argument
+-------------------------------------------------------------------------------
+   Argument(s): 2, Real Real 
+   Result type: Real 
+   See also   : LN
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := LOG(10,100)
+     X=2
+
+
+-------------------------------------------------------------------------------
+MAX - Returns the maximum entry from a numeric or string list
+-------------------------------------------------------------------------------
+   Argument(s): from 1 to 64, String 
+   Result type: String 
+   See also   : MIN
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := MAX(1,'A',2)
+     X=A
+
+
+-------------------------------------------------------------------------------
+MIN - Returns the minimum entry from a numeric or string list
+-------------------------------------------------------------------------------
+   Argument(s): from 1 to 64, String 
+   Result type: String 
+   See also   : MAX
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := MIN(1,'A',2)
+     X=1
+
+
+-------------------------------------------------------------------------------
+MINUTE - Returns the system minute
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   See also   : HOUR SECOND
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := MINUTE
+     X=44
+
+
+-------------------------------------------------------------------------------
+MONTH - Returns the month in the year for a given date (default is today) (? on
+        error)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := MONTH('12/04/1992')
+     X=12
+
+
+-------------------------------------------------------------------------------
+MONTHN - Returns the name of a month for a given date (default is today;
+         argument1 is an optional language (one of American, German), default
+         is American) (? on error)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 2, String String 
+   Result type: String 
+   Aliases    : MONTHNAME
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := MONTHN('12/04/1992')
+     X=December
+
+
+-------------------------------------------------------------------------------
+NTH - Picks the n-th word of a string ('' on error)
+-------------------------------------------------------------------------------
+   Argument(s): 2, Integer String 
+   Result type: String 
+   Aliases    : PICK
+   See also   : NTHARG PICKARG
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := NTH(2,'A B C')
+     X=B
+
+
+-------------------------------------------------------------------------------
+NTHARG - Picks the n-th argument of a list ('' on error)
+-------------------------------------------------------------------------------
+   Argument(s): from 2 to 64, Integer String 
+   Result type: String 
+   Aliases    : PICKARG
+   See also   : NTH PICK
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := NTHARG(2,'A B','AB','ABC')
+     X=AB
+
+
+-------------------------------------------------------------------------------
+ODD - Determines whether the argument is an odd integer number
+-------------------------------------------------------------------------------
+   Argument(s): 1, Integer 
+   Result type: Boolean 
+   See also   : EVEN
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := ODD(2)
+     X=0
+
+
+-------------------------------------------------------------------------------
+ORD - Returns the code of the first character in the argument (0, if the
+      argument is '')
+-------------------------------------------------------------------------------
+   Argument(s): 1, String 
+   Result type: Integer 
+   Aliases    : ASC
+   See also   : CHR CHAR
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := ORD(Auto)
+     X=65
+
+
+-------------------------------------------------------------------------------
+PI - The constant pi
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Real 
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := PI
+     X=3.141593
+
+
+-------------------------------------------------------------------------------
+POS - Returns the position of a substring in a string (arguments are:
+      pattern,string)
+-------------------------------------------------------------------------------
+   Argument(s): 2, String String 
+   Result type: Integer 
+   See also   : INSTR
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := POS('C','ABCDE')
+     X=3
+
+
+-------------------------------------------------------------------------------
+QUOTE - Put a string in quotes (') (returns one single quote ('), if called
+        without arguments)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   See also   : UNQUOTE
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := QUOTE(a'b'c)
+     X='a''b''c'
+
+
+-------------------------------------------------------------------------------
+RAMFREE - Determines the amount of free RAM memory
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   Aliases    : MEMFREE
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := RAMFREE
+     X=300848
+
+
+-------------------------------------------------------------------------------
+RANDOM - Returns a random number
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, Integer 
+   Result type: Real 
+   Aliases    : RND
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := RANDOM(100)
+     X=67
+
+
+-------------------------------------------------------------------------------
+RIGHT - Returns the rightmost part of a string (arguments are: string,length)
+-------------------------------------------------------------------------------
+   Argument(s): 2, String Integer 
+   Result type: String 
+   Aliases    : RIGHTSTR
+   See also   : LEFT
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := RIGHT('ABCDE',2)
+     X=DE
+
+
+-------------------------------------------------------------------------------
+ROUND - Returns the value rounded to the next integer
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Integer 
+   See also   : INT TRUNC
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := ROUND(-1.5)
+     X=-2
+
+
+-------------------------------------------------------------------------------
+SECOND - Returns the system second
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   See also   : HOUR MINUTE
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := SECOND
+     X=56
+
+
+-------------------------------------------------------------------------------
+SHELL - Returns the SHELL from CONFIG.SYS without additional parameters and
+        switches (?:\COMMAND.COM on error)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: String 
+   Category   : Functions accessing CONFIG.SYS
+
+   Example: 
+     C:> ASET -p X := SHELL
+     X=C:\4DOS\4DOS.COM
+
+
+-------------------------------------------------------------------------------
+SIGN - Returns the sign of a number (-1, 0, or 1)
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Integer 
+   Aliases    : SGN
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := SIGN(-1234.5)
+     X=-1
+
+
+-------------------------------------------------------------------------------
+SIN - Computes the radiant sinus function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   See also   : SIND
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := SIN(3.141593)
+     X=0
+
+
+-------------------------------------------------------------------------------
+SIND - Computes the degree sinus function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   See also   : SIN
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := SIND(90)
+     X=1
+
+
+-------------------------------------------------------------------------------
+SINH - Computes the sinus hyperbolicus function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := SINH(1)
+     X=1.175201
+
+
+-------------------------------------------------------------------------------
+SQR - Computes the square function (argument raised to the power of 2)
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := SQR(2.5)
+     X=6.25
+
+
+-------------------------------------------------------------------------------
+SQRT - Computes the square root function (argument raised to the power of 0.5)
+       (? on error)
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := SQRT(2)
+     X=1.414214
+
+
+-------------------------------------------------------------------------------
+STACKX - Returns the number of stack frames from CONFIG.SYS (9 on error)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   Category   : Functions accessing CONFIG.SYS
+
+   Example: 
+     C:> ASET -p X := STACKX
+     X=9
+
+
+-------------------------------------------------------------------------------
+STACKY - Returns the size of the stack frame from CONFIG.SYS (128 on error)
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: Integer 
+   Category   : Functions accessing CONFIG.SYS
+
+   Example: 
+     C:> ASET -p X := STACKY
+     X=128
+
+
+-------------------------------------------------------------------------------
+SUBALL - Replaces all substrings in a string (arguments are: from,to,string)
+-------------------------------------------------------------------------------
+   Argument(s): 3, String String String 
+   Result type: String 
+   Aliases    : SUBSTALL
+   See also   : SUBST
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := SUBALL('BC','_','ABC.BCD')
+     X=A_._D
+
+
+-------------------------------------------------------------------------------
+SUBST - Replaces a substring once in a string (arguments are: from,to,string)
+-------------------------------------------------------------------------------
+   Argument(s): 3, String String String 
+   Result type: String 
+   Aliases    : SUBSTONE
+   See also   : SUBALL
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := SUBST('BC','_','ABC.BCD')
+     X=A_.BCD
+
+
+-------------------------------------------------------------------------------
+TAN - Computes the radiant tangens function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   See also   : TAND
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := TAN(3.141593)
+     X=0
+
+
+-------------------------------------------------------------------------------
+TAND - Computes the degree tangens function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   See also   : TAN
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := TAND(45)
+     X=1
+
+
+-------------------------------------------------------------------------------
+TANH - Computes the tangens hyperbolicus function
+-------------------------------------------------------------------------------
+   Argument(s): 1, Real 
+   Result type: Real 
+   Category   : Math functions
+
+   Example: 
+     C:> ASET -p X := TANH(1)
+     X=0.761594
+
+
+-------------------------------------------------------------------------------
+TIME - Returns the current time  in the form HH:MM.SS
+-------------------------------------------------------------------------------
+   Argument(s): None
+   Result type: String 
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := TIME
+     X=12:21.12
+
+
+-------------------------------------------------------------------------------
+TYPE - Returns the type of the argument (result is one of Boolean, Integer,
+       Real, String, or Null)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Category   : Miscellanous functions
+
+   Example: 
+     C:> ASET -p X := TYPE(1)
+     X=Boolean
+
+
+-------------------------------------------------------------------------------
+UNIQUE - Returns a unique (ie. non-existing) filename for a directory (default
+         is the current directory)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Aliases    : TMPNAME
+   Category   : Functions returning information about files and disks
+
+   Example: 
+     C:> ASET -p X := UNIQUE('C:\TMP')
+     X=C:\TMP\14533457.TMP
+
+
+-------------------------------------------------------------------------------
+UNQUOTE - Remove one level of quotes (') from a string
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   See also   : QUOTE
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := UNQUOTE(QUOTE+'abc'+QUOTE)
+     X=abc
+
+
+-------------------------------------------------------------------------------
+UPCASE - Converts a string to uppercase
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: String 
+   Aliases    : UPPER
+   See also   : LOCASE LOWER
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := UPCASE('AbCdE')
+     X=ABCDE
+
+
+-------------------------------------------------------------------------------
+WDAY - Returns the day of a week for a given date (default is today),
+       1=Sunday...7=Saturday (? on error)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: Integer 
+   See also   : WDAYN
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := WDAY()
+     X=6
+
+
+-------------------------------------------------------------------------------
+WDAYN - Returns the name of a weekday for a given date (default is today;
+        argument1 is an optional language (one of American, German), default is
+        American) (? on error)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 2, String 
+   Result type: String 
+   Aliases    : WDAYNAME
+   See also   : WDAY
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := WDAYN('12/04/1992')
+     X=Friday
+
+
+-------------------------------------------------------------------------------
+WORDS - Returns the number of words in the arguments (words are separated by
+        SPACEs or TABs)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 64, String 
+   Result type: Integer 
+   Aliases    : COUNT
+   Category   : String handling
+
+   Example: 
+     C:> ASET -p X := WORDS('a b ','cde')
+     X=3
+
+
+-------------------------------------------------------------------------------
+YEAR - Returns the year of a given date (default is today) (? on error)
+-------------------------------------------------------------------------------
+   Argument(s): from 0 to 1, String 
+   Result type: Integer 
+   Category   : Time/date handling
+
+   Example: 
+     C:> ASET -p X := YEAR('12/04/1992')
+     X=1992
+
+
+
+
+9   Details
+===========
+  This section will give you some details about the implementation of ASETs
+  functions. If you have further questions, feel free to contact me.
+
+9.1   Evaluation errors
+-----------------------
+  Some functions are not defined for all possible values. Consider the
+  function ARCCOS. It is defined only, if the argument is in the interval
+  (-1.0,1.0). All those restricted functions will return '?' if you invoke
+  them with an illegal argument. In detail these functions are (their aliases
+  have the same restrictions, of course):
+
+  	Name			Restriction		Category
+        ---------------------------------------------------------------
+	ARCCOS(x)		-1 <= x <= 1		Math
+        ARCCOSD(x)		-1 <= y <= 1
+        ARCSIN(x)		-1 <= x <= 1
+        ARCSIND(x)		-1 <= x <= 1
+	LN(x)			x > 0
+        LOG(x,y)		x,y > 0 and y <> 1
+        SQRT(x)			x >= 0
+        TAN(x)			x <> (2k+1)*pi/2
+	TAND(x)			x <> (2k+1)*90
+        DIR(drive)		Drive readable		Files and Disks
+        DFREE(drive)		Drive readable
+        DSIZE(drive)		Drive readable
+        LABEL(drive)            Drive readable
+	DOSPATH(fn)		File exists
+        FATTR(fn)		File exists
+        FDATE(fn)		File exists
+        FSIZE(fn)		File exists
+	FTIME(fn)		File exists
+        FDIR(fn)		File exists
+        FDRIVE(fn)		File exists
+        FPATH(fn)		File exists
+        FEXT(fn)		File exists
+        FNAME(fn)		File exists
+        FNAMEX(fn)		File exists
+        UNIQUE(dir)		Dir exists
+	CHR(n)			0 <= n <= 255		Strings
+        COPY(s,m,n)             m>0, n>-1
+        DELETE(s,m,n)           m>0, n>-1
+        GETNUM(ml,df,r,c)       ml,r,c>0                Interaction
+        GETSTR(ml,df,r,c)	ml,r,c>0
+        GETLINE(n,fn)		File & line exists
+        DAY(date)		Valid date		Date and time
+        MONTH(date)		Valid date
+        YEAR(date)		Valid date
+        DOY(date)		Valid date
+        WDAY(date)		Valid date
+        MONTHN(date)		Valid date
+        WDAYN(date)		Valid date
+	BOOTDRV			DOS 4++			Miscellanous
+
+9.2   Internal data representation
+----------------------------------
+  The following table shows which data types are internally used. This
+  knowledge may be helpful in the case of the mathematic functions. Some of
+  them are potential victims of arithmetic overflow. This is NOT CHECKED by
+  ASET! The function FAC, eg., will only return correct results for arguments
+  less than 13.
+
+           Type     |          Range         |    Size   | Digits
+          ----------+------------------------+-----------+--------
+           String   |                        | 255 chars |
+           Integer  |-2147483648..2147483647 |  32 bits  |
+           Real     |    2.9e-39..1.7e38     |   6 bits  |   6
+           Boolean  |	(integers 0 and 1)   |  32 bits  |
+
+
+9.3   Further notes
+-------------------
+  This section contains further information about certain functions or
+  function groups.
+
+
+  FAC
+    works for negative values, also. FAC(n) is defined as n(n-1)(n-2)...1
+    for positive, and n(n+1)(n+2)...-1 for negative integers. FAC(0) is 1,
+    as usual.
+
+
+  RANDOM
+    If you invoke RANDOM without arguments, ie. something like
+
+            ASET A=RANDOM
+
+    it will return a real value in the interval [0.0,1.0]. If you invoke it
+    with an integer number n as parameter, as in
+
+            ASET A=RANDOM(1000)
+
+    several cases are possible:
+
+            n <= 0          RANDOM always returns zero
+            0 < n < 65536   RANDOM returns a pseudo random number in the
+	    		    integer interval [0,65534]
+            n > 65535       RANDOM works as if RANDOM(65535) were invoked
+
+
+  DIR,DFREE,DSIZE,LABEL
+    do all accept a drive specification as their argument. They are implemented
+    in a rather tolerant way. Each of them accepts not only arguments like
+    'a', 'B', or 'C:', but also paths, like 'E:\FOO\SILLY.DAT'.
+
+
+  UNIQUE
+    generates a non-existing filename for a given directory. The name does
+    have the format
+
+    		dddddddd.TMP
+
+    where each d is a randomly chosen decimal digit. That means that
+
+    		61524212.TMP
+
+    is one possible unique name. After one name is created, UNIQUE checks if
+    it already exists (by trying to open it for reading). If it fails, the
+    name is ok. Otherwise the procedure is repeated. If UNIQUE fails to
+    generate a non-existing file name 10 times, it aborts and returns '?'.
+
+
+  BUFFERS,COUNTRY,DEVICE,FCBX,FCBY,FILES,LASTDRIVE,SHELL,STACKY,STACKY
+    read CONFIG.SYS, as you probably already know. The question is, how they
+    find it. First they determine the boot drive by a DOS operation. This
+    requires DOS 4.0 or above. If they fail to find CONFIG.SYS there (eg.
+    because DOS 3.3 is used), they give 'C:\CONFIG.SYS' a try (because most
+    systems boot from C:). If this also fails, they abort and return a
+    default value, which is as follows (from my DOS 3.30 manual):
+
+    	BUFFERS		15 <if memory>521k, which is assumed>
+        COUNTRY		001
+        DEVICE		<returns 0 if failure or device not found>
+	FCBX		4
+	FCBY		0
+	FILES		8
+	LASTDRIVE	E
+	SHELL		<see below>
+	STACKY		9
+	STACKY		128
+
+
+  SHELL
+    This function is treated separately to explain its algorithm. SHELL does
+    first, as any other CONFIG.SYS function, try to locate a SHELL= line in
+    CONFIG.SYS (see above for details). If it fails, it determines the boot
+    drive (which needs DOS 4.0 or above). If it succeeds, 'd:\COMMAND.COM' is
+    returned (with d being the boot drive), otherwise '?:\COMMAND.COM' is
+    returned.
+
+
+  CONCAT
+    You might ask yourself, why this function is implemented where the '+'
+    operator performs the same task. The answer is that '+' cannot be used
+    to concat string which represent numbers. In this special case the
+    arguments are interpreted as numbers and ADDED, not concatenated! CONCAT
+    however does interpret its aruments never as numbers.
+
+
+  GETKEY
+    can also read function keys, because they are passed to ASET as _two_
+    keystrokes, ascii 0 + ascii <code>. GETKEY simply ignores the 0, because
+    it cannot belong to the key set, and interprets <code> as if it had been
+    entered alone. This implies, that you can install GETKEY so that it can
+    react on function keys, using the following replacements:
+
+    		Key	  Char after #0		Code of char
+                --------------------------------------------
+    		F1		;		     59
+                F2		<		     60	*
+                F3              =                    61
+                F4              >                    62 *
+                F5              ?                    63
+                F6              @                    64
+                F7              A                    65
+                F8              B                    66
+                F9              C                    67
+                F10             D                    68
+                LEFT		K		     75
+                RIGHT           M                    77
+                UP              H                    72
+                DOWN            P                    80
+                PAGE UP         I                    73
+                PAGE DOWN       Q                    81
+                INS             R                    82
+                DEL             S                    83
+                POS 1           G                    71
+                END             O                    79
+
+    There's a problem with the two codes marked with '*', because the chars
+    '>' and '<' are interpreted by DOS. You will be able to use these only
+    if your shell has a possibility to pass them to programs.
+
+    Example: 	The following call
+
+    			ASET A = GETKEY('KMHPIQ')
+
+    		does not only accept they keys K,M,H,P,I, and Q themselves,
+		but also the cursor keys and PageUp and PageDown.
+
+
+  GETSTRING,GETNUMBER
+    These functions understand the following control keys:
+    	Cursor Left		Back one character
+        Cursor Right		Forward one character
+        Delete			Delete character under the cursor
+        End			Goto the last character
+        Pos 1			Goto the first character
+        Ins			Toggle insert (default) and overwrite mode
+        Return			Terminate input
+        Ctrl/H (Backspace)	Delete character before the cursor
+        Ctrl/Y			Delete the whole string and start again
+
+
+  LINE
+    This function returns a line from standard input or a certain file. It
+    returns '?' if the line does not exist in the file.
+
+
+  DAY,MONTH,YEAR,DOY,WDAY,WDAYN,MONTHN
+    do all accept a date as argument. Currently, there are these valid formats
+    for dates:
+
+    		Format		Example
+                -------------------------
+		dd.mm.yyyy      4.12.1963
+		mm-dd-yyyy      12-4-1963
+		mm/dd/yyyy	12/4/1963
+
+
+  BOOTDRIVE
+    needs DOS 4.0 or above to operate.
+
+
+  ENVCOUNT,ENVUSED
+    compute their results without accounting for the environment modification
+    caused by the very call of ASET.
+
+
+  MAX,MIN
+    These functions use the following algorithm. In a first run they try to
+    consider all arguments as numbers and compute their maximum/minimum. If
+    they encounter the first non-number, they switch to string mode and
+    rescan the arguments, looking at them as strings.
+
+
+  RAMFREE
+    A call to this function returns the current amount of free memory. The
+    value has been affected by ASET before it was computed and might be
+    affected even after the computation (if ASET has some more functions to
+    evaluate). It is therefore to be taken as a circa value.
+
+
+  IF,AIF
+    The functions IF and AIF can be a powerful help if (but not only if) you
+    use ASET in file mode, ie., if you invoke ASET with the /f option to read
+    a file containing several assignments. IF and AIF can be used in most
+    cases where the DOS IF statement could have been used (which is not
+    possible in ASET files).
+

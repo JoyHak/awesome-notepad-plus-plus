@@ -1,0 +1,59 @@
+// Dirs can contain spaces; file name CANNOT CONTAINT SPACES!
+// Lang specific console syntax highlighting
+set hComplete = *omplete*
+set hSuccess = *uccess*
+set hCritical = *ritical*
+set hFail = * not *
+set hFatal = *atal*
+set hError = *rror*
+set hWarn = *Warn*
+set hAlert = *es:*
+set hLog = *opyright*
+set hMsg = *init*
+CON_FILTER local +h1 +h2 +h3 +h4 +h5 +h6 +h7 +h8 +h9 +h10
+
+
+// Setup dirs
+set local TASM_DIR = $(NPP_DIRECTORY)\AssemblyTools\TASM
+set local DOSBOX_DIR = $(NPP_DIRECTORY)\AssemblyTools\DosBox-X
+cd "$(DOSBOX_DIR)"
+
+// run ..\drivez script
+// default params; may change depending on options
+set local name = assembly.btm
+set local launch = -c "$(NAME_PART).exe"
+set local silent = -c "@echo. ^ exit" -silent
+set local separate = 
+
+if $(ARGV) == -compile-run then
+    NPP_CONSOLE on
+
+else if $(ARGV) == -compile then
+    NPP_CONSOLE on
+    set local launch = 
+
+else if $(ARGV) == -run then 
+    NPP_CONSOLE on
+    set local name = init.btm
+
+else if $(ARGV) == -debug then
+    set local name = init.btm
+    set local launch = -c "T:\td.exe $(NAME_PART).exe"
+    set local silent = -nolog
+    set local separate = NPP_RUN
+
+else if $(ARGV) == -dosbox then
+    set local name = guest.btm
+    set local launch =
+    set local silent = -nolog
+    set local separate = NPP_RUN
+endif    
+
+
+// script arguments: look at the ARGUMENTS ORDER script section
+set local SCRIPT = -c "call $(name) \"$(TASM_DIR)\" \"$(CURRENT_DIRECTORY)\" $(NAME_PART)"
+
+// DosBox arguments: https://dosbox-x.com/wiki/DOSBox%E2%80%90X%E2%80%99s-Command%E2%80%90Line-Options
+set local ARGS = $(silent) -fastlaunch -noconsole -conf dosbox-x.conf 
+
+$(separate) dosbox-x.exe $(SCRIPT) $(launch) $(ARGS)

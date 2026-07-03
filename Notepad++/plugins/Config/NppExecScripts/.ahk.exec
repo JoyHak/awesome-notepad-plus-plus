@@ -1,0 +1,62 @@
+// Lang specific console syntax highlighting
+set hComplete = *omplete*
+set hSuccess = *uccess*
+set hCritical = * not *
+set hFail = *Fail*
+set hFatal = *atal*
+set hError = *rror*
+set hWarn = *Warn*
+set hAlert = *es:*
+set hLog = *opyright*
+set hMsg = *init*
+CON_FILTER +h1 +h2 +h3 +h4 +h5 +h6 +h7 +h8 +h9 +h10
+NPE_CONSOLE local -- v+
+set local COMPILER = "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"
+
+cd "$(CURRENT_DIRECTORY)"
+NPP_CONSOLE -
+goto $(ARGV)
+
+
+:-debug
+    echo Debug currently not supported...
+    exit
+
+:-run 
+    NPP_RUN "$(FULL_CURRENT_PATH)"
+    NPP_CONSOLE +
+    echo Launch "$(FILE_NAME)"
+    echo Press "Run and compile" to launch .exe
+    exit
+    
+:-compile-run       
+    :-compile
+        // Kill script & exe silently
+        NPP_CONSOLE on
+        NPP_CONSOLE -
+        taskkill /f /t /im "$(NAME_PART)*"                      // .exe
+        taskkill /fi "WINDOWTITLE eq $(FULL_CURRENT_PATH)*"     // .ahk
+        NPP_CONSOLE +
+
+        $(COMPILER) /in "$(FILE_NAME)" /silent
+
+        if $(ARGV) == -compile then
+            exit            
+        endif
+     
+    // Run only after success
+    if $(EXITCODE) == 0 then
+        set exists ~ fileexists $(OUTPUTL)
+        if $(exists) == 1 then
+            NPP_RUN $(OUTPUTL)
+            echo Launch $(OUTPUTL)
+            echo Press Run to launch .ahk
+        else
+            echo Cannot locate $(OUTPUTL). Please run it manually...
+        endif
+
+    endif
+    exit
+    
+
+    
