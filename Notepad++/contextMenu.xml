@@ -30,19 +30,26 @@ https://npp-user-manual.org/docs/config-files/#the-context-menu-contextmenu-xml
 		Use ItemNameAs (optional) to rename the menu item name in the context menu 
 		ItemNameAs can be used in any type of item in any language.
         <Item FolderName="Quotes"   PluginEntryName="TextFX" PluginCommandItemName="TextFX Characters" ItemNameAs="Copy Text with Syntax Highlighting" />
-		-->
-        
-        <Item PluginEntryName="Open Selection"        PluginCommandItemName="Open current selection"/>
-        <Item PluginEntryName="QuickText"             PluginCommandItemName="Replace Snip"/>
+        <Item PluginEntryName="QuickText"                                       PluginCommandItemName="Replace Snip"/>
+		-->        
+        <Item FolderName="Translate"    PluginEntryName="NppExec"               PluginCommandItemName="Translate selected"              ItemNameAs="Selected"/>
+        <Item FolderName="Translate"    PluginEntryName="NppExec"               PluginCommandItemName="Translation variants"            ItemNameAs="Show variants"/>
+        <Item FolderName="Find magic number"    PluginEntryName="NppExec"       PluginCommandItemName="Find CLSID constant"             ItemNameAs="{CLSID} (win folder)"/>
+        <Item FolderName="Find magic number"    PluginEntryName="NppExec"       PluginCommandItemName="Find shell constant"             ItemNameAs="Shell:: (internal explorer path)"/>
+        <Item FolderName="Find magic number"    PluginEntryName="NppExec"       PluginCommandItemName="Find Win32 constant"             ItemNameAs="Win32/DllCall/Message/Macros"/>
         <Item id="0"/>
-        <Item FolderName="Align"    PluginEntryName="Code alignment"        PluginCommandItemName="Align by..."/>
-        <Item FolderName="Align"    id="0"/>
-        <Item FolderName="Align"    PluginEntryName="Code alignment"        PluginCommandItemName="Align by equals"                 ItemNameAs="="/>
-        <Item FolderName="Align"    PluginEntryName="Code alignment"        PluginCommandItemName="Align by equals equals"          ItemNameAs="=="/>
-        <Item FolderName="Align"    PluginEntryName="Code alignment"        PluginCommandItemName="Align by m_"                     ItemNameAs="_"/>
-        <Item FolderName="Align"    PluginEntryName="Code alignment"        PluginCommandItemName="Align by quote (&quot;)"         ItemNameAs="&quot;"/>
-        <Item FolderName="Align"    PluginEntryName="Code alignment"        PluginCommandItemName="Align by period"                 ItemNameAs="."/>
-        <Item FolderName="Align"    PluginEntryName="Code alignment"        PluginCommandItemName="Align by space"                  ItemNameAs="Space"/>
+        <Item FolderName="Separator"    PluginEntryName="NppExec"               PluginCommandItemName="Add bold separator"              ItemNameAs="Bold"/>
+        <Item FolderName="Separator"    PluginEntryName="NppExec"               PluginCommandItemName="Add thin separator"              ItemNameAs="Thin"/>
+        <Item FolderName="Separator"    PluginEntryName="NppExec"               PluginCommandItemName="Add dot separator"               ItemNameAs="Dot"/>
+        <Item FolderName="Separator"    PluginEntryName="NppExec"               PluginCommandItemName="Add block separator"             ItemNameAs="Block"/>
+        <Item FolderName="Align"        PluginEntryName="Code alignment"        PluginCommandItemName="Align by..."/>
+        <Item FolderName="Align"        id="0"/>
+        <Item FolderName="Align"        PluginEntryName="Code alignment"        PluginCommandItemName="Align by equals"                 ItemNameAs="="/>
+        <Item FolderName="Align"        PluginEntryName="Code alignment"        PluginCommandItemName="Align by equals equals"          ItemNameAs="=="/>
+        <Item FolderName="Align"        PluginEntryName="Code alignment"        PluginCommandItemName="Align by m_"                     ItemNameAs="_"/>
+        <Item FolderName="Align"        PluginEntryName="Code alignment"        PluginCommandItemName="Align by quote (&quot;)"         ItemNameAs="&quot;"/>
+        <Item FolderName="Align"        PluginEntryName="Code alignment"        PluginCommandItemName="Align by period"                 ItemNameAs="."/>
+        <Item FolderName="Align"        PluginEntryName="Code alignment"        PluginCommandItemName="Align by space"                  ItemNameAs="Space"/>
         <Item id="0"/>
         <Item MenuEntryName="TextFX" MenuItemName="TextFX Characters"/>
         <Item PluginEntryName="TextFX Characters"        PluginCommandItemName="UPPER CASE"/>
@@ -70,6 +77,16 @@ https://npp-user-manual.org/docs/config-files/#the-context-menu-contextmenu-xml
         <Item FolderName="Clear color"                  ItemNameAs="Clear Purple"       TranslateID="contextMenu-clearStyle"                    id="43029"/>
         <Item FolderName="Clear color"                  ItemNameAs="Clear Green"        TranslateID="contextMenu-clearStyle"                    id="43031"/>
         
-        <Item FolderName="Clear color"                  ItemNameAs="Clear All"          TranslateID="contextMenu-clearStyle"                    id="43032"/>        
+        <Item FolderName="Clear color"                  ItemNameAs="Clear All"          TranslateID="contextMenu-clearStyle"                    id="43032"/>   
+        <Item id="0"/>        
+        <Item MenuEntryName="Edit" MenuItemName="Cut"/>
+        <Item MenuEntryName="Edit" MenuItemName="Copy"/>
+        <Item MenuEntryName="Edit" MenuItemName="Paste"/>
+        <Item MenuEntryName="Edit" MenuItemName="Delete"/>
+        <!-- <Item MenuEntryName="Edit" MenuItemName="Select all"/> -->
+        <!-- <Item MenuEntryName="Edit" MenuItemName="Begin/End Select"/> -->
+        <!-- <Item MenuEntryName="Edit" MenuItemName="Begin/End Select in Column Mode"/> -->
+        
+        <!-- id="0" is the separator -->
     </ScintillaContextMenu>
 </NotepadPlus>
