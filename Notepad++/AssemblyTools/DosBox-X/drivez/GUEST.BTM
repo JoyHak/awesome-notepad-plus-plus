@@ -1,0 +1,23 @@
+@echo off
+cls
+
+:: ARGUMENTS ORDER
+:: Dirs can contain spaces; file name CANNOT CONTAINT SPACES!
+set TASM_DIR=%1
+set CUR_DIR=%2
+set UNUSED=%3
+
+mount T %TASM_DIR%
+
+mount F %CUR_DIR% && echoc /f yellow (your working directory) 
+F:
+chdir F:\
+
+echo.
+echoc /n Use 
+echoc /n /f cyan /C32 F:\Path-to-file /C32
+echoc to work with files and folders in the working directory.
+echoc Use /n
+echoc /n /f cyan /C32 T:\name.exe /C32
+echoc to work with assembly tools. 
+echoc /f red Do not mount the entire C: drive because it decreases performance! 

@@ -1,0 +1,13 @@
+DELAY:		Usage - delay <seconds> [/s]
+ DELAY is a simple program to replace the use of PAUSE inside of a batch
+ file.  DELAY will allow you to specify how long to pause for.  While
+ DELAY is running it will countdown the time remaining.  If you add the
+ optional switch /S it will suppress all output to the screen.
+ For example:
+
+DELAY 30		- Will pause for 30 seconds
+DELAY 20 /S		- Will pause for 20 seconds with no output
+
+If you have any questions, comments, suggestion, or problems then email
+me at bfriesen@galaxy.csc.calpoly.edu, or download the newest version
+at http://www.csc.calpoly.edu/~bfriesen

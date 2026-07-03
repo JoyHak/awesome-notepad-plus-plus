@@ -1,0 +1,2451 @@
+﻿help all
+
+-------- Console keys --------
+Enter  -  executes entered command
+Shift+Enter  -  new line
+Tab  -  auto-completes current command/looks through the commands history
+Shift+Tab  -  the same as Tab but backwards
+Arrow Up  -  previous command (when Console Commands History is enabled)
+Arrow Down  -  next command (when Console Commands History is enabled)
+Ctrl+C  -  copy selected text to the clipboard
+Ctrl+V  -  paste from the clipboard
+Ctrl+W  -  word wrap on/off
+Ctrl+~  -  toggle Console/editing window
+Ctrl+T  -  hide toggled Console on/off
+Ctrl+F, F3, F7  -  shows Console's Find dialog
+Esc  -  hides Console's Find dialog
+Enter, F3 (in Console's Find dialog)  -  find next (down)
+Shift+Enter, Shift+F3 (in Console's Find dialog)  -  find previous (up)
+-------- Console commands --------
+help  -  show available commands
+help <command>  -  show detailed information about specified command
+help all  -  show all available help (all the commands in detail)
+ver  -  show plugin's version
+manual  -  show NppExec User Guide
+about  - show NppExec Help/About
+nppexec:  -  prefix for NppExec's commands (e.g. "nppexec:npp_console off")
+nppexec::  -  always executes a command in a collateral (parallel) script
+CTRL+C  -  kill (via Ctrl+C) or terminate current child process
+CTRL+BREAK  -  kill (via Ctrl+Break) or terminate current child process
+CTRL+BREAK  -  abort current NppExec's script (without closing the Console)
+CTRL+Z  -  send ^Z to current child process
+-------- General commands --------
+cls  -  clear Console screen
+cd  -  shows current path
+cd <absolute_path or relative_path>  -  changes current path
+dir  -  lists files and subdirs
+dir <mask or path\mask>  -  lists files/subdirs matched the mask
+echo <text>  -  prints a text in the Console
+echo~ <math/str expression>  -  prints the calculated/transformed result
+if <condition> goto <label>  -  jumps to the label if the condition is true
+if~ <condition> goto <label>  -  calculates and checks the condition
+if ... else if ... else ... endif  -  conditional execution
+if~ ... else if~ ... else ... endif  -  conditional execution
+goto <label>  -  jumps to the label
+exit  -  exits the current NppExec's script
+exit <type>  -  exits the NppExec's script
+set  -  shows all user's variables
+set <var>  -  shows the value of user's variable <var>
+set <var> = <value>  -  sets the value of user's variable <var>
+set <var> ~ <math expression>  -  calculates the math expression
+set <var> ~ strlen <string>  -  calculates the string length
+set <var> ~ strlenutf8 <string>  -  calculates the UTF-8 string length
+set <var> ~ strlenu <string>  -  the same as strlenutf8
+set <var> ~ strlensci <string>  -  string length, using Scintilla's encoding
+set <var> ~ strlens <string>  -  the same as strlensci
+set <var> ~ strupper <string>  -  returns the string in upper case
+set <var> ~ strlower <string>  -  returns the string in lower case
+set <var> ~ substr <pos> <len> <string>  -  returns the substring
+set <var> ~ strfind <s> <t>  -  returns the first position of <t> in <s>
+set <var> ~ strrfind <s> <t>  -  returns the last position of <t> in <s>
+set <var> ~ strreplace <s> <t0> <t1>  -  replaces all <t0> with <t1>
+set <var> ~ strstrip <k> <s>  -  strips whitespaces in <s>
+set <var> ~ strquote <s>  -  surrounds <s> with "" quotes
+set <var> ~ strunquote <s>  -  removes the surrounding "" quotes
+set <var> ~ strescape <s>  -  simple character escaping (e.g. <TAB> to '\t')
+set <var> ~ strunescape <s>  -  simple character unescaping (e.g. '\n' to <LF>)
+set <var> ~ strexpand <s>  -  expands all $(sub) values within <s>
+set <var> ~ strfromhex <hs>  -  returns a string from the hex-string
+set <var> ~ strtohex <s>  -  returns a hex-string from the string
+set <var> ~ chr <n>  -  returns a character from a character code <n>
+set <var> ~ ord <c>  -  returns a decimal character code of a character <c>
+set <var> ~ ordx <c>  -  returns a hexadecimal character code of a character <c>
+set <var> ~ normpath <path>  -  returns a normalized path
+set <var> ~ fileexists <path>  -  checks if a given file exists
+set <var> ~ direxists <path>  -  checks if a given directory exists
+set local  -  shows all user's local variables
+set local <var>  -  shows the value of user's local variable <var>
+set local <var> = ...  -  sets the value of user's local variable <var>
+set local <var> ~ ...  -  calculates the value of user's local variable
+set +v <var> = ...  -  sets the value of <var> using delayed vars substitution
+set +v local <var> = ...  -  sets the local <var> using delayed vars substitution
+unset <var>  -  removes user's variable <var>
+unset <var> = <value>  -  removes user's variable <var>
+unset local <var>  -  removes user's local variable <var>
+env_set <var>  -  shows the value of environment variable <var>
+env_set <var> = <value>  -  sets the value of environment variable <var>
+env_set local ...  -  sets an environment variable locally (within the current script)
+env_unset <var>  -  removes/restores the environment variable <var>
+set_env <var> = <value>  -  see "env_set"
+unset_env <var>  -  see "env_unset"
+inputbox "message"  -  shows InputBox, sets $(INPUT)
+inputbox "message" : initial_value  -  shows InputBox, sets $(INPUT)
+inputbox "message" : "value_name" : initial_value  -  InputBox customization
+inputbox "message" : "value_name" : "initial_value" : time_ms  -  expirable
+messagebox "text"  -  shows a simple MessageBox
+messagebox "text" : "title"  -  shows a MessageBox with a custom title
+messagebox "text" : "title" : type  -  shows a MessageBox of a given type
+messagebox "text" : "title" : type : timeout  -  expirable MessageBox
+con_colour <colours>  -  sets the Console's colours
+con_colour local ...  -  sets the colours locally (within the current script)
+con_filter <filters>  -  enables/disables the Console's output filters
+con_filter local ...  -  sets the filters locally (within the current script)
+con_loadfrom <file>  -  loads a file's content to the Console
+con_load <file>  -  see "con_loadfrom"
+con_saveto <file>  -  saves the Console's content to a file
+con_save <file>  -  see "con_saveto"
+sel_loadfrom <file>  -  replace current selection with a file's content
+sel_load <file>  -  see "sel_loadfrom"
+sel_saveto <file>  -  save the selected text to a file
+sel_saveto <file> : <encoding>  -  save the selected text to a file
+sel_save <file> : <encoding>  -  see "sel_saveto"
+sel_settext <text>  -  replace current selection with the text specified
+sel_settext+ <text>  -  replace current selection with the text specified
+text_loadfrom <file>  -  replace the entire text with a file's content
+text_load <file>  -  see "text_loadfrom"
+text_saveto <file>  -  save the entire text to a file
+text_saveto <file> : <encoding>  -  save the entire text to a file
+text_save <file> : <encoding>  -  see "text_saveto"
+clip_settext <text>  -  set the clipboard text
+npp_exec <script>  -  execute commands from specified NppExec's script
+npp_exec <file>  -  execute commands from specified NppExec's file
+npp_exec <script/file> <args>  -  passes additional arguments <args>
+npp_exectext <mode> <text>  -  execute the given text
+npp_close  -  close current file in Notepad++
+npp_close <file>  -  close specified file opened in Notepad++
+npp_console <on/off/keep>  -  show/hide the Console window
+npp_console <enable/disable>  -  enables/disables output to the Console
+npp_console <1/0/?>  -  show/hide the Console window
+npp_console <+/->  -  enables/disables output to the Console
+npp_console local ...  -  Console on/off locally (within the current script)
+npp_menucommand <menu\item\name>  -  executes (invokes) a menu item
+npp_open <file>  -  (re)open specified file in Notepad++
+npp_open <mask or path\mask>  -  opens file(s) matched the mask
+npp_run <command>  -  run external process/command
+npp_save  -  save current file in Notepad++
+npp_save <file>  -  save specified file opened in Notepad++
+npp_saveas <file>  -  save current file with a new (path)name
+npp_saveall  -  save all modified files
+npp_switch <file>  -  switch to specified opened file
+npp_setfocus  -  set the keyboard focus
+npp_sendmsg <msg>  -  send a message (msg) to Notepad++
+npp_sendmsg <msg> <wparam>  -  message with parameter (wparam)
+npp_sendmsg <msg> <wparam> <lparam>  -  msg to Notepad++
+npp_sendmsgex <hwnd> <msg> <wparam> <lparam>  -  msg to hwnd
+sci_sendmsg <msg>  -  send a message (msg) to current Scintilla
+sci_sendmsg <msg> <wparam>  -  message with parameter (wparam)
+sci_sendmsg <msg> <wparam> <lparam>  -  msg to Scintilla
+sci_find <flags> <find_what>  -  find a string
+sci_replace <flags> <find_what> <replace_with>  -  replace a string
+proc_input <string>  -  send a string to a child process
+proc_signal <signal>  -  signal to a child process
+sleep <ms>  -  sleep for ms milliseconds
+sleep <ms> <text>  -  print the text and sleep for ms milliseconds
+npe_cmdalias  -  show all command aliases
+npe_cmdalias <alias>  -  shows the value of command alias
+npe_cmdalias <alias> =  -  removes the command alias
+npe_cmdalias <alias> = <command>  -  sets the command alias
+npe_cmdalias local ...  -  local command alias (within the current script)
+npe_console <options>  -  set/modify Console options/mode
+npe_console local ...  -  sets Console's mode locally (within the current script)
+npe_debuglog <on/off>  -  enable/disable Debug Log
+npe_debuglog local ...  -  enable/disable Debug Log locally (within the current script)
+npe_debug <1/0>  -  see "npe_debuglog"
+npe_noemptyvars <1/0>  -  enable/disable replacement of empty vars
+npe_noemptyvars local ...  -  sets empty vars on/off locally (within the current script)
+npe_queue <command>  -  queue NppExec's command to be executed
+npe_sendmsgbuflen <max_len>  -  set npp/sci_sendmsg's buffer length
+npe_sendmsgbuflen local ...  -  sets the buffer length locally (within the current script)
+\<script/file>  -  the same as  npp_exec <script/file>
+\<script/file> <args>  -  the same as  npp_exec <script/file> <args>
+nppexec:  -  prefix for NppExec's commands (e.g. "nppexec:npp_console off")
+nppexec::  -  always executes a command in a collateral (parallel) script
+-------- Environment variables --------
+$(FULL_CURRENT_PATH)  :  E:\my Web\main\welcome.html
+$(CURRENT_DIRECTORY)  :  E:\my Web\main
+$(FILE_NAME)  :  welcome.html
+$(NAME_PART)  :  welcome
+$(EXT_PART)  :  .html
+$(NPP_DIRECTORY)  :  full path of directory with notepad++.exe
+$(NPP_FULL_FILE_PATH)  :  full path to notepad++.exe
+$(CURRENT_WORD)  :  word(s) you selected in Notepad++
+$(CURRENT_LINE)  :  current line number
+$(CURRENT_LINESTR)  :  text of the current line
+$(CURRENT_COLUMN)  :  current column number
+$(SELECTED_TEXT)  :  the text you selected in Notepad++
+$(FILE_NAME_AT_CURSOR)  :  file name selected in the editor
+$(WORKSPACE_ITEM_PATH)  :  full path to the current item in the workspace pane
+$(WORKSPACE_ITEM_DIR)  :  directory containing the current item in the workspace pane
+$(WORKSPACE_ITEM_NAME)  :  file name of the current item in the workspace pane
+$(WORKSPACE_ITEM_ROOT)  :  root path of the current item in the workspace pane
+$(CLIPBOARD_TEXT)  :  text from the clipboard
+$(#N)  :  full path of the Nth opened document (N=1,2,3...)
+$(#0)  :  full path to notepad++.exe
+$(LEFT_VIEW_FILE)  :  current file path-name in primary (left) view
+$(RIGHT_VIEW_FILE)  :  current file path-name in secondary (right) view
+$(PLUGINS_CONFIG_DIR)  :  full path of the plugins configuration directory
+$(NPP_SETTINGS_DIR)  :  path for the active Notepad++ settings
+$(CLOUD_LOCATION_PATH)  :  cloud location path (settings on cloud)
+$(CWD)  :  current working directory of NppExec (use "cd" to change it)
+$(ARGC)  :  number of arguments passed to the NPP_EXEC command
+$(ARGV)  :  all arguments passed to the NPP_EXEC command after the script name
+$(ARGV[0])  :  script name - first parameter of the NPP_EXEC command
+$(ARGV[N])  :  Nth argument (N=1,2,3...)
+$(RARGV)  :  all arguments in reverse order (except the script name)
+$(RARGV[N])  :  Nth argument in reverse order (N=1,2,3...)
+$(INPUT)  :  this value is set by the 'inputbox' command
+$(INPUT[N])  :  Nth field of the $(INPUT) value (N=1,2,3...)
+$(OUTPUT)  :  this value can be set by the child process, see npe_console v+
+$(OUTPUT1)  :  first line in $(OUTPUT)
+$(OUTPUTL)  :  last line in $(OUTPUT)
+$(EXITCODE)  :  exit code of the last executed child process
+$(PID)  :  process id of the current (or the last) child process
+$(IS_PROCESS)  :  is child process running (1 - yes, 0 - no)
+$(IS_CONSOLE)  :  is NppExec's Console visible (1 - yes, 0 - no)
+$(IS_CONSOLE0)  :  was the Console visible when the script has started
+$(LAST_CMD_RESULT)  :  result of the last NppExec's command
+                         (1 - succeeded, 0 - failed, -1 - invalid arg)
+$(MSG_RESULT)  :  result of 'npp_sendmsg[ex]' or 'sci_sendmsg'
+$(MSG_WPARAM)  :  wParam (output) of 'npp_sendmsg[ex]' or 'sci_sendmsg'
+$(MSG_LPARAM)  :  lParam (output) of 'npp_sendmsg[ex]' or 'sci_sendmsg'
+$(NPP_HWND)  :  Notepad++'s main window handle
+$(NPP_PID)  :  Notepad++'s process id
+$(SCI_HWND)  :  current Scintilla's window handle
+$(SCI_HWND1)  :  primary Scintilla's window handle (main view)
+$(SCI_HWND2)  :  secondary Scintilla's window handle (second view)
+$(CON_HWND)  :  NppExec's Console window handle (RichEdit control)
+$(FOCUSED_HWND)  :  focused window handle
+$(SYS.<var>)  :  system's environment variable, e.g. $(SYS.PATH)
+$(@EXIT_CMD)  :  a callback exit command for a child process
+$(@EXIT_CMD_SILENT)  :  a silent (non-printed) callback exit command
+
+
+------------------------------------------------------------------------------
+COMMAND:  help
+USAGE:
+  help
+  help <command>
+  help all
+DESCRIPTION:
+  Prints help ;-)
+EXAMPLES:
+  help           // prints general help information
+  help npp_open  // prints detailed information about the NPP_OPEN command
+  help all       // prints detailed information about all available commands
+SEE ALSO:
+  manual, about, ver
+
+------------------------------------------------------------------------------
+COMMAND:  ver
+USAGE:
+  ver             (*)
+  * available in the Console dialog only
+DESCRIPTION:
+  Prints plugin's version
+SEE ALSO:
+  about, help, manual
+
+------------------------------------------------------------------------------
+COMMAND:  manual
+USAGE:
+  manual          (*)
+  * available in the Console dialog only
+DESCRIPTION:
+  Shows NppExec User Guide
+EXAMPLES:
+  manual  // shows NppExec User Guide
+SEE ALSO:
+  help, about, ver
+
+------------------------------------------------------------------------------
+COMMAND:  about
+USAGE:
+  about           (*)
+  * available in the Console dialog only
+DESCRIPTION:
+  Shows NppExec Help/About
+EXAMPLES:
+  about  // shows NppExec Help/About
+SEE ALSO:
+  ver, help, manual
+
+------------------------------------------------------------------------------
+COMMAND:  cls
+USAGE:
+  cls
+DESCRIPTION:
+  Clears the Console screen
+
+------------------------------------------------------------------------------
+COMMAND:  cd
+USAGE:
+  cd
+  cd <relative_path>
+  cd <absolute_path>
+DESCRIPTION:
+  1. Changes current directory ("cd" with parameters)
+  2. Shows current directory path ("cd" without parameters)
+EXAMPLES:
+  cd       // shows current directory path
+  cd ..    // go to up-directory
+  cd \     // go to root-directory
+  cd $(NPP_DIRECTORY)    // go to notepad++'s directory
+  cd e:\temp            // change drive and directory
+SEE ALSO:
+  dir
+
+------------------------------------------------------------------------------
+COMMAND:  dir
+USAGE:
+  dir
+  dir <path>
+  dir <mask>
+  dir <path\mask>
+DESCRIPTION:
+  1. Lists all subdirs and files in current/specified directory  (*)
+  2. Lists subdirs and files matched the mask                   (**)
+   * current directory can be set by the "cd" command
+  ** type "help mask" for more information about file masks
+EXAMPLES:
+  dir                 // list all subdirs and files in current directory
+  dir *               // the same
+  dir d:\docs\*.txt   // list all *.txt files in the folder d:\docs
+  dir $(PLUGINS_CONFIG_DIR)\*.ini
+  dir $(NPP_SETTINGS_DIR)\*.xml
+SEE ALSO:
+  cd, mask, npp_open
+
+------------------------------------------------------------------------------
+COMMAND:  echo
+USAGE:
+  echo <text>
+DESCRIPTION:
+  Prints a text in the Console (the environment variables are supported)
+EXAMPLES:
+  echo Notepad++'s directory is: $(NPP_DIRECTORY)
+SEE ALSO:
+  echo~, sleep, set
+
+------------------------------------------------------------------------------
+COMMAND:  echo~
+USAGE:
+  echo~ <math/str expression>
+DESCRIPTION:
+  1. Calculates the math expression and prints the result
+  2. Transforms the string expression and prints the result
+     (supports the same string expressions as the SET command)
+EXAMPLES:
+  // Math calculations...
+  echo~ 1 + 2 + 3 + 4 + 5       // prints 15
+  echo~ 1 << 10                 // prints 1024
+  set local x ~ pi/2
+  echo~ sin($(x)) + cos(0)      // prints 2.0
+  // String transformations...
+  echo~ strlen abcdef           // prints 6
+  echo~ strupper abc def        // prints ABC DEF
+  echo~ ordx A                  // prints 0x41
+  echo~ chr 0x61                // prints a
+  echo~ strfromhex 41 00 61 00  // prints Aa
+  // Command alias...
+  npe_cmdalias ~ = echo~        // alias: ~ -> echo~
+  ~ 1 + 2/3 + 4/5               // prints 2.466667, using the alias for echo~
+  ~ strquote abc                // prints "abc", using the alias for echo~
+SEE ALSO:
+  echo, set, if~
+
+------------------------------------------------------------------------------
+COMMAND:  con_colour
+USAGE:
+  con_colour
+  con_colour fg = <RR GG BB>
+  con_colour bg = <RR GG BB>
+  con_colour fg = <RR GG BB> bg = <RR GG BB>
+  con_colour fg = 0
+  con_colour bg = 0
+  con_colour fg = 0 bg = 0
+  con_colour local fg = <RR GG BB> bg = <RR GG BB>
+DESCRIPTION:
+  fg - sets foreground (text) colour of the Console;
+  bg - sets background colour of the Console;
+  without parameters - shows current values of the colours;
+  the value of 0 restores the original colour(s).
+  When "local" is specified, the changes are applied locally to the current
+  NppExec's script and are reverted back when the current script ends.
+EXAMPLES:
+  con_colour bg=303030 fg=d0d0d0     // white text on dark-grey
+  con_colour fg = 303030 bg = D0D0D0 // dark text on light-grey
+  con_colour FG = 20 20 90           // dark-blue text
+  con_colour fg = 0                  // restore original text colour
+  con_colour local fg = 303030       // dark-grey text locally
+REMARKS:
+  The foreground (text) colour is applied to new text only.
+  The background colour is applied to the whole Console's background. And
+  when it is being applied, all the text is being re-coloured to the current
+  foreground colour.
+  <RR GG BB> are hex values of Right, Green and Blue components of a colour
+  to be used. Each colour component can have a value from 00 to FF. The value
+  of 00 means absence of the colour component, FF means maximum. Thus,
+  00 00 00 means "dark" (absence of all colours), 00 FF 00 means "maximum of
+  green", FF FF FF means "maximum white".
+  These colours are run-time only, they are not saved when Notepad++ exits.
+  (Use the Advanced Options to set and save the colours.)
+SEE ALSO:
+  con_filter, npe_console
+
+------------------------------------------------------------------------------
+COMMAND:  con_filter
+USAGE:
+  con_filter +x5/-x5 +i1/-i1 +fr4/-fr4 +frc1/-frc1 +h10/-h10
+  con_filter local ...
+DESCRIPTION:
+  Enables or disables the eXclude/Include/Replace/Highlight Filters
+  +x<N>/-x<N>     - enables/disables the Nth eXclude Mask (N = 1..5)
+  +i<N>/-i<N>     - enables/disables the Nth Include Mask (N = 1..5)
+  +fr<N>/-fr<N>   - enables/disables the Nth Replacing Filter and
+                    deactivates "Match case" (N = 1..4)
+  +frc<N>/-frc<N> - enables/disables the Nth Replacing Filter and
+                    activates "Match case" (N = 1..4)
+  +h<N>/-h<N>     - enables/disables the Nth Highlight Mask (N = 1..10)
+  When "local" is specified, the changes are applied locally to the current
+  NppExec's script and are reverted back when the current script ends.
+EXAMPLES:
+  con_filter +frc3 +fr2 -i5 +x2 +h1
+  con_filter -x4 +h2 +i1 -fr3 +i2 -h7 +x1 +fr1 +frc2
+  con_filter local -x4 +h2 +i1 -fr3  // has local effect
+REMARKS:
+  This command allows to enable and disable the Console Output Filters from
+  your script.
+  When any eXclude or Include mask is enabled, the "Enable Console Output Filter"
+  check-box becomes checked.
+  When any Replacing Filter is enabled, the "Enable Replacing Filters" check-box
+  becomes checked.
+  While using CON_FILTER to enable or disable the Console Output Filters and having
+  macro-variables as the values of these Filters, you are able to apply different
+  filters during execution of your script - thus having the full control over the
+  filters at runtime.
+  To illustrate the last sentence, let's assume you have specified the following
+  variables as filters in the Console Output Filters:
+    $(Exclude5) as the 5th Exclude mask;
+    $(Include5) as the 5th Include mask;
+    $(Find4) and $(Replace4) as the 4th Replacing Filter;
+    $(Highlight10) as the 10th Highlight mask.
+  Now you can write the following script:
+    // set the filters dynamically
+    set Exclude5 = *(C)*     // exclude any line that contains "(C)"
+    set Include5 = *         // include any line
+    set Find4 = /            // find all '/'...
+    set Replace4 = \         // ...and replace with '\'
+    set Highlight10 = error* // highlight any line that starts with "error"
+    con_filter +x5 +i5 +fr4 +h10  // enable the above filters
+SEE ALSO:
+  con_colour, npe_console, npp_console
+
+------------------------------------------------------------------------------
+COMMAND:  con_loadfrom
+USAGE:
+  con_loadfrom <file>
+DESCRIPTION:
+  Loads a file's content to the Console
+EXAMPLES:
+  con_loadfrom c:\temp\output.txt
+  con_loadfrom $(PLUGINS_CONFIG_DIR)\npec_cmdhistory.txt
+REMARKS:
+  NppExec can read ANSI, UTF-8, UCS-2 LE and UCS-2 BE text files
+SEE ALSO:
+  con_saveto
+
+------------------------------------------------------------------------------
+COMMAND:  con_saveto
+USAGE:
+  con_saveto <file>
+DESCRIPTION:
+  Saves the Console's content to a file
+EXAMPLES:
+  con_saveto c:\temp\output.txt
+REMARKS:
+  NppExec saves the Console's content as an Unicode text file (UCS-2 LE)
+SEE ALSO:
+  con_loadfrom
+
+------------------------------------------------------------------------------
+COMMAND:  npp_close
+USAGE:
+  npp_close
+  npp_close <file>
+DESCRIPTION:
+  1. Closes current file ("npp_close" without parameters)
+  2. Closes specified opened file
+     (supports a partial file path/name)
+EXAMPLES:
+  npp_close $(#3)  // closes 3rd file opened in Notepad++
+  npp_close awk    // closes a first file which contains "awk" in its name
+SEE ALSO:
+  npp_open, npp_switch, npp_save
+
+------------------------------------------------------------------------------
+COMMAND:  npp_console
+USAGE:
+  npp_console <on/off/keep>
+  npp_console <enable/disable>
+  npp_console <1/0/?>
+  npp_console <+/->
+  npp_console local ...
+DESCRIPTION:
+  Shows/hides the Console window.
+  Enables/disables output to the Console.
+  Usually the Console window is automatically opened each time you execute
+  some command or script, so the purpose of this command is to change the
+  default behaviour.
+  When "local" is specified, the changes are applied locally to the current
+  NppExec's script and are reverted back when the current script ends.
+EXAMPLES:
+  npp_console ?  // keep the Console's state: hidden Console is not shown
+  npp_console 1  // open (show) the Console
+  npp_console 0  // close (hide) the Console
+  npp_console -  // disable output to the Console
+  npp_console +  // enable output to the Console
+  npp_console local 0  // close the Console locally
+REMARKS:
+  You can use 'NPP_CONSOLE ?' as a first command of your script in order to
+  keep the Console's state: don't open hidden Console or don't hide opened one.
+  If you want to apply 'NPP_CONSOLE ?' to every script, you don't have to add
+  this command to the beginning of each script. An auxiliary script can be created
+  in order to start every script using this auxiliary script:
+  
+    // auxiliary script
+    NPP_CONSOLE ?  // keep the Console's state
+    NPP_EXEC $(ARGV)  // execute NppExec's script passed as the argument
+  
+  Now you can start any script using
+    NPP_EXEC "auxiliary script" "script to be executed"
+  
+  If you disable output to the Console via 'NPP_CONSOLE -', you will not see any
+  output neither from internal nor from external commands until you enable it
+  via 'NPP_CONSOLE +'.
+  If you call 'NPP_CONSOLE -' before running a child process, you will not see
+  any prompt even if the proccess waits for user input. And 'NPP_CONSOLE +'
+  will not work until the child process finishes.
+  Starting from NppExec v0.6, the command 'NPP_CONSOLE -' has a "local" effect:
+  when this command is executed within a script, the Console output is enabled
+  automatically when the script ends. If, however, this script is executed via
+  NPP_EXEC, the Console remains disabled.
+SEE ALSO:
+  npe_console, proc_signal, @exit_cmd ("help @exit_cmd")
+
+------------------------------------------------------------------------------
+COMMAND:  npp_exec
+USAGE:
+  npp_exec <script>
+  npp_exec <file>
+  npp_exec <script/file> <args>
+DESCRIPTION:
+  1. Executes NppExec's commands from a specified script
+  2. Executes NppExec's commands from a specified file
+     (supports a partial file path/name)
+  3. Executes NppExec's commands from a specified script/file
+     and passes additional arguments to this script.
+     These arguments can be accessed in the script through
+     the following macro-variables: $(ARGC), $(ARGV),
+     $(ARGV[n]), $(RARGV), $(RARGV[n])
+EXAMPLES:
+  npp_exec "awk-run"         // executes NppExec's script named "awk-run"
+  npp_exec "..\script.txt"   // executes NppExec's file "..\script.txt"
+  npp_exec "..\script"       // the same (if there is no other files with similar name)
+  npp_exec "script" p1 "p 2" // in the script: $(ARGV[1]) = p1, $(ARGV[2]) = p 2
+  // An example with npp_exec <file>:
+  // 1. Create a new file and save it as e.g. "test.nppexec";
+  // 2. Type the following line in this file:
+  //      echo $(ARGV[1])
+  //    and save the file;
+  // 3. Now type the following in NppExec's Console:
+  //      npp_exec "$(FULL_CURRENT_PATH)" "Hello, world!"
+  // 4. Going further, a command alias can be assigned:
+  //      npe_cmdalias f = npp_exec "$(FULL_CURRENT_PATH)"
+  //      f "Hello, world!"
+REMARKS:
+  Do _not_ use NPP_EXEC to start a batch file or an executable file in NppExec!
+  The purpose of NPP_EXEC is to execute NppExec's own script.
+  To start a batch file or an executable file in NppExec, type just:
+     application.exe // in case of an executable file named "application.exe"
+     batchfile.bat   // in case of a batch file named "batchfile.bat"
+SEE ALSO:
+  npp_exectext
+
+------------------------------------------------------------------------------
+COMMAND:  npp_exectext
+USAGE:
+  npp_exectext <mode> <text>
+DESCRIPTION:
+  Executes the given text as NppExec's script or sends this text to
+  the running child process as an input.
+  The value of <mode> can be either 0 or a sum of these flags:
+  0:  use the given text as is;
+      if there is a running child process then send the text to
+      that process as an input;
+  4:  (cs) if the first line of the text is "!collateral" and there is
+      no running child process then start a collateral script;
+  8:  (cp) if the first line of the text is "!collateral" and there is
+      a running child process then start a collateral script;
+  16: (ne) lines that start with the "nppexec:" prefix will be executed by
+      NppExec (as NppExec's script commands) and will not be sent to a
+      running child process;
+  64: (sv) share local variables: npp_exectext uses and updates the existing
+      local variables instead of its own local variables.
+EXAMPLES:
+  npp_exectext 0 $(CLIPBOARD_TEXT)
+  npp_exectext 28 $(SELECTED_TEXT) // process "!collateral" and "nppexec:"
+  set local A = 123
+  npp_exectext 0 echo A is $(A)
+  set local cmds ~ strunescape !collateral\nmessagebox Hello!!!
+  npp_exectext 12 $(cmds) // process "!collateral"
+SEE ALSO:
+  npp_exec
+
+------------------------------------------------------------------------------
+COMMAND:  npp_menucommand
+USAGE:
+  npp_menucommand <full name of menu item>
+DESCRIPTION:
+  Executes (invokes) a menu item by its full name.
+EXAMPLES:
+  npp_menucommand File\New
+  npp_menucommand Edit|Blank Operations|Trim Leading and Trailing Space
+  npp_menucommand Plugins/Plugin Manager/Show Plugin Manager
+  npp_menucommand Plugins\\NppExec\\Help/Manual
+REMARKS:
+  In general case, names of menu items are language-specific. If you have a
+  translated menu in Notepad++, you should use the menu item names you see.
+  (For example, "npp_menucommand Файл|Новый".)
+  The menu item names are processed case-sensitively, so "file/new" or
+  "File|new" does not correspond to the menu item "File/New".
+  You can use '\', '/' and '|' as a separator. Moreover, you can double or
+  even triple the separator if a menu item already contains '\', '/' or '|'.
+  However, be sure to use the very same separator within a full name of menu
+  item. For example: "Plugins||NppExec||Help/Manual" is correct since it uses
+  the same separator "||". And "Plugins\\NppExec||Help/Manual" is incorrect
+  because the first "\\" has been detected as a separator, and the remaining
+  part "NppExec||Help/Manual" would be treated as a name of one sub-item
+  since it did not contain the separator "\\".
+  Note: do not forget that "//" by default is a start of a comment in NppExec.
+  So do not use doubled "//" or tripled "///" as a separator of menu item name
+  because the remaining part of the item name (after "//" or "///") will be
+  treated as a comment and ignored.
+SEE ALSO:
+  npp_sendmsg
+
+------------------------------------------------------------------------------
+COMMAND:  npp_open
+USAGE:
+  npp_open <file>
+  npp_open <mask>
+  npp_open <path\mask>
+DESCRIPTION:
+  1. Opens or reopens specified file in Notepad++
+  2. Opens file(s) matched the mask                (*)
+  * type "help mask" for more information about file masks
+EXAMPLES:
+  npp_open *.txt             // opens all *.txt files in current directory
+  npp_open e:\temp\file.txt  // opens the file "e:\temp\file.txt"
+  npp_open .\text\*.*        // opens all files in the folder ".\text"
+REMARKS:
+  To reopen a file, specify the full file path.
+SEE ALSO:
+  npp_close, npp_switch, npp_save, mask, dir
+
+------------------------------------------------------------------------------
+COMMAND:  npp_run
+USAGE:
+  npp_run <command>
+  npp_run <file>
+DESCRIPTION:
+  1. The same as Notepad++'s Run command - runs an external process
+  2. Opens specified file in its associated program (requires NppExec v0.2 RC3.1 or higher)
+EXAMPLES:
+  npp_run calc.exe    (*)
+  * if you type just "calc.exe" without "npp_run", then NppExec runs
+    "calc.exe" as a child process and waits until it returns (i.e. until
+    you close the calc's window)
+  npp_run "index.html" // opens "index.html" in your default web-browser
+  npp_run "C:\Program Files\Mozilla Firefox\firefox.exe" "index.html" // in Firefox
+  npp_run "$(FULL_CURRENT_PATH)" // opening using the associated program
+REMARKS:
+  In terms of an application (a program), NPP_RUN allows to run it in its own
+  window without waiting for its execution:
+    npp_run application.exe
+    npp_run application.exe <arguments>
+  If, however, there is a need to wait until the application has been executed,
+  while still running it in its own window, it can be achieved without NPP_RUN:
+    cmd /c start /wait application.exe
+    cmd /c start /wait application.exe <arguments>
+  In this last case, NppExec waits for cmd to be executed, while cmd itself
+  starts the application in its own separate window and waits until it has
+  been executed.
+
+------------------------------------------------------------------------------
+COMMAND:  npp_save
+USAGE:
+  npp_save
+  npp_save <file>
+DESCRIPTION:
+  1. Saves current file ("npp_save" without parameters)
+  2. Saves specified file if it's opened in Notepad++
+     (supports a partial file path/name)
+EXAMPLES:
+  npp_save         // saves current file
+  npp_save $(#2)   // saves 2nd file opened in Notepad++
+  npp_save txt     // saves a first file which contains "txt" in its name
+SEE ALSO:
+  npp_saveas, npp_saveall, npp_open
+
+------------------------------------------------------------------------------
+COMMAND:  npp_saveall
+USAGE:
+  npp_saveall
+DESCRIPTION:
+  Saves all modified files
+EXAMPLES:
+  npp_saveall
+SEE ALSO:
+  npp_save, npp_saveas, npp_open
+
+------------------------------------------------------------------------------
+COMMAND:  npp_saveas
+USAGE:
+  npp_saveas <file>
+DESCRIPTION:
+  Saves current file with a new (path)name
+EXAMPLES:
+  npp_saveas $(SYS.TEMP)\newname.txt
+  npp_saveas anothername.txt
+SEE ALSO:
+  npp_save, npp_saveall, npp_open
+
+------------------------------------------------------------------------------
+COMMAND:  npp_switch
+USAGE:
+  npp_switch <file>
+DESCRIPTION:
+  Switches to specified opened file
+  (supports a partial file path/name)
+EXAMPLES:
+  npp_switch $(#3)  // activates 3rd file opened in Notepad++
+  npp_switch awk    // activates a first file which contains "awk" in its name
+SEE ALSO:
+  npp_open, npp_close, npp_save
+
+------------------------------------------------------------------------------
+COMMAND:  npp_setfocus
+USAGE:
+  npp_setfocus con
+  npp_setfocus sci
+DESCRIPTION:
+  Sets the keyboard focus (to the Console or to Scintilla's editing window)
+EXAMPLES:
+  npp_setfocus con  // sets the focus to NppExec's Console
+  npp_setfocus sci  // sets the focus to the current Scintilla
+
+------------------------------------------------------------------------------
+COMMAND:  npp_sendmsg
+USAGE:
+  npp_sendmsg <msg>
+  npp_sendmsg <msg> <wparam>
+  npp_sendmsg <msg> <wparam> <lparam>
+   * Warning: incorrect usage of this command may crash Notepad++ !!!
+DESCRIPTION:
+  Sends a message to Notepad++ (to its main window).
+  This command invokes Win API function SendMessage:
+    LRESULT SendMessage(hNppWnd, Msg, wParam, lParam)
+  where lParam or both lParam and wParam can be omitted.
+  <wparam> and <lparam> can be the following:
+    <int>    - integer value (int or DWORD)
+    @<int>   - pointer to integer (LPDWORD -> signed int)
+    "<str>"  - const string (LPCTSTR)
+    @"<str>" - pointer to string (LPTSTR)
+  Use <int> and "<str>" to pass integer or string to Notepad++:
+  e.g. 10, 0x1E, "some text".
+  Use @<int> and @"str" to get integer or string from Notepad++:
+  e.g. @0, @0x7FF, @"", @"initial string".
+  When using @<int> and @"<str>", the values specified are
+  initial values of the parameters.
+  NppExec reserves a buffer of (4 MB)*sizeof(TCHAR) for @"<str>".
+  When omitting <wparam> or <lparam>, NppExec treats the omitted
+  parameter(s) as 0 (0 as int).
+  This command sets the following local variables:
+    $(MSG_RESULT) - LRESULT as int
+    $(MSG_WPARAM) - int or string for @<int> or @"<str>", otherwise empty
+    $(MSG_LPARAM) - int or string for @<int> or @"<str>", otherwise empty
+  See MSDN for more details about SendMessage.
+  See Notepad++'es sources and documentation for more details
+  about messages supported by Notepad++.
+EXAMPLES:
+  // !!! All NPPM_* messages must be specified in upper case !!!
+  // !!! (These messages are read from NppExec\Notepad_plus_msgs.h) !!!
+  // NPPM_GETNPPVERSION example:
+  npp_sendmsg NPPM_GETNPPVERSION  // returns ver as LRESULT
+  set local hver ~ trunc($(MSG_RESULT)/65536)  // HIWORD(ver)
+  set local lver ~ $(MSG_RESULT) - $(hver)*65536  // LOWORD(ver)
+  echo $(hver).$(lver)  // prints version as string
+  // NPPM_GETPLUGINSCONFIGDIR example:
+  npp_sendmsg NPPM_GETPLUGINSCONFIGDIR 4000000 @""  // send a message
+  echo $(MSG_LPARAM)  // prints the string pointed by lParam
+  // NPPM_GETFULLPATHFROMBUFFERID _advanced_ example:
+  npp_sendmsg NPPM_GETCURRENTBUFFERID  // returns buffer Id as result
+  set local bufferId = $(MSG_RESULT)
+  npp_sendmsg NPPM_GETFULLPATHFROMBUFFERID $(bufferId) @""
+  echo $(MSG_LPARAM)  // file path as string
+  npp_sendmsg NPPM_GETFULLPATHFROMBUFFERID $(bufferId) @[]
+  echo $(MSG_LPARAM)  // file path as hex string
+  // (this last example uses undocumented ability of
+  //  handling of hex-string parameters, e.g.:
+  //  [00 7F EA 00] - const buffer of 4 bytes
+  //  @[FF 02 0C]   - pointer to buffer
+  //  Use it with care!)
+SEE ALSO:
+  sci_sendmsg, npp_sendmsgex, npe_sendmsgbuflen, set
+
+------------------------------------------------------------------------------
+COMMAND:  npp_sendmsgex
+USAGE:
+  npp_sendmsgex <hwnd> <msg>
+  npp_sendmsgex <hwnd> <msg> <wparam>
+  npp_sendmsgex <hwnd> <msg> <wparam> <lparam>
+   * Warning: incorrect usage of this command may crash something !!!
+DESCRIPTION:
+  Sends a message to hwnd.
+  This command invokes Win API function SendMessage:
+    LRESULT SendMessage(hWnd, Msg, wParam, lParam)
+  where lParam or both lParam and wParam can be omitted.
+  See NPP_SENDMSG and SCI_SENDMSG for more details.
+EXAMPLES:
+  npp_sendmsg NPPM_DMMGETPLUGINHWNDBYNAME "NppExec Console" "NppExec.dll"
+  set local hwnd = $(MSG_RESULT)  // hwnd of NppExec's Console
+  npp_sendmsgex $(hwnd) WM_COMMAND 1154 0  // Word-Wrap checkbox
+SEE ALSO:
+  npp_sendmsg, sci_sendmsg, npe_sendmsgbuflen, set
+
+------------------------------------------------------------------------------
+COMMAND:  sci_sendmsg
+USAGE:
+  sci_sendmsg <msg>
+  sci_sendmsg <msg> <wparam>
+  sci_sendmsg <msg> <wparam> <lparam>
+   * Warning: incorrect usage of this command may crash Notepad++ !!!
+DESCRIPTION:
+  Sends a message to current Scintilla (to its window).
+  This command invokes Win API function SendMessage:
+    LRESULT SendMessage(hSciWnd, Msg, wParam, lParam)
+  where lParam or both lParam and wParam can be omitted.
+  <wparam> and <lparam> can be the following:
+    <int>    - integer value (int or DWORD)
+    @<int>   - pointer to integer (LPDWORD -> signed int)
+    "<str>"  - const string (LPCTSTR)
+    @"<str>" - pointer to string (LPTSTR)
+  Use <int> and "<str>" to pass integer or string to Scintilla:
+  e.g. 10, 0x1E, "some text".
+  Use @<int> and @"str" to get integer or string from Scintilla:
+  e.g. @0, @0x7FF, @"", @"initial string".
+  When using @<int> and @"<str>", the values specified are
+  initial values of the parameters.
+  NppExec reserves a buffer of (4 MB)*sizeof(char) for @"<str>".
+  NppExec performs conversion from/to ANSI or UTF-8 automatically.
+  When omitting <wparam> or <lparam>, NppExec treats the omitted
+  parameter(s) as 0 (0 as int).
+  This command sets the following local variables:
+    $(MSG_RESULT) - LRESULT as int
+    $(MSG_WPARAM) - int or string for @<int> or @"<str>", otherwise empty
+    $(MSG_LPARAM) - int or string for @<int> or @"<str>", otherwise empty
+  See MSDN for more details about SendMessage.
+  See Scintilla's documentation for more details about messages
+  supported by Scintilla.
+EXAMPLES:
+  // !!! All SCI_* messages must be specified in upper case !!!
+  // !!! (These messages are read from NppExec\Scintilla.h) !!!
+  // get the text of the first visible line:
+  sci_sendmsg SCI_GETFIRSTVISIBLELINE // returns line number as $(MSG_RESULT)
+  sci_sendmsg SCI_GETLINE $(MSG_RESULT) @"" // returns the line as $(MSG_LPARAM)
+  set local line ~ strstrip 0x42 `$(MSG_LPARAM)` // removes the trailing \r\n
+  echo $(line)  // prints the line
+  // insert some text at the current position:
+  sci_sendmsg SCI_INSERTTEXT -1 "Some text"
+  // insert some multi-line text:
+  set local s ~ strunescape 123\n456\n789
+  sci_sendmsg SCI_INSERTTEXT -1 "$(s)"
+SEE ALSO:
+  npp_sendmsg, npp_sendmsgex, npe_sendmsgbuflen, set
+
+------------------------------------------------------------------------------
+COMMAND:  sci_find
+USAGE:
+  sci_find <flags> <find_what>
+DESCRIPTION:
+  Searches for the given string according to the specified flags.
+  The actual behavior completely depends on the <flags> specified.
+  It is recommended to enquote the "find_what" string.
+  Use the "Bitwise OR" operator '|' to combine the flags.
+  The flags can be a combination of the following:
+    NPE_SF_MATCHCASE   = 0x00000001
+      - "text" finds only "text", not "Text" or "TEXT"
+    NPE_SF_WHOLEWORD   = 0x00000010
+      - "word" finds only "word", not "sword" or "words"
+    NPE_SF_WORDSTART   = 0x00000020
+      - "word" finds "word" and "words", not "sword"
+    NPE_SF_REGEXP      = 0x00000100
+      - search using a regular expression
+    NPE_SF_POSIX       = 0x00000200
+      - search using a POSIX-compatible regular expression
+    NPE_SF_CXX11REGEX  = 0x00000400
+      - search using a C++11 regular expression
+    NPE_SF_REGEXP_EMPTYMATCH_NOTAFTERMATCH = 0x00002000
+      - allows an empty match, not after another match
+    NPE_SF_REGEXP_EMPTYMATCH_ALL = 0x00004000
+      - allows an empty match
+    NPE_SF_REGEXP_EMPTYMATCH_ALLOWATSTART = 0x00008000
+      - allows an empty match, at start
+    NPE_SF_BACKWARD    = 0x00010000
+      - search backward (from the bottom to the top)
+    NPE_SF_NEXT        = 0x00020000
+      - search from current_position + 1
+    NPE_SF_INSELECTION = 0x00100000
+      - search only in the selected text
+    NPE_SF_INENTIRETEXT = 0x00200000
+      - search in the entire text, not only from the current position
+    NPE_SF_SETPOS      = 0x01000000
+      - move the caret to the position of the occurrence found
+    NPE_SF_SETSEL      = 0x02000000
+      - move the caret + select the occurrence found
+    NPE_SF_REPLACEALL  = 0x10000000  // only for sci_replace
+      - replace all the occurrences from the current pos to the end
+    NPE_SF_PRINTALL    = 0x20000000
+      - print all the occurrences from the current pos to the end
+  This command sets the following local variables:
+    $(MSG_RESULT) - the position of the occurrence found, or -1
+    $(MSG_WPARAM) - <find_what>'s length in Scintilla's chars (*)
+    * in case of regular expression, it is the length of the matched string
+EXAMPLES:
+  // search for "some text", starting from the caret position:
+  sci_find 0 "some text"
+  // search backward (from the caret position), select if found:
+  sci_find 0x02010000 "some text"
+  sci_find NPE_SF_BACKWARD|NPE_SF_SETSEL "some text"  // the same
+  sci_find "NPE_SF_BACKWARD | NPE_SF_SETSEL" "some text"  // the same
+  set local flags ~ NPE_SF_BACKWARD | NPE_SF_SETSEL
+  sci_find $(flags) "some text"  // the same
+  // search for a regular expression in the entire text, select if found:
+  set local flags ~ NPE_SF_REGEXP | NPE_SF_INENTIRETEXT | NPE_SF_SETSEL
+  sci_find $(flags) "[0-9]+"
+  // find all empty lines:
+  set local flags ~ NPE_SF_INENTIRETEXT | NPE_SF_REGEXP | NPE_SF_REGEXP_EMPTYMATCH_ALL | NPE_SF_PRINTALL
+  sci_find $(flags) "^$"
+  // find all non-empty lines:
+  set local flags ~ NPE_SF_INENTIRETEXT | NPE_SF_REGEXP | NPE_SF_PRINTALL
+  sci_find $(flags) "^.+$"
+REMARKS:
+  With NPE_SF_PRINTALL, it is possible to achieve a functionality similar to
+  (but not equal to) the standard "Find result" window.
+  Let's assume you want to find all occurrences of "abc":
+    sci_find NPE_SF_INENTIRETEXT|NPE_SF_PRINTALL "abc"
+  This will print all the occurrences of "abc" in the Console in a form of:
+    (<line>,<column>)	 abc
+  In case of searching with regular expressions, e.g.
+    sci_find NPE_SF_INENTIRETEXT|NPE_SF_REGEXP|NPE_SF_PRINTALL "WM_[A-Z_]+"
+  the results will be printed in a form of:
+    (<line>,<column>)	 <matched_string>
+  The "(<line>,<column>)" part and the matched string part are always separated
+  by two characters: a tabulation character '\t' plus a space character ' '.
+  So the following Highlight Mask can be specified for the search results:
+    (%LINE%,%CHAR%)? *
+  This will allow to go to the occurrence by simple double-clicking.
+  (A Highlight Mask can be specified either directly in the Console Filters
+  dialog or using the technique described in "help con_filter".)
+SEE ALSO:
+  sci_replace, sci_sendmsg
+
+------------------------------------------------------------------------------
+COMMAND:  sci_replace
+USAGE:
+  sci_replace <flags> <find_what> <replace_with>
+DESCRIPTION:
+  Searches for the given string according to the specified flags and replaces it.
+  The actual behavior completely depends on the <flags> specified.
+  It is recommended to enquote the "find_what" and "replace_with" strings.
+  Use the "Bitwise OR" operator '|' to combine the flags.
+  The flags can be a combination of the following:
+    NPE_SF_MATCHCASE   = 0x00000001
+      - "text" finds only "text", not "Text" or "TEXT"
+    NPE_SF_WHOLEWORD   = 0x00000010
+      - "word" finds only "word", not "sword" or "words"
+    NPE_SF_WORDSTART   = 0x00000020
+      - "word" finds "word" and "words", not "sword"
+    NPE_SF_REGEXP      = 0x00000100
+      - search using a regular expression
+    NPE_SF_POSIX       = 0x00000200
+      - search using a POSIX-compatible regular expression
+    NPE_SF_CXX11REGEX  = 0x00000400
+      - search using a C++11 regular expression
+    NPE_SF_REGEXP_EMPTYMATCH_NOTAFTERMATCH = 0x00002000
+      - allows an empty match, not after another match
+    NPE_SF_REGEXP_EMPTYMATCH_ALL = 0x00004000
+      - allows an empty match
+    NPE_SF_REGEXP_EMPTYMATCH_ALLOWATSTART = 0x00008000
+      - allows an empty match, at start
+    NPE_SF_BACKWARD    = 0x00010000
+      - search backward (from the bottom to the top)
+    NPE_SF_NEXT        = 0x00020000
+      - search from current_position + 1
+    NPE_SF_INSELECTION = 0x00100000
+      - search only in the selected text
+    NPE_SF_INENTIRETEXT = 0x00200000
+      - search in the entire text, not only from the current position
+    NPE_SF_SETPOS      = 0x01000000
+      - move the caret to the position of the occurrence found
+    NPE_SF_SETSEL      = 0x02000000
+      - move the caret + select the occurrence found
+    NPE_SF_REPLACEALL  = 0x10000000  // only for sci_replace
+      - replace all the occurrences from the current pos to the end
+    NPE_SF_PRINTALL    = 0x20000000
+      - print all the occurrences from the current pos to the end
+  This command sets the following local variables:
+    $(MSG_RESULT) - the position of the occurrence found, or -1
+    $(MSG_WPARAM) - <find_what>'s length in Scintilla's chars (*)
+    $(MSG_LPARAM) - <replace_with>'s length in Scintilla's chars (*)
+    * in case of regular expression, it is the length of the matched string
+EXAMPLES:
+  // replace the first occurrence of "some text" with nothing:
+  sci_replace 0 "some text"
+  // replace all occurrences of "some text" with nothing:
+  sci_replace NPE_SF_INENTIRETEXT|NPE_SF_REPLACEALL "some text"
+  // replace all occurrences of "some text" with "other text":
+  sci_replace NPE_SF_INENTIRETEXT|NPE_SF_REPLACEALL "some text" "other text"
+  // replace all occurrences in the selection, searching backward:
+  set local flags ~ NPE_SF_INSELECTION | NPE_SF_REPLACEALL | NPE_SF_BACKWARD
+  sci_replace $(flags) "some text" "other text"
+  // replace using a regular expression, searching backward:
+  set local flags ~ NPE_SF_BACKWARD | NPE_SF_REGEXP
+  sci_replace $(flags) "([a-z]+)-([a-z]+)" "\2-\1"
+  // the same:
+  sci_replace 0x00010100 "([a-z]+)-([a-z]+)" "\2-\1"
+  // the same:
+  sci_replace NPE_SF_BACKWARD|NPE_SF_REGEXP "([a-z]+)-([a-z]+)" "\2-\1"
+  // replace using a regular expression, select if found:
+  sci_replace NPE_SF_REGEXP|NPE_SF_SETSEL "([a-z]+)-([a-z]+)" "\2-\1"
+  // insert "abc" at the beginning of every line:
+  set local flags ~ NPE_SF_INENTIRETEXT | NPE_SF_REGEXP | NPE_SF_REGEXP_EMPTYMATCH_ALL | NPE_SF_REPLACEALL
+  sci_replace $(flags) "^" "abc"
+  // append "xyz" to every line:
+  set local flags ~ NPE_SF_INENTIRETEXT | NPE_SF_REGEXP | NPE_SF_REGEXP_EMPTYMATCH_ALL | NPE_SF_REPLACEALL
+  sci_replace $(flags) "$" "xyz"
+  // append "xyz" to every non-empty line:
+  set local flags ~ NPE_SF_INENTIRETEXT | NPE_SF_REGEXP | NPE_SF_REPLACEALL
+  sci_replace $(flags) "^(.+)$" "\1xyz"
+  // replace every empty line with "EMPTY":
+  set local flags ~ NPE_SF_INENTIRETEXT | NPE_SF_REGEXP | NPE_SF_REGEXP_EMPTYMATCH_ALL | NPE_SF_REPLACEALL
+  sci_replace $(flags) "^$" "EMPTY"
+REMARKS:
+  Combining NPE_SF_REPLACEALL with NPE_SF_PRINTALL, it is possible to see all
+  the replaced occurrences in the Console (see also: sci_find).
+  Using NPE_SF_PRINTALL alone, without NPE_SF_REPLACEALL, it is possible to see
+  all the found occurrences in the Console, with only the first occurrence
+  replaced.
+  The combination of NPE_SF_REPLACEALL|NPE_SF_PRINTALL|NPE_SF_BACKWARD will
+  most likely lead to incorrect character positions printed in the Console.
+  Why? Because each replacement with a string of different length changes the
+  length of the entire text. And while the replacements are being done from
+  the bottom to the top, each new replacement changes the offsets of all the
+  strings below it, affecting the positions of the occurrences that have
+  already been printed in the Console. (And yes, it proves that when you tell
+  sci_replace to replace in the backward direction, it really does it in the
+  backward direction.)
+SEE ALSO:
+  sci_find, sci_sendmsg
+
+------------------------------------------------------------------------------
+DESCRIPTION:  file mask
+USAGE:
+  File masks are used by such commands as DIR and NPP_OPEN
+DESCRIPTION:
+  The file mask in NppExec is an orthographical construction where
+    ? means any single character and
+    * means any 0 or more characters
+  regardless of such concepts as file name or file extension.
+  Thus, *.* in NppExec DOES NOT match any file or directory name -
+  it matches any string which contains '.'
+  Also, *tx*.* does not match "file.txt" because "tx" must be
+  located BEFORE '.' and not AFTER it.
+EXAMPLES:
+  dir *.cpp         // prints all *.cpp files in current directory
+  npp_open *dlg*.*  // opens all files which contain "dlg" and '.' in its name
+SEE ALSO:
+  dir, npp_open
+
+------------------------------------------------------------------------------
+COMMAND:  set/unset
+USAGE:
+  1.  set
+  2.  set <var>
+  3.  set <var> = <value>
+      set $(<var>) = <value>
+  4.  set <var> ~ <math expression>
+  5a. set <var> ~ strlen <string>
+  5b. set <var> ~ strlenutf8 <string>
+  5c. set <var> ~ strlensci <string>
+  5d. set <var> ~ strupper <string>
+  5e. set <var> ~ strlower <string>
+  5f. set <var> ~ substr <pos> <len> <string>
+  5g. set <var> ~ strfind <string> <sfind>
+  5h. set <var> ~ strrfind <string> <sfind>
+  5i. set <var> ~ strreplace <string> <sfind> <sreplace>
+  5j. set <var> ~ strstrip <k> <string>
+  5k. set <var> ~ strquote <string>
+  5l. set <var> ~ strunquote <string>
+  5m. set <var> ~ strescape <string>
+  5n. set <var> ~ strunescape <string>
+  5o. set <var> ~ strexpand <string>
+  5p. set <var> ~ strfromhex <hexstring>
+  5q. set <var> ~ strtohex <string>
+  5r. set <var> ~ chr <n>
+  5s. set <var> ~ ord <c>
+  5t. set <var> ~ ordx <c>
+  5u. set <var> ~ normpath <path>
+  5v. set <var> ~ fileexists <path>
+  5w. set <var> ~ direxists <path>
+  6.  set local
+      set local <var>
+      set local <var> = ...
+      set local <var> ~ ...
+  7.  set +v <var> = ...
+      set +v local <var> = ...
+  8.  unset <var>
+      unset <var> = <value>
+  9.  unset local <var>
+DESCRIPTION:
+  1.  Shows all user's variables ("set" without parameters)
+  2.  Shows the value of user's variable ("set" without "=")
+  3.  Sets the value of user's variable ("set <var> = <value>")
+  4.  Calculates the math expression ("set <var> ~ <math expr>")
+  5a. Calculates the string length ("set <var> ~ strlen <string>")
+  5b. Calculates the UTF-8 string length ("set <var> ~ strlenutf8 <s>")
+  5c. Calculates Scintilla's string length ("set <var> ~ strlensci <s>")
+      (depending on Scintilla's encoding, equals to strlen or strlenutf8)
+  5d. Returns the string in upper case ("set <var> ~ strupper <s>")
+  5e. Returns the string in lower case ("set <var> ~ strlower <s>")
+  5f. Returns the substring ("substr <pos> <len> <s>")
+  5g. Returns the position of first <sfind> in <string>
+  5h. Returns the position of last <sfind> in <string>
+  5i. Replaces all <sfind> with <sreplace> in <string>
+  5j. Returns the string with whitespace characters stripped
+  5k. Returns the string surrounded with "" quotes
+  5l. Removes the surrounding "" quotes
+  5m. Simple character escaping: '\' -> '\\', '<TAB>' -> '\t',
+      '<CR>' -> '\r', '<LF>' -> '\n', '"' -> '\"'
+  5n. Simple character unescaping: '\\' -> '\', '\t' -> '<TAB>',
+      '\r' -> '<CR>', '\n' -> '<LF>', '\?' -> '?'
+  5o. Expands all $(sub) values within the <string>
+  5p. Returns a string from the <hexstring>
+  5q. Returns a hex-string from the <string>
+  5r. Returns a character from a character code <n>
+  5s. Returns a decimal character code of a character <c>
+  5t. Returns a hexadecimal character code of a character <c>
+  5u. Returns a normalized path
+  5v. Returns 1 if a given file exists, 0 otherwise
+  5w. Returns 1 if a given directory exists, 0 otherwise
+  6.  Shows/sets the value of local variable ("set local <var> ...")
+  7.  Sets a value using delayed substitution of variables ("set +v ...")
+  8.  Removes the variable <var> ("unset <var>")
+  9.  Removes the local variable <var> ("unset local <var>")
+EXAMPLES:
+  set p = C:\Program Files
+  dir $(p)\*  // the same as dir C:\Program Files\*
+  unset p     // removes the variable p
+  // set vs. set local:
+  set x = 10       // 10: global x
+  set local x = 20 // 20: local x
+  echo $(x)        // 20: substitutes the overridden (local) x
+  set x            // 10: prints global x
+  set local x      // 20: prints local x
+  unset local x    // 20: deletes local x
+  echo $(x)        // 10: substitutes the global x
+  // indirect variable reference:
+  set local a = 123
+  set local b = a
+  echo $($(b))           // prints 123 : $($(b)) = $(a) = 123
+  set local c = $($(b))  // $(c) = 123 : $($(b)) = $(a) = 123
+  unset local $($(b))    // deletes $(a)
+  // delayed substitution of variables, modern way:
+  set +v local fname = $(FILE_NAME)  // $(fname) = $(FILE_NAME)
+  set local s ~ strexpand $(fname)  // the actual file name
+  // delayed substitution of variables, old way:
+  set local s = $
+  set local cmd = echo $(s)(PID)  // $(cmd) = echo $(PID)
+  nppexec:$(cmd)  // will print a running process'es id
+  // calculations:
+  set ans ~ 1 + 2*(3 + 4) - 0x5  // calculates the expression
+  set ans ~ 0x001 | 0x010 | 0x100  // calculates the expression
+  set ans ~ hex(0x001 | 0x010 | 0x100)  // calculates as hexadecimal
+  // strlen:
+  set n ~ strlen   ABC D   // sets n=5 (skipping leading & trailing spaces)
+  set n ~ strlen "  ABC "  // sets n=8 (including spaces & double quotes)
+  // in case of non-Latin characters, strlenutf8 may differ from strlen:
+  set n ~ strlenutf8 Привет  // sets n=12 (number of UTF-8 bytes)
+  set n ~ strlensci Привет  // sets n=6 for Scintilla with multibyte encoding
+  set n ~ strlensci Привет  // sets n=12 for Scintilla with UTF-8 encoding
+  // strupper/strlower:
+  set s = Text
+  set t = $(s)           // t = Text
+  set t ~ strupper $(s)  // t = TEXT
+  set t ~ strlower $(s)  // t = text
+  // substr:
+  set s ~ substr 0 3  abcde  // abc (3 characters from position 0)
+  set s ~ substr 2 2  abcde  // cd (2 characters from position 2)
+  set s ~ substr 3 -  abcde  // de (substring from position 3 to the end)
+  set s ~ substr 1 -2 abcde  // bc (substring from position 1 to length-2)
+  set s ~ substr -3 - abcde  // cde (substring from position length-3 to the end)
+  set s ~ substr -2 1 abcde  // d (1 character from position length-2)
+  set s ~ substr -3 -2 abcde // c (substring from position length-3 to length-2)
+  set s = abcde
+  set t ~ substr 1 3 $(s)    // bcd (3 characters from position 1)
+  // strfind/strrfind
+  // * quotes are not treated as a part of a string itself
+  set n ~ strfind "Hello world" Hello  // returns 0
+  set n ~ strfind "Hello world" "o"    // returns 4 - "o" in "Hello"
+  set n ~ strrfind "Hello world" o     // returns 7 - "o" in "world"
+  set n ~ strrfind "Hello world" x     // returns -1 - "x" not found
+  set n ~ strfind "Hello world" "o y"  // returns -1 - "o y" not found
+  set s = abcd
+  set n ~ strfind "$(s)" cd            // returns 2
+  // strreplace
+  // * quotes are not treated as a part of a string itself
+  set s ~ strreplace "Hello world" "o" "0" // Hell0 w0rld    ("o" -> "0")
+  set s ~ strreplace "$(s)" l 1            // He110 w0r1d    ("l" -> "1")
+  set s ~ strreplace "$(s)" 1 "y "         // Hey y 0 w0ry d ("1" -> "y ")
+  set s ~ strreplace "queen-bee" ee ""     // qun-b          ("ee" -> "")
+  // strstrip
+  // * quotes are not treated as a part of a string itself
+  // k = 0x01, 0x02, 0x03 - strip whitespaces: ' ', '\t', '\v', '\f', '\n', '\r'
+  // k = 0x11, 0x12, 0x13 - strip non-EOL spaces: ' ', '\t', '\v', '\f'
+  // k = 0x21, 0x22, 0x23 - strip space and tab: ' ', '\t'
+  // k = 0x41, 0x42, 0x43 - strip EOL: '\n', '\r'
+  // when k ends with 1 - strip only the leading ones
+  // when k ends with 2 - strip only the trailing ones
+  // when k ends with 3 - strip both leading and trailing ones
+  set s ~ strstrip 0x11 `  abc   ` // "abc   "
+  set s ~ strstrip 0x12 `  abc   ` // "  abc"
+  set s ~ strstrip 0x13 `  abc   ` // "abc"
+  set s ~ strstrip 0x42 ` abc\r\n` // " abc"
+  set s ~ strstrip 0x03 `  abc \r\n` // "abc"
+  set s ~ strstrip 0x23 ` \n abc \n ` // "\n abc \n"
+  // strquote
+  set s ~ strquote a b c        // "a b c"
+  set s ~ strquote "a b c"      // "a b c"  (already quoted)
+  set s ~ strquote `a b c`      // `a b c`  (already quoted)
+  // strunquote
+  set s ~ strunquote "a b c"    // a b c
+  set s ~ strunquote a b c      // a b c
+  set s ~ strunquote `a b c`    // a b c
+  set s ~ strunquote ` a b c  ` // (preserves the spaces)
+  echo -$(s)-                   // - a b c  -
+  // strescape & strunescape
+  set local TAB ~ chr 0x09  // <TAB> = '\t'
+  set local LF ~ chr 0x0A  // <LF> = '\n'
+  set local s = C:\A$(TAB)b\C$(LF)d\Ef  // C:\A<TAB>b\C<LF>d\Ef
+  set local t ~ strescape "$(s)"  // \"C:\\A\tb\\C\nd\\Ef\"
+  set local s2 ~ strunescape $(t)\x  // "C:\A<TAB>b\C<LF>d\Ef"x
+  set local s3 ~ strunescape $(s2)  // "C:A<TAB>bC<LF>dEf"x
+  // strexpand
+  set local x = 123
+  set local y = $
+  set local z ~ strexpand $(y)(x) // $(y)(x) -> $(x) -> 123
+  clip_settext $(y)(x) // now the clipboard contains "$(x)"
+  set local c ~ strexpand $(CLIPBOARD_TEXT) // $(x) -> 123
+  // strfromhex (unicode version)
+  set s ~ strfromhex 0D 00 0A 00           // <CR><LF> = \r\n in C/C++
+  set s ~ strfromhex "ab" 09 00 "c" 0A 00  // ab<TAB>c<LF> = ab\tc\n in C/C++
+  // strtohex (unicode version)
+  set s ~ strtohex abc123   // 61 00 62 00 63 00 31 00 32 00 33 00
+  set s ~ strtohex "ab 12"  // 61 00 62 00 20 00 31 00 32 00
+  set s ~ strtohex Привет   // 1F 04 40 04 38 04 32 04 35 04 42 04
+  // chr
+  set c ~ chr 0x71    // q
+  set c ~ chr 113     // q
+  set c ~ chr 0x0416  // Ж
+  // ord
+  set n ~ ord /       // 47
+  set n ~ ord q       // 113
+  set n ~ ord й       // 1081
+  set n ~ ord " "     // 32
+  set n ~ ord "z"     // 122
+  // ordx
+  set n ~ ordx /      // 0x2F
+  set n ~ ordx q      // 0x71
+  set n ~ ordx Ж      // 0x0416
+  set n ~ ordx " "    // 0x20
+  set n ~ ordx "z"    // 0x7A
+  // normpath
+  set s ~ normpath C:\A\.\B\X\..\C  // C:\A\B\C
+  set s ~ normpath "\\A\B\..\..\C"  // "\\C"
+  // fileexists
+  set local f ~ fileexists $(NPP_DIRECTORY)\notepad++.exe
+  set local f ~ fileexists $(PLUGINS_CONFIG_DIR)\NppExec.ini
+  // direxists
+  set local d ~ direxists C:\Program Files
+  set local d ~ direxists $(SYS.ProgramFiles)
+REMARKS:
+  User's variables have the lowest priority, so they can't override
+  other (predefined) variables. Thus, you can set your own variables
+  $(FILE_NAME), $(ARGV) and so on, but their values will not be
+  available because of predefined variables with the same name.
+  These variables are internal variables of NppExec, unlike
+  environment variables which can be set using ENV_SET.
+  NppExec uses Function Parser (fparser) to calculate the math
+  expression given as "set <var> ~ <math expression>".
+  The math expression can contain hex numbers with leading "0x"
+  (e.g. set ans ~ 0x0F + 0x10A - 0xB).
+  The following constants are hardcoded: WM_USER, NPPMSG.
+  For more details about supported functions, see "fparser.html".
+  You can use NPE_CMDALIAS to define a short alias to the built-in
+  calculator:
+    npe_cmdalias = = set ans ~  // "=" -> "set ans ~"
+    = 1 + 2/3 + 4/5  // using the alias for calculations
+  Local variables ("set local <var>") live just within a script
+  where they were declared. When the script ends, all its local
+  variables are automatically deleted.
+  Within a script, a local variable overrides a global variable
+  with the same name. Each script may have its own local variables
+  that are not inherited by NPP_EXEC-ed scripts.
+  The same applies to local variables created directly in NppExec's
+  Console - these local variables live only in NppExec's Console
+  and are not visible in NppExec's scripts.
+SEE ALSO:
+  env_set/env_unset, if
+
+------------------------------------------------------------------------------
+COMMAND:  env_set/env_unset
+USAGE:
+  env_set <var>
+  env_set <var> = <value>
+  env_set local <var> = <value>
+  env_unset <var>
+DESCRIPTION:
+  1. Shows the value of environment variable ("env_set" without "=")
+  2. Sets the value of environment variable ("env_set <var> = <value>")
+  3. Sets the value of environment variable locally (with "local" specified)
+  4. Removes/restores the environment variable <var> ("env_unset <var>")
+  When "local" is specified, the changes are applied locally to the current
+  NppExec's script and are reverted back when the current script ends.
+EXAMPLES:
+  env_set NPPHOME = $(NPP_DIRECTORY)  // new environment variable: NPPHOME
+  env_set PATH = $(SYS.NPPHOME);$(SYS.PATH)  // modifying the PATH variable
+  npp_run readme.txt  // opening "readme.txt" from Notepad++'es folder
+                      // (NPPHOME is the first path in the PATH variable)
+  env_unset NPPHOME  // removing the environment variable NPPHOME
+  env_unset PATH     // restoring initial value of PATH
+  env_set local PATH = C:\tools;$(SYS.PATH)  // has local effect
+REMARKS:
+  Unlike set/unset, these commands deal with Notepad++'es environment vars
+  which are inherited by child processes (programs, tools) started from
+  NppExec or Notepad++'es "Run..." menu.
+  NppExec can use the values of environment variables in a form of $(SYS.<var>).
+  For example:
+    env_set NPPHOME = $(NPP_DIRECTORY)  // new environment variable: NPPHOME
+    echo $(SYS.NPPHOME)  // print the value of NPPHOME
+  NppExec does not understand such form of environment variable as %<var>%.
+  I.e. you can type  "env_set PATH = C:\tools;$(SYS.PATH)",
+  but not  "env_set PATH = C:\tools;%PATH%"
+  because NppExec does not support such declaration as %PATH%.
+  You can use a value of other variable as an environment variable name:
+    set a = PATH  // value of 'a' is a string "PATH"
+    env_set $(a) = C:\tools  // env. variable PATH becomes "C:\tools"
+    echo $(SYS.PATH)  // prints the value of env. var PATH i.e. "C:\tools"
+    env_unset $(a)  // restore the initial value of PATH
+  The ENV_UNSET command removes only those environment variables which
+  have been created by the ENV_SET command (i.e. did not exist before).
+  Other environment variables (such as PATH, TEMP etc.) are not removed
+  by ENV_UNSET because these variables were not created by ENV_SET.
+  Instead, ENV_UNSET restores initial values of these variables.
+  The usage of "env_set local <var> = ..." is similar to the sequence of
+  "env_set <var> = ...", doing something with the <var> and finally doing
+  "env_unset <var>". There is a difference, though: ENV_UNSET restores the
+  _initial_ value of <var> (i.e. before any ENV_SET), while "env_set local"
+  restores the _previous_ value of <var> (e.g. after the last ENV_SET) once
+  the current NppExec's script ends.
+SEE ALSO:
+  set/unset
+
+------------------------------------------------------------------------------
+COMMAND:  inputbox
+USAGE:
+  inputbox "message"
+  inputbox "message" : initial_value
+  inputbox "message" :: initial_value
+  inputbox "message" : "value_name" : initial_value
+  inputbox "message" : " " : initial_value
+  inputbox "message" : "value_name" : "initial_value" : time_ms
+  inputbox "message" ::: timeout
+DESCRIPTION:
+  1. Shows the InputBox with a message 'message';
+     the input value is stored in $(INPUT), $(INPUT[1]) etc.
+  2. Shows the InputBox with a message 'message';
+     the initial input value is set to 'initial_value';
+     the input value is stored in $(INPUT), $(INPUT[1]) etc.
+  3. Shows the InputBox with a message 'message';
+     the text "$(INPUT) =" is replaced with 'value_name'
+     (use "" to keep "$(INPUT) ="; use " " to empty it);
+     the initial input value is set to 'initial_value';
+     the input value is stored in $(INPUT), $(INPUT[1]) etc.
+  4. Shows the InputBox for 'time_ms' milliseconds. When the
+     'time_ms' is over, the InputBox "expires" and closes.
+  * Note: $(INPUT), $(INPUT[1]) etc. are local variables.
+EXAMPLES:
+  // show the InputBox...
+  inputbox "Input values of A, B and C separated by spaces:"
+  // update the values of our variables...
+  set local a = $(input[1])  // e.g. 'A' in 'A "B B" C'
+  set local b = $(input[2])  // e.g. 'B B' in 'A "B B" C'
+  set local c = $(input[3])  // e.g. 'C' in 'A "B B" C'
+  // show the InputBox with specified initial value...
+  inputbox "Please confirm the value of C:" : $(c)
+  // update the value of c...
+  set local c = $(input)
+  // show the InputBox with the text "Input a:", "a ="...
+  inputbox "Input a:" : "a =" :
+  // show the InputBox with empty value name...
+  inputbox "Input a:" : " " :   // notice the  : " " :  part!
+  // show the initial value with a colon...
+  inputbox "Input a:" : : "1 : 2"   // notice the  : :  part!
+  // the same...
+  inputbox "Input a:" :: "1 : 2"   // notice the  ::  part!
+  // expirable InputBox...
+  inputbox "You have 5 seconds to input a:" : a : 1 : 5000
+REMARKS:
+  You can use any environment variable inside the input value, e.g.
+    INPUTBOX "Input A:"
+    // ... the InputBox is shown, you can type e.g.: $(ARGV)
+    SET local a = $(INPUT)
+    // ... $(a) becomes $(INPUT), i.e. $(ARGV)
+  To set the keyboard focus to the Console after the InputBox is shown,
+  use the following command:
+    npp_setfocus con
+SEE ALSO:
+  set, unset, if, messagebox
+
+------------------------------------------------------------------------------
+COMMAND:  messagebox
+USAGE:
+  messagebox "text"
+  messagebox "text" : "title"
+  messagebox "text" : "title" : type
+  messagebox "text" : : type
+  messagebox "text" : "title" : type : time_ms
+  messagebox "text" ::: time_ms
+DESCRIPTION:
+  1. Shows a MessageBox with a text 'text' and default title;
+  2. Shows a MessageBox with a text 'text' and a title 'title';
+  3. Shows a MessageBox of the given type with a text 'text' and a title 'title';
+  4. Shows a MessageBox of the given type with a text 'text' and default title;
+  5. Shows a MessageBox for 'time_ms' milliseconds and then closes it;
+  The type can be:
+    0 or "msg"  - a message
+    1 or "warn" - a warning
+    2 or "err"  - an error
+EXAMPLES:
+  messagebox "This is a simple message"
+  messagebox "This is a simple message" :: 0 // the same
+  messagebox "This is a simple message" : : msg // the same
+  messagebox "This is an error!" :: err
+  messagebox "This is a custom error!" : "ERROR" : 2
+  messagebox "This is a custom warning!" : "WARNING" : warn
+  messagebox "You will see it during 3 seconds!" ::: 3000
+REMARKS:
+  To set the keyboard focus to the Console after the MessageBox is shown,
+  use the following command:
+    npp_setfocus con
+SEE ALSO:
+  inputbox
+
+------------------------------------------------------------------------------
+COMMAND:  npe_cmdalias
+USAGE:
+  npe_cmdalias
+  npe_cmdalias <alias>
+  npe_cmdalias <alias> =
+  npe_cmdalias <alias> = <command>
+  npe_cmdalias +v <alias> = <command>
+  npe_cmdalias -v <alias> = <command>
+  npe_cmdalias local ...
+DESCRIPTION:
+  1. Shows all command aliases ("npe_cmdalias" without parameters)
+  2. Shows the value of command alias ("npe_cmdalias" without "=")
+  3. Removes the command alias ("npe_cmdalias" with empty "=")
+  4. Sets the value of command alias ("npe_cmdalias <alias> = <command>")
+  5.1. +v uses delayed vars substitution (default), e.g. $(x) remains $(x)
+  5.2. -v uses instant vars substitution, e.g. $(x) is replaced with its value
+  6. local command aliases (within the current NppExec's script)
+EXAMPLES:
+  // basic examples:
+  npe_cmdalias = = calc            // type just "=" instead of "calc"
+  npe_cmdalias copy = cmd /c copy  // "copy" instead of "cmd /c copy"
+  npe_cmdalias /c = cmd /c         // "/c" instead of "cmd /c"
+  npe_cmdalias /c                  // show the value of command alias
+  npe_cmdalias /c =                // remove the command alias
+  // examples with +v and -v:
+  npe_cmdalias e1 = echo $(A), $(B) // uses delayed substitution
+  npe_cmdalias +v e2 = echo $(A), $(B) // uses delayed substitution
+  set A = 123
+  set B = 456
+  e1 // prints "123, 456" because delayed substitution is used
+  e2 // prints "123, 456" because delayed substitution is used
+  npe_cmdalias -v e3 = echo $(A), $(B) // uses instant substitution
+  set A = abc
+  set B = def
+  e1 // prints "abc, def" because delayed substitution is used
+  e2 // prints "abc, def" because delayed substitution is used
+  e3 // prints "123, 456" because instant substitution was used
+  // delayed substitution example:
+  npe_cmdalias fp = nircmd clipboard set $(FULL_CURRENT_PATH)
+  fp // always uses the actual file path
+  // now open or switch to another file in Notepad++
+  fp // always uses the actual file path
+  // local cmd alias (within the current script):
+  npe_cmdalias local copy = cmd /c copy  // set a local alias
+  npe_cmdalias local copy                // show the local alias
+  npe_cmdalias local                     // show all local aliases
+  npe_cmdalias local copy =              // remove the local alias
+REMARKS:
+  To use a command alias, type it in the beginning of the input string
+  (e.g. "/c copy /?" for the command alias "/c -> cmd /c"), otherwise
+  it will NOT be treated as a command alias. For example, "/c" inside
+  "cmd /c move /?" is not treated as a command alias because it is located
+  in the middle of the string, so this string remains unmodified.
+  Note: npe_queue supports command aliases, so it is possible to do e.g.
+    npe_cmdalias local et = echo $(SYS.TEMP)
+    npe_queue et  // will print the up-to-date value of %TEMP%
+  To use -v or +v as the alias name, just specify the desired mode prior
+  to the alias name:
+    npe_cmdalias -v -v = ... // alias name is "-v", instant substitution
+    npe_cmdalias +v -v = ... // alias name is "-v", delayed substitution
+SEE ALSO:
+  npe_console q+/q-
+
+------------------------------------------------------------------------------
+COMMAND:  npe_console
+USAGE:
+  npe_console
+  npe_console a+/a- d+/d- e0/e1 u+/u- h+/h- m+/m- n+/n- p+/p- q+/q- v+/v- j+/j- f+/f- r+/r- x+/x- k0..3
+  npe_console c<N> s<N>
+  npe_console o0/o1/o2 i0/i1/i2
+  npe_console <options> --
+  npe_console local <options>
+DESCRIPTION:
+  1. Without parameter - shows current Console options/mode
+  2. X+/X-  enables/disables the option/mode X:
+       a+/a-  append mode (don't clear Console) on/off
+       d+/d-  follow $(CURRENT_DIRECTORY) on/off
+       e0/e1  ansi escape sequences: raw/remove
+       u+/u-  pseudoconsole on/off (experimental)
+       h+/h-  console commands history on/off
+       m+/m-  console internal messages on/off
+       n+/n-  condense empty lines on/off
+       p+/p-  print "==== READY ====" on/off
+       q+/q-  command aliases on/off
+       v+/v-  set the $(OUTPUT) local variable on/off
+       j+/j-  kill process tree on/off
+       f+/f-  console output filter on/off
+       r+/r-  console output replace filter on/off
+       x+/x-  compiler errors highlight filter on/off
+       k0..3  catch NppExec's shortcut keys on/off
+       c<N>   text processing for Execute Clipboard Text
+       s<N>   text processing for Execute Selected Text
+  3. Y0/Y1/Y2  sets the value of the option/mode Y:
+       o0/o1/o2  console output encoding: ANSI/OEM/UTF8
+       i0/i1/i2  console input encoding: ANSI/OEM/UTF8
+  4. --  silent (don't print Console mode info)
+  5. local within the current NppExec's script
+  When "local" is specified, the changes are applied locally to the current
+  NppExec's script and are reverted back when the current script ends.
+EXAMPLES:
+  npe_console o1 i1 a+ --
+    //// OEM/OEM, append mode, silent
+  npe_console h+ m+ a- i0 o0
+    //// history on, int. msgs on, don't append, ANSI/ANSI
+  npe_console d+ k0 q-
+    //// follow curr. dir, don't catch shortcut keys, cmd aliases off
+  npe_console -- v+ m- // silent, enable the $(OUTPUT) var, no int.msgs
+  cmd /c time /t       // cmd prints current time; $(OUTPUT) is set
+  echo $(OUTPUT)       // NppExec prints $(OUTPUT) i.e. current time
+  npe_console -- v- m+ // don't forget to disable the $(OUTPUT) var
+  npe_console local -- v+ m- // has local effect
+REMARKS:
+  a+/a-  Console append mode on/off.
+         There is no corresponding menu item.
+         This option is not saved when you close Notepad++.
+         Default value: off
+         (Console is automatically cleared when new script starts).
+  d+/d-  Follow $(CURRENT_DIRECTORY) on/off.
+         Corresponding menu item: Follow $(CURRENT_DIRECTORY).
+         If On, NppExec follows the directory of current file.
+  e0/e1  ANSI escape sequences: raw/remove.
+         e0: keep raw esc-sequence characters;
+         e1: remove esc-sequence characters.
+         There is no corresponding menu item.
+         This option is saved as "AnsiEscapeSequences".
+         Default value: 0.
+         Note: if a child process is running, NPE_CONSOLE prints the value
+         of this option corresponding to the child process.
+  u+/u-  Pseudoconsole on/off (experimental).
+         When On, the console new line is set to '\r';
+         the input and output encodings are set to UTF-8 (i2, o2);
+         the ANSI escape sequences are set to "remove" (e1).
+         There is no corresponding menu item.
+         This option is saved as "ChildProcess_PseudoConsole".
+         Note: if a child process is running, NPE_CONSOLE prints the value
+         of this option corresponding to the child process.
+  h+/h-  Console commands history on/off.
+         Corresponding menu item: Console Commands History.
+         If On, NppExec's Console remembers the commands you typed.
+  m+/m-  Console internal messages on/off.
+         Corresponding menu item (inverse): No internal messages.
+         If On, NppExec's Console prints all internal (green) messages.
+  n+/n-  Condense empty lines on/off.
+         When On, successive empty lines are condensed into one empty line.
+         There is no corresponding menu item.
+         This option is saved as "CondenseEmptyLines".
+         Default value: on.
+  p+/p-  Print "==== READY ====" on/off.
+         There is no corresponding menu item.
+         This option is saved as "PrintMsgReady".
+         Default value: on.
+  q+/q-  Command aliases on/off.
+         There is no corresponding menu item.
+         This option is not saved when you close Notepad++.
+         Default value: on
+         (command aliases created with NPE_CMDALIAS are active).
+  v+/v-  Set the $(OUTPUT) local variable on/off.
+         (this variable will store the child process'es output).
+         There is no corresponding menu item.
+         This option is not saved when you close Notepad++.
+         Default value: off.
+  j+/j-  Kill process tree on/off.
+         When this option is On, killing a running child process (the one
+         that runs in NppExec's Console) also kills any processes that were
+         started from this running child process.
+         There is no corresponding menu item.
+         This option is saved as "KillProcTree".
+         Default value: off.
+  f+/f-  Console output filter on/off.
+         Corresponding menu item: Console Output Filters...
+  r+/r-  Console output replace filter on/off.
+         Corresponding menu item: Console Output Filters...
+  x+/x-  Compiler errors highlight filter on/off
+         Enables or disables a built-in highlight filter that catches and
+         highlights most of compilers' errors. This filter has lower priority
+         than the user-defined highlight masks.
+         There is no corresponding menu item.
+         This option is saved as "CompilerErrors".
+         Default value: off.
+  k0..3  Catch NppExec's shortcut keys on/off
+         Controls if NppExec's Console catches shortcut keys related
+         to NppExec's menu items or scripts. This allows to execute
+         the corresponding commands from NppExec's Console when the
+         associated shortcut keys are pressed.
+         k0: Do not catch NppExec's shortcut keys;
+         k1: Catch standard NppExec's shortcut keys (Execute... etc.);
+         k2: Catch user's NppExec's shortcut keys (scripts' menu items);
+         k3: Catch all NppExec's shortcut keys (standard+scripts).
+         There is no corresponding menu item.
+         This option is not saved when you close Notepad++.
+         Default value: 3.
+  c<N>   Text processing for Execute Clipboard Text.
+         The value of <N> can be either 0 or a sum of these flags:
+         0:  use the clipboard text as is;
+             if there is a running child process then send the clipboard
+             text to that process as an input;
+         1:  (vs) substitute macro-vars in the clipboard text before the execution
+             if there is no running child process;
+         2:  (vp) substitute macro-vars in the clipboard text before the execution
+             if there is a running child process;
+         4:  (cs) if the first line of the clipboard text is "!collateral" and
+             there is no running child process then start a collateral script;
+         8:  (cp) if the first line of the clipboard text is "!collateral" and
+             there is a running child process then start a collateral script;
+         16: (ne) lines that start with the "nppexec:" prefix will be executed by
+             NppExec (as NppExec's script commands) and will not be sent to
+             a running child process;
+         32: (ls) update the last executed script: Execute Clipboard Text updates
+             the commands that will be executed by Execute Previous NppExec Script;
+         64: (sv) share local variables: Execute Clipboard Text uses and updates
+             the existing local variables instead of its own local variables.
+         There is no corresponding menu item.
+         This option is saved as "ExecClipTextMode".
+         Default value: 60 (4+8+16+32).
+  s<N>   Text processing for Execute Selected Text.
+         The value of <N> can be either 0 or a sum of these flags:
+         0:  use the selected text as is;
+             if there is a running child process then send the selected
+             text to that process as an input;
+         1:  (vs) substitute macro-vars in the selected text before the execution
+             if there is no running child process;
+         2:  (vp) substitute macro-vars in the selected text before the execution
+             if there is a running child process;
+         4:  (cs) if the first line of the selected text is "!collateral" and
+             there is no running child process then start a collateral script;
+         8:  (cp) if the first line of the selected text is "!collateral" and
+             there is a running child process then start a collateral script;
+         16: (ne) lines that start with the "nppexec:" prefix will be executed by
+             NppExec (as NppExec's script commands) and will not be sent to
+             a running child process;
+         32: (ls) update the last executed script: Execute Selected Text updates the
+             commands that will be executed by Execute Previous NppExec Script;
+         64: (sv) share local variables: Execute Selected Text uses and updates
+             the existing local variables instead of its own local variables.
+         There is no corresponding menu item.
+         This option is saved as "ExecSelTextMode".
+         Default value: 60 (4+8+16+32).
+  o0/o1/o2  Console output encoding: ANSI/OEM/UTF8
+            Corresponding menu item: Console Output...
+            Sets Console output encoding.
+            Note: if a child process is running, NPE_CONSOLE prints the value
+            of this option corresponding to the child process.
+  i0/i1/i2  Console input encoding: ANSI/OEM/UTF8
+            Corresponding menu item: Console Output...
+            Sets Console input encoding.
+            Note: if a child process is running, NPE_CONSOLE prints the value
+            of this option corresponding to the child process.
+SEE ALSO:
+  con_filter, npp_console, npe_noemptyvars
+
+------------------------------------------------------------------------------
+COMMAND:  npe_debuglog
+USAGE:
+  npe_debuglog
+  npe_debuglog on
+  npe_debuglog 1
+  npe_debuglog off
+  npe_debuglog 0
+  npe_debuglog local 1/0
+DESCRIPTION:
+  1. Without parameter - shows current Debug Log state (On/Off)
+  2. On or 1 - enables the Debug Log in NppExec's Console
+  3. Off or 0 - disables the Debug Log in NppExec's Console
+  4. local - enables/disables the Debug Log locally
+  When "local" is specified, the changes are applied locally to the current
+  NppExec's script and are reverted back when the current script ends.
+
+------------------------------------------------------------------------------
+COMMAND:  npe_noemptyvars
+USAGE:
+  npe_noemptyvars
+  npe_noemptyvars 1
+  npe_noemptyvars 0
+  npe_noemptyvars local 1/0
+DESCRIPTION:
+  1. Without parameter - shows current option's state
+  2. 1 or On - enables replacement of empty (uninitialized) vars
+  3. 0 or Off - disables replacement of empty (uninitialized) vars
+  4. local - enables/disables empty vars locally
+  When "local" is specified, the changes are applied locally to the current
+  NppExec's script and are reverted back when the current script ends.
+EXAMPLES:
+  unset var            // to be sure that $(var) is uninitialized
+  unset local var      // to be sure that $(var) is uninitialized
+  npe_noemptyvars 0    // disabled
+  echo var = "$(var)"  // prints: var = "$(var)"
+  npe_noemptyvars 1    // enabled
+  echo var = "$(var)"  // prints: var = ""
+  npe_noemptyvars local 1    // enabled locally
+REMARKS:
+  Refer to NppExec.ini, parameter NoEmptyVars in the [Console] section.
+  This option is not saved when you close Notepad++.
+SEE ALSO:
+  set, echo, npe_console
+
+------------------------------------------------------------------------------
+COMMAND:  npe_queue
+USAGE:
+  npe_queue <command>
+  npe_queue +s/-s +v/-v <command>
+DESCRIPTION:
+  Queues a command to be executed after the current NppExec's script is finished.
+  +s - execute the queued command as a separate NppExec's script (default)
+  -s - execute the queued command in the scope of the current NppExec's script
+  +v - use delayed vars substitution (default), e.g. $(x) remains $(x)
+  -v - use instant vars substitution, e.g. $(x) is replaced with its value
+EXAMPLES:
+  // queue each command as a separate script:
+  set X = 10
+  npe_queue set X = 20 // queued: will set X to 20
+  echo $(X) // prints the current value of X, i.e. 10
+  npe_queue echo $(X) // queued: will print the latest value of X, i.e. 20
+  npe_queue -v echo $(X) // queued: will print the current value of X, i.e. 10
+  // queue in the scope of the current script:
+  set X = 10
+  npe_queue -s set X = 20 // queued: will set X to 20
+  echo $(X) // prints the current value of X, i.e. 10
+  npe_queue -s +v echo $(X) // queued: will print the latest value of X, i.e. 20
+  npe_queue -v -s echo $(X) // queued: will print the current value of X, i.e. 10
+  // the order of execution:
+  npe_queue echo 5th
+  npe_queue echo 6th
+  npe_queue -s echo 3rd
+  npe_queue -s echo 4th
+  echo 1st
+  echo 2nd
+  // just a nice script that looks elegant:
+  npp_console local -      // within this script
+  npe_console local -- v+  // within this script
+  cmd /c time /t
+  npe_queue -v -s echo $(OUTPUT)
+  npp_console local +
+  // now something really crazy, just because we _can_ do it:
+  npe_queue npe_queue npe_queue sleep 2000 Let's sleep for 2 seconds...
+  npe_queue -s npe_queue -s npe_queue -s sleep 2000 Let's sleep for 2 seconds...
+REMARKS:
+  The parameters +v/-v and +s/-s can be specified in any order, but always
+  right after "npe_queue" and before the command to be executed. Both the
+  parameters can be omitted.
+  The NPE_QUEUE command can be useful in combination with the "nppexec:" prefix.
+  For example, if cmd.exe is running in NppExec's Console and you realized you
+  want some command to be executed right after the cmd.exe has finished, it can
+  be queued right from the cmd's prompt:
+    nppexec:npe_queue npp_console off
+  This will close the Console right after you have finished to work with the
+  cmd.exe. (Note: as the "nppexec:" prefix tells NppExec to start a collateral
+  script in this case, the usage of "nppexec:npe_queue -s npp_console off"
+  (with "-s") would be equivalent to a simple "nppexec:npp_console off", thus
+  trying to execute it immediately rather than queuing.)
+  The parameter "-v" is necessary when working with local variables. Consider
+  the following examples:
+    // example 1, inside NppExec's script:
+    set local a = 12345
+    npe_queue -v echo $(a)
+    // example 2, in NppExec's Console while some process is running:
+    nppexec:npe_queue -v echo $(pid)
+  In both situations, the variables $(a) and $(pid) are local variables. If the
+  "-v" parameter was not specified, it would mean: print the value of $(a) or
+  $(pid) at the moment of the previous script or process has finished. But, as
+  these variables are local ones, they will not exist at that moment! So, most
+  likely, an empty string will be printed - unless there is another, non-local,
+  variable with the same name.
+  Here is another non-intuitive example: as NPE_QUEUE queues a given command as
+  a separate NppExec's script (without "-s", of course), this script - as any
+  script in NppExec - does not have access to local variables of the invoker.
+  For example, let's type the following commands one by one:
+    set a = 123             // non-local $(a)
+    set local a = abc       // local $(a)
+    echo $(a)               // prints "abc" - local $(a)
+    npe_queue echo $(a)     // separate script: prints "123" - non-local $(a)
+    npe_queue -s echo $(a)  // current script: prints "abc" - local $(a)
+    npe_queue -v echo $(a)  // separate script: prints "abc" - current $(a)
+  Well, I hope you enjoy it :)
+SEE ALSO:
+  npe_cmdalias
+
+------------------------------------------------------------------------------
+COMMAND:  npe_sendmsgbuflen
+USAGE:
+  npe_sendmsgbuflen <max_length>
+  npe_sendmsgbuflen local <max_length>
+DESCRIPTION:
+  Sets npp_sendmsg/sci_sendmsg's maximum buffer length
+  When "local" is specified, the changes are applied locally to the current
+  NppExec's script and are reverted back when the current script ends.
+EXAMPLES:
+  npe_sendmsgbuflen  // current buffer length
+  npe_sendmsgbuflen 1048576  // 1 MB
+  npe_sendmsgbuflen 8M  // 8 MB
+  npe_sendmsgbuflen local 4M  // 4 MB locally
+REMARKS:
+  If the specified value is less than 65536, NppExec sets it to 65536.
+  This value is not saved when Notepad++ exits.
+  To set this value permanently, refer to "NppExec_TechInfo.txt".
+SEE ALSO:
+  npp_sendmsg, npp_sendmsgex, sci_sendmsg
+
+------------------------------------------------------------------------------
+COMMAND:  sel_loadfrom
+USAGE:
+  sel_loadfrom <file>
+DESCRIPTION:
+  Replaces currently selected text with the file's content
+EXAMPLES:
+  sel_loadfrom c:\temp\output.txt
+REMARKS:
+  NppExec can read ANSI, UTF-8, UCS-2 LE and UCS-2 BE text files.
+  The text loaded from the file is converted to the current Scintialla's
+  encoding.
+SEE ALSO:
+  sel_saveto, sel_settext, text_loadfrom
+
+------------------------------------------------------------------------------
+COMMAND:  sel_saveto
+USAGE:
+  sel_saveto <file>
+  sel_saveto <file> : <encoding>
+DESCRIPTION:
+  1. Saves the selected text (in its current encoding) to a file
+  2. Saves the selected text (converted to specified encoding) to a file
+     <encoding> may be:  a (ANSI), u (UTF-8), w (UCS-2 LE)
+EXAMPLES:
+  sel_saveto c:\temp\output.txt // may be ANSI, UTF-8 or DBCS file
+  sel_saveto c:\temp\outputANSI.txt :a     // save as ANSI file
+  sel_saveto c:\temp\outputUTF8.txt :u     // save as UTF-8 (with BOM) file
+  sel_saveto c:\temp\outputUTF8.txt :u+    // save as UTF-8 (with BOM) file
+  sel_saveto c:\temp\outputUTF8.txt :u-    // save as UTF-8 (without BOM) file
+  sel_saveto c:\temp\outputUnicode.txt :w  // save as UCS-2 LE (with BOM) file
+REMARKS:
+  SEL_SAVETO with the <encoding> parameter omitted saves the text in the
+  Scintilla's current encoding (it can be ANSI, DBCS or UTF-8).
+  So, if you want to save the text as UCS-2 LE (Unicode in Windows), you
+  must specify the ":w" parameter.
+SEE ALSO:
+  sel_loadfrom, sel_settext, text_saveto
+
+------------------------------------------------------------------------------
+COMMAND:  sel_settext, sel_settext+
+USAGE:
+  sel_settext <text>
+  sel_settext+ <text>
+DESCRIPTION:
+  Replaces currently selected text with the text specified
+EXAMPLES:
+  sel_settext This text has replaced the previously selected text
+  sel_settext $(INPUT)   // see: inputbox
+  sel_settext $(OUTPUT)  // see: npe_console v+
+  sel_settext $(SYS.PATH)
+  sel_settext+ A text with new line:\r\nnew line
+REMARKS:
+  Use sel_settext+ to insert special characters:
+  \n  - line feed (LF) character;
+  \r  - carriage return (CR) character;
+  \t  - tabulation character;
+  \\  - \;  \\n - \n;  \\t - \t.
+  To replace the entire text rather than the selected text, use
+  the following script:
+    // 1. disabling redrawing
+    sci_sendmsg 0x000B 0 // WM_SETREDRAW FALSE
+    // 2. selecting all the text
+    sci_sendmsg SCI_SELECTALL
+    // 3. enabling redrawing
+    sci_sendmsg 0x000B 1 // WM_SETREDRAW TRUE
+    // 4. replacing the text
+    sel_settext ...
+SEE ALSO:
+  sel_loadfrom, sel_saveto
+
+------------------------------------------------------------------------------
+COMMAND:  text_loadfrom
+USAGE:
+  text_loadfrom <file>
+DESCRIPTION:
+  Replaces the entire text with the file's content
+EXAMPLES:
+  text_loadfrom c:\temp\output.txt
+REMARKS:
+  NppExec can read ANSI, UTF-8, UCS-2 LE and UCS-2 BE text files.
+  The text loaded from the file is converted to the current Scintialla's
+  encoding.
+SEE ALSO:
+  text_saveto, sel_loadfrom
+
+------------------------------------------------------------------------------
+COMMAND:  text_saveto
+USAGE:
+  text_saveto <file>
+  text_saveto <file> : <encoding>
+DESCRIPTION:
+  1. Saves the entire text (in its current encoding) to a file
+  2. Saves the entire text (converted to specified encoding) to a file
+     <encoding> may be:  a (ANSI), u (UTF-8), w (UCS-2 LE)
+EXAMPLES:
+  text_saveto c:\temp\output.txt // may be ANSI, UTF-8 or DBCS file
+  text_saveto c:\temp\outputANSI.txt :a    // save as ANSI file
+  text_saveto c:\temp\outputUTF8.txt :u    // save as UTF-8 (with BOM) file
+  text_saveto c:\temp\outputUTF8.txt :u+   // save as UTF-8 (with BOM) file
+  text_saveto c:\temp\outputUTF8.txt :u-   // save as UTF-8 (without BOM) file
+  text_saveto c:\temp\outputUnicode.txt :w // save as UCS-2 LE (with BOM) file
+REMARKS:
+  TEXT_SAVETO with the <encoding> parameter omitted saves the text in the
+  Scintilla's current encoding (it can be ANSI, DBCS or UTF-8).
+  So, if you want to save the text as UCS-2 LE (Unicode in Windows), you
+  must specify the ":w" parameter.
+SEE ALSO:
+  text_loadfrom, sel_saveto
+
+------------------------------------------------------------------------------
+COMMAND:  clip_settext
+USAGE:
+  clip_settext <text>
+DESCRIPTION:
+  Sets the Clipboard text
+EXAMPLES:
+  echo Text in the Clipboard (was): $(CLIPBOARD_TEXT)
+  clip_settext This is the new Clipboard text
+  echo Text in the Clipboard (now): $(CLIPBOARD_TEXT)
+
+------------------------------------------------------------------------------
+COMMAND:  if
+USAGE:
+  1. if <condition> goto <label>
+  2. if <condition> then
+       ...
+     endif
+  3. if <condition> then
+       ...
+     else
+       ...
+     endif
+  4. if <condition1> then
+       ...
+     else if <condition2> then
+       ...
+     else
+       ...
+     endif
+  5. if <condition1> goto <label1>
+     else if <condition2> goto <label2>
+     else
+       ...
+     endif
+DESCRIPTION:
+  If the condition is true, jumps to the specified label.
+  If the condition is false, proceeds to the next line.
+  * If the specified label can not be found within the current script,
+  this command reports an error and proceeds to the next line.
+  ** You should always place "if" and "goto" on the same line.
+  Available conditions:
+  a == b  - equal:             1 == 1, "Ab" == "Ab"
+  a = b   - equal:             2 = 2,  "Aa" = "Aa"
+  a != b  - not equal:         1 != 2, "Ab" != "AB"
+  a <> b  - not equal:         1 <> 2, "Aa" <> "A"
+  a > b   - greater:           2 > 1,  "Ab" > "Aa"
+  a < b   - less:             -2 < 1,  "a" < "ab"
+  a >= b  - greater or equal:  0 >= 0, "AB" >= "AA"
+  a <= b  - less or equal:     1 <= 2, "A" <= "AA"
+  a ~= b  - equal no case:     "AA" ~= "aa"
+  * You can use variables and constants as the operands:
+    "if $(var1) == $(var2) goto EqualVars"
+    "if $(var) != 10 goto NotEqualTo10"
+    "if ABC < $(var) goto GreaterThanABC"
+  ** Each condition always expects two operands: the left one and the
+  right one. Thus, "if $(var) goto Label" is not valid - you should
+  specify either "if $(var) != 0 goto Label" for a number or
+  "if "$(var)" != "" goto Label" for a string.
+  *** If both operands are decimal numbers, a numeric comparison is
+  used. Otherwise the operands are compared as strings.
+  Thus, -2 < -1 (decimal numbers) and "-2" > "-1" (strings).
+  **** No additional calculations are performed during the comparison.
+  Thus, "if 3 == 1 + 2 goto Label" is not a valid numeric comparison
+  because "1 + 2" is not calculated and remains as is, so the string
+  comparison is used in this case ("3" is compared with "1 + 2").
+  All the calculations should be performed in advance - or use IF~ .
+  ***** Notice the usage of double quotes and spaces between the
+  operands while comparing strings that contain '>', '<' and so on:
+    if "1 >" < "2" goto Label1  // "1 >" vs. "2"
+    if "1" > "< 2" goto Label2  // "1" vs. "< 2"
+  ****** Nested conditions are supported.
+  ******* The keyword "then" can be omitted.
+EXAMPLES:
+  ////////////////////////
+  // Example 1:
+  // emulating "for (i = 1; i <= 10; i += 1) { cout << i << endl; }"
+  set local i ~ 1          // initialization: "i = 1"
+  :for_i                   // start of the cycle
+  echo $(i)                // the cycle body: "cout << i << endl;"
+  set local i ~ $(i) + 1   // iteration: "i += 1"
+  if $(i) <= 10 goto for_i // condition: "i <= 10"
+  // - equivalent to "i = 1; do { cout << i << endl; i += 1; } while (i <= 10);"
+  ////////////////////////
+  // Example 2:
+  // compare N leading characters of S1 with N trailing characters of S2
+  set local S1 = extension  // input: S1
+  set local S2 = some text  // input: S2
+  set local N = 3           // initialization: N
+  set local sub1 ~ substr 0 $(N) $(S1)   // get N leading characters of S1
+  set local sub2 ~ substr -$(N) - $(S2)  // get N trailing characters of S2
+  if "$(sub1)" == "$(sub2)" then
+    echo substrings are equal: "$(sub1)" == "$(sub2)"
+  else
+    echo substrings are not equal: "$(sub1)" != "$(sub2)"
+  endif
+  ////////////////////////
+  // Example 3:
+  // emulating "IF 1 <= x AND x < 5"
+  if 1 > $(x) goto @If_End  // opposite to 1 <= x
+  if $(x) >= 5 goto @If_End // opposite to x < 5
+  :@If_True
+  // the condition is true, do something...
+  echo True: 1 <= x < 5
+  :@If_End
+  ////////////////////////
+  // Example 4:
+  // emulating "IF s == 'ABC' OR s == 'DEF' THEN ... ELSE ..."
+  if "$(s)" == "ABC" goto @If_True
+  if "$(s)" == "DEF" goto @If_True
+  else
+    // the condition is false, do something...
+    echo False: s is neither "ABC" nor "DEF"
+  endif
+  goto @If_End
+  :@If_True
+  // the condition is true, do something...
+  echo True: s is either "ABC" or "DEF"
+  :@If_End
+  ////////////////////////
+  // Example 5:
+  // nested conditions
+  set local x = 0
+  set local y = 1
+  if $(x) == 0 then
+    echo x is 0
+    if $(y) == 0 then
+      echo y is 0
+    else
+      echo y is not 0
+    endif
+  else
+    echo x is not 0
+  endif
+REMARKS:
+  As you can see, different IF-GOTO constructions in combination with
+  another GOTOs and LABELs can serve as IF-ELSE, FOR and WHILE.
+  This allows to apply more-or-less complicated conditional logic
+  inside NppExec's scripts.
+SEE ALSO:
+  if~, else, endif, goto, label, set
+
+------------------------------------------------------------------------------
+COMMAND:  if~
+USAGE:
+  1. if~ <condition> goto <label>
+  2. if~ <condition> then
+       ...
+     endif
+  3. if~ <condition> then
+       ...
+     else
+       ...
+     endif
+  4. if~ <condition1> then
+       ...
+     else if~ <condition2> then
+       ...
+     else
+       ...
+     endif
+  5. if~ <condition1> goto <label1>
+     else if~ <condition2> goto <label2>
+     else
+       ...
+     endif
+DESCRIPTION:
+  First calculates the operands mathematically, then checks the condition.
+  If the condition is true, jumps to the specified label.
+  If the condition is false, proceeds to the next line.
+  * If the specified label can not be found within the current script,
+  this command reports an error and proceeds to the next line.
+  ** You should always place "if" and "goto" on the same line.
+  Available conditions:
+  a == b  - equal:             1 == 1,  NPPMSG == WM_USER + 1000
+  a = b   - equal:             2 = 2,   $(x) + 5 = $(x) + 5
+  a != b  - not equal:         1 != 2,  $(x) + 1 != sin($(y))
+  a <> b  - not equal:         1 <> 2,  NPPMSG <> pi
+  a > b   - greater:           2 > 1,   $(x) + 1 > 1
+  a < b   - less:             -2 < 1,   $(x) - 10 < $(x) - 5
+  a >= b  - greater or equal:  0 >= 0,  $(x) + 0 >= $(x)
+  a <= b  - less or equal:     1 <= 2,  $(x) - 2 <= $(y) - 2
+REMARKS:
+  IF~ deals only with numbers and numeric calculations.
+  (Unlike ECHO~, IF~ does not support string expressions
+  such as strlen, strupper etc. for performance reasons).
+  A string operand will cause a syntax error.
+SEE ALSO:
+  if, else, endif, goto, label, set, echo~
+
+------------------------------------------------------------------------------
+COMMAND:  label, :
+USAGE:
+  label <LabelName>
+  label :<LabelName>
+  :<LabelName>
+DESCRIPTION:
+  Declares a label within the current script.
+  You can jump to a label using the GOTO command.
+EXAMPLES:
+  :Label1
+  label MyLabelB
+  :C
+  label 4
+  label :4  // equal to label 4
+REMARKS:
+  You can give any name to your label. Leading and trailing spaces are
+  ignored. Leading ':' is ignored (i.e. LABEL X is the same as LABEL :X).
+  Each label "lives" within a script where it is declared. You can not
+  jump to a label located inside another script - either outer or inner
+  one. (And this is the difference between labels and variables: each
+  script has its own set of labels which are not shared between scripts,
+  whereas any declared variable is visible and exists everywhere - unless
+  it is a local variable, of course.)
+  Thus, you can declare labels with the same names inside different
+  scripts (but not within one script). E.g. you may have labels named
+  A, B and C inside SomeScript1 and the same label names A, B and C
+  inside SomeScript2 - and these labels are different because they
+  "exist" in different scripts, even if SomeScript1 then uses
+  NPP_EXEC to execute SomeScript2 or vice versa.
+SEE ALSO:
+  goto, if, if~
+
+------------------------------------------------------------------------------
+COMMAND:  goto
+USAGE:
+  goto <LabelName>
+  goto :<LabelName>
+DESCRIPTION:
+  Jumps to the label
+EXAMPLES:
+  ////////////////////////
+  // Theoretical example:
+  // Pure GOTOs with short label names
+  goto 1
+  :2
+  goto 3
+  :1
+  goto 2
+  :3
+  ////////////////////////
+  // The very same example,
+  // using short label names with preceding ':'
+  goto :1
+  :2
+  goto :3
+  :1
+  goto :2
+  :3
+  ////////////////////////
+  // Theoretical example:
+  // Endless cycle with neat label name...
+  :Neat Label Name
+  goto Neat Label Name
+  // ...now you can either wait until the number of executed GOTOs
+  // exceeds the value of GoTo_MaxCount - or just close the Console.
+  // When the Console is closed, the script execution is stopped.
+  ////////////////////////
+  // Practical example:
+  // IF-GOTO
+  if "$(a)" == "" goto @a_is_empty
+  echo a is not empty: a=$(a)
+  goto done
+  :@a_is_empty
+  echo a is empty
+  :done
+REMARKS:
+  You can give any name to your label. Leading and trailing spaces are
+  ignored. Leading ':' is ignored (i.e. GOTO X is the same as GOTO :X).
+  Each label "lives" within a script where it is declared. You can not
+  jump to a label located inside another script - either outer or inner
+  one. (And this is the difference between labels and variables: each
+  script has its own set of labels which are not shared between scripts,
+  whereas any declared variable is visible and exists everywhere - unless
+  it is a local variable, of course.)
+SEE ALSO:
+  label, if, if~, exit
+
+------------------------------------------------------------------------------
+COMMAND:  else
+USAGE:
+  if <condition>
+    ...
+  else if <condition>
+    ...
+  else
+    ...
+  endif
+DESCRIPTION:
+  Implements IF ... ELSE ... ENDIF
+  or         IF ... ELSE IF ... ENDIF
+  or         IF ... ELSE IF ... ELSE ... ENDIF
+  or         IF ... ELSE IF ... ELSE IF ... ENDIF
+  and similar constructions.
+EXAMPLES:
+  see: if
+SEE ALSO:
+  if, if~, endif
+
+------------------------------------------------------------------------------
+COMMAND:  endif
+USAGE:
+  if <condition>
+    ...
+  endif
+DESCRIPTION:
+  The end of the IF ... ENDIF construction.
+EXAMPLES:
+  see: if, else
+SEE ALSO:
+  if, if~, else
+
+------------------------------------------------------------------------------
+COMMAND:  exit
+USAGE:
+  exit
+  exit 0
+  exit -1
+DESCRIPTION:
+  Exits (aborts) the current NppExec's script.
+  The 'exit' and 'exit 0' mean "soft exit": when such command is located in
+  NppExec's script being NPP_EXEC-ed, it aborts only this NPP_EXEC-ed script.
+  The 'exit -1' means "hard exit": when this command is located in NppExec's
+  script being NPP_EXEC-ed, it aborts the root script.
+EXAMPLES:
+  // To illustrate the difference between "soft" and "hard" exit,
+  // let's look at the following 2 scripts:
+  //
+  // :: This is Script-1 ::
+  echo Script-1 : before Script-2
+  npp_exec "Script-2"
+  echo Script-1 : after Script-2
+  //
+  // :: This is Script-2 ::
+  echo Script-2 : before 'exit'
+  exit  // "soft" exit
+  echo Script-2 : after 'exit'
+  //
+  // Now let's run the Script-1.
+  // It prints:
+  //   Script-1 : before Script-2
+  //   Script-2 : before 'exit'
+  //   Script-1 : after Script-2
+  // i.e. only the Script-2 exited, whereas the Script-1 continued.
+  // Now let's modify the Script-2 to use the exit type of -1:
+  //
+  // :: This is Script-2 ::
+  echo Script-2 : before 'exit'
+  exit -1  // "hard" exit
+  echo Script-2 : after 'exit'
+  //
+  // Now let's run the Script-1.
+  // It prints:
+  //   Script-1 : before Script-2
+  //   Script-2 : before 'exit'
+  // and that's all.
+  // I.e. the 'exit -1' has aborted the Script-1 as well.
+  //
+  // Usage example:
+  set local error = Some error
+  if "$(error)" != ""
+    messagebox "$(error)" :: err
+    exit
+  endif
+  echo There was no error, continuing...
+SEE ALSO:
+  goto, if, if~
+
+------------------------------------------------------------------------------
+COMMAND:  proc_input
+USAGE:
+  proc_input <string>
+DESCRIPTION:
+  Sends a given string to the running process.
+  The string can be single-line or multi-line.
+EXAMPLES:
+  proc_input $(SELECTED_TEXT)  // sends selected text to the process
+  proc_input $(CLIPBOARD_TEXT) // sends clipboard text to the process
+  set local s ~ strunescape echo 123\necho 456
+  proc_input $(s)
+  proc_input exit
+SEE ALSO:
+  proc_signal, @exit_cmd ("help @exit_cmd"), npp_console
+
+------------------------------------------------------------------------------
+COMMAND:  proc_signal
+USAGE:
+  proc_signal <signal>
+  proc_signal <signal> <timeout>
+DESCRIPTION:
+  proc_signal ctrl-c        // sends Ctrl-C to the process
+  proc_signal ctrl-break    // sends Ctrl-Break to the process
+  proc_signal wm_close      // sends WM_CLOSE to the process
+  proc_signal wm_close 1000 // wait for reaction during 1000 ms
+EXAMPLES:
+  proc_signal CtrlC                 // sends Ctrl-C
+  proc_signal Ctrl-C Ctrl-Break     // sends Ctrl-C, then Ctrl-Break
+  proc_signal ctrl-break wm_close   // sends Ctrl-Break, then WM_CLOSE
+  proc_signal ctrlbreak wmclose 500 // Ctrl-Break, waits 500 ms, WM_CLOSE
+REMARKS:
+  This command is expected to be sent while a child console process is running
+  in NppExec's Console. So the usual syntax of this command will be:
+    nppexec:proc_signal <signal>
+  Also this command can be combined with $(@exit_cmd), e.g. to break the child
+  process automatically when NppExec's Console is closed (and when the child
+  process can not be finished by some regular exit command):
+    nppexec:set local @exit_cmd = nppexec:proc_signal CtrlC WMCLOSE
+    // now close the NppExec's Console - or type:
+    nppexec:npp_console off
+  This latest example actually has a similar effect as the following one:
+    nppexec:set local @exit_cmd = nppexec:taskkill /pid $(PID)
+  Anyway, it's recommended to use an exit command (such as "exit" for cmd and
+  "exit()" for python) whenever possible to let the process exit normally.
+SEE ALSO:
+  proc_input, @exit_cmd ("help @exit_cmd"), npp_console
+
+------------------------------------------------------------------------------
+COMMAND:  sleep
+USAGE:
+  sleep <ms>
+  sleep <ms> <text>
+DESCRIPTION:
+  Sleeps during <ms> milliseconds.
+  If the <text> parameter is specified, it is printed first.
+EXAMPLES:
+  // without the text:
+  sleep 1000 // sleeps during 1 second
+  // with the text:
+  set local t = 2500
+  sleep $(t) "Sleeping during $(t) milliseconds..."
+REMARKS:
+  It is not necessary to use quotes for the <text> parameter as this command
+  expects either 1 or 2 parameters, not more.
+SEE ALSO:
+  echo, set
+
+------------------------------------------------------------------------------
+VARIABLE:  @exit_cmd / @exit_cmd_silent
+USAGE:
+  set @exit_cmd = exit // sets the child process'es exit command
+  set @exit_cmd_silent = exit // sets the child process'es silent exit command
+DESCRIPTION:
+  When NppExec's Console is being closed or another NppExec's script is about
+  to start while a child console process is running in NppExec's Console, the
+  specified exit command is sent to the running process automatically.
+  The exit command is expected to finish the process normally - otherwise, if
+  the process does not finish, the Console won't close.
+  In case of @exit_cmd, the exit command is printed in the Console.
+  In case of @exit_cmd_silent, the exit command is not printed in the Console.
+  Note: the Console can be closed either manually (by clicking the "x" button)
+  or programmatically (via "npp_console off").
+EXAMPLES:
+  set local @exit_cmd = exit // the exit command is "exit"
+  cmd // running the cmd.exe
+  // now close the Console - "exit" will be sent to the cmd.exe automatically
+REMARKS:
+  An exit command is specific to a running process. For example, it is "exit"
+  for cmd, and it is "exit()" for python. A proper exit command is a recommended
+  way to finish a process.
+  It is also possible to specify an exit command that will kill the running
+  process rather than finish it normally. This is not recommended! Anyway,
+  here is an example. It also demonstrates a delayed substitution of $(PID):
+    set +v local @exit_cmd = nppexec:taskkill /PID $(PID)
+  It is possible to close NppExec's Console by typing "npp_console off" in it.
+  Even when a child console process (such as "cmd" or "python -u -i") is running
+  and waiting for the input, the Console can be closed by typing:
+    nppexec:npp_console off
+SEE ALSO:
+  set, proc_signal, npp_console
+

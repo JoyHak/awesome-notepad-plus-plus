@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<NotepadPlus>
+	<functionList>
+		<!-- ======================================================== [ AHK ] -->
+		<!-- AHK - AutoHotKey Language                -->
+
+		<parser id="ahk_function" displayName="AHK" commentExpr="((?<=[\s]);.*?$)">
+			<function
+				mainExpr="\/\*\s*\n?((?:(?=.*\|).*?\n?)*?)\*\/|(^[ \t]*#HotIf\s+\w*\(.*\))|(^[ \t]*([\w#!^+&<>*~$]+)\s*\([^)]*\)\s*\{)">
+				<functionName>
+					<nameExpr expr="\|.*\w*|#HotIf\s+\w*\(.*\)|(^[ \t]*([\w#!^+&<>*~$]+)\s*\([^)]*\)\s*\{)"/>
+				</functionName>
+			</function>
+		</parser>
+	</functionList>
+</NotepadPlus>

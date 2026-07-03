@@ -1,0 +1,56 @@
+:: Assembly script for 4dos v8.0 by Rafaello
+:: https://github.com/JoyHak
+:: GPL-3.0 license
+@echo off
+
+:: ARGUMENTS ORDER
+:: Dirs can contain spaces; file name CANNOT CONTAINT SPACES!
+set TASM_DIR=%1
+set CUR_DIR=%2
+set NAME=%3
+
+::-----------------------------------------------------------------------------------------------------
+
+:: PREPARATIONS
+:: Some commands uses: /S(ilent) /Q(uiet) /E(rror suppress)
+:: Some commands support only one type of arg. separator  /  or  -
+
+:: Working dir with .asm
+mount -q F %CUR_DIR%
+F:
+
+set SUB_DIR=\exe
+if not direxist %SUB_DIR% mkdir %SUB_DIR%
+chdir %SUB_DIR%
+del /q /e %NAME%.*
+
+::-----------------------------------------------------------------------------------------------------
+
+:: ASSEMBLY
+mount -q T %TASM_DIR%
+
+:: Try to create the .obj until it appears or the counter completes
+do 3
+    :: Silent; show errors; set WarningLevel 2; set Passes 4 (for reliability)
+	T:\tasm.exe /l /t /z /w2 /m4 F:\%NAME%.asm || exit
+	if exist %NAME%.obj leave
+
+    :: Wait and retry
+	echo Retrying to open the OBJ...
+	sleep 1 /s
+enddo
+
+:: Try to create the .exe until it appears or the counter completes
+do 3
+	T:\tlink.exe %NAME%.obj || exit 
+	if exist %NAME%.exe leave
+
+    :: Wait and retry
+	echo Retrying to open the EXE...
+	sleep 1 /s
+enddo
+
+if not exist %NAME%.exe exit
+
+echo. 
+echo Successfully assembled

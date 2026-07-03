@@ -1,0 +1,16 @@
+@echo off
+
+:: ARGUMENTS ORDER
+:: Dirs can contain spaces; file name CANNOT CONTAINT SPACES!
+set TASM_DIR=%1
+set CUR_DIR=%2
+set NAME=%3
+
+mount -q T %TASM_DIR%
+mount -q F %CUR_DIR%
+F:
+
+set SUB_DIR=\exe
+if not direxist %SUB_DIR% echo Error: compile the "%NAME%.asm" first! && exit
+chdir %SUB_DIR%
+cls

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<NotepadPlus>
+	<functionList>
+		<!-- ======================================================== [ NSS ] -->
+		<!-- NilesoftShell -->
+		<parser id="ahk_function" displayName="AHK" commentExpr="((?<=[\s]);.*?$)">
+			<function
+				mainExpr="\/\*\s*\n?((?:(?=.*\|).*?\n?)*?)\*\/|menu\s*?\(\n*[\s\t]*title.*?\n*?\)[\s\t]*?\{|settings[\s\t]*\{|exclude[\s\t]*\{|tip[\s\t]*\{|modify[\s\t]*\{|new[\s\t]*\{">
+				<functionName>
+					<nameExpr expr="\|.*\w*|title.*=.*|settings[\s\t]*\{|exclude[\s\t]*\{|tip[\s\t]*\{|modify[\s\t]*\{|new[\s\t]*\{"/>
+				</functionName>
+			</function>
+		</parser>
+	</functionList>
+</NotepadPlus>

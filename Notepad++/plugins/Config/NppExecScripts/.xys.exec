@@ -1,0 +1,43 @@
+// Lang specific console syntax highlighting
+set hComplete = *omplete*
+set hSuccess = *uccess*
+set hCritical = * not *
+set hFail = *Fail*
+set hFatal = *atal*
+set hError = *rror*
+set hWarn = *Warn*
+set hAlert = *es:*
+set hLog = *opyright*
+set hMsg = *init*
+CON_FILTER +h1 +h2 +h3 +h4 +h5 +h6 +h7 +h8 +h9 +h10
+NPE_CONSOLE local -- v+
+
+set local NEW_INSTANCE =
+set local SCRIPT = load '$(FULL_CURRENT_PATH)'
+cd "C:\Program Files (x86)\XYplorer"
+goto $(ARGV)
+
+:-debug
+    echo Enabling step mode...
+    set local STEP_MODE = #750
+    
+    // wait until the debug window closes
+    cmd /c start /wait xyplorer.exe /feed="::$(STEP_MODE); $(SCRIPT);"
+    
+    // regardless of user actions turn off step mode
+    NPP_RUN xyplorer.exe /feed="::$(STEP_MODE);"
+    exit
+
+:-run
+    NPP_RUN xyplorer.exe /feed="::$(SCRIPT);"
+    echo $(SCRIPT)
+    exit
+    
+:-compile-run   
+    echo Resetting caching... 
+    set local NEW_INSTANCE = /new
+    
+    :-compile
+        echo The script will run from the cache
+        echo $(SCRIPT)
+        NPP_RUN xyplorer.exe $(NEW_INSTANCE) /script="::$(SCRIPT),, 'fc';"      
