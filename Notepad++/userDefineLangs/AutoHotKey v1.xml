@@ -3,9 +3,9 @@
 	Use in pair with EnhanceAnyLexer plugin
 -->
 <NotepadPlus>
-    <UserLang name="Autohotkey" ext="ahk AHK ahk2" udlVersion="2.1">
+    <UserLang name="Autohotkey v1 (old)" ext="ahk1 ah" udlVersion="2.1">
         <Settings>
-            <Global caseIgnored="yes" allowFoldOfComments="yes" foldCompact="yes" forcePureLC="0" decimalSeparator="2" />
+            <Global caseIgnored="yes" allowFoldOfComments="yes" foldCompact="yes" forcePureLC="0" decimalSeparator="0" />
             <Prefix Keywords1="no" Keywords2="no" Keywords3="no" Keywords4="no" Keywords5="no" Keywords6="no" Keywords7="no" Keywords8="yes" />
         </Settings>
         <KeywordLists>
@@ -55,9 +55,9 @@
             <WordsStyle name="FOLDER IN CODE1" fgColor="A80259" bgColor="1E1E21" colorStyle="1" fontName="JetBrains Mono" fontStyle="0" nesting="0" />
             <WordsStyle name="FOLDER IN CODE2" fgColor="F10381" bgColor="1E1E21" colorStyle="1" fontName="JetBrains Mono" fontStyle="0" nesting="0" />
             <WordsStyle name="FOLDER IN COMMENT" fgColor="000000" bgColor="1E1E21" colorStyle="1" fontName="JetBrains Mono" fontStyle="0" nesting="0" />
-            <WordsStyle name="DELIMITERS1" fgColor="3DCC35" bgColor="1E1E21" colorStyle="1" fontName="JetBrains Mono" fontStyle="0" nesting="16973828" />
+            <WordsStyle name="DELIMITERS1" fgColor="3DCC35" bgColor="1E1E21" colorStyle="1" fontName="JetBrains Mono" fontStyle="0" nesting="16973824" />
             <WordsStyle name="DELIMITERS2" fgColor="FEA54B" bgColor="1E1E21" colorStyle="1" fontName="JetBrains Mono" fontStyle="0" nesting="50331653" />
-            <WordsStyle name="DELIMITERS3" fgColor="3DCC35" bgColor="1E1E21" fontName="JetBrains Mono" fontStyle="0" nesting="16973825" />
+            <WordsStyle name="DELIMITERS3" fgColor="3DCC35" bgColor="1E1E21" fontName="JetBrains Mono" fontStyle="0" nesting="16973824" />
             <WordsStyle name="DELIMITERS4" fgColor="FF8040" bgColor="1E1E21" colorStyle="1" fontName="JetBrains Mono" fontStyle="0" nesting="50331653" />
             <WordsStyle name="DELIMITERS5" fgColor="BB0000" bgColor="1E1E21" fontName="JetBrains Mono" fontStyle="0" nesting="117701632" />
             <WordsStyle name="DELIMITERS6" fgColor="000000" bgColor="1E1E21" fontName="JetBrains Mono" fontStyle="0" nesting="0" />
