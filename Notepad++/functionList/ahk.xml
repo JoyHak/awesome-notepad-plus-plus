@@ -6,9 +6,9 @@
 
 		<parser id="ahk_function" displayName="AHK" commentExpr="((?<=[\s]);.*?$)">
 			<function
-				mainExpr="\/\*\s*\n?((?:(?=.*\|).*?\n?)*?)\*\/|(^[ \t]*#HotIf\s+\w*\(.*\))|(^[ \t]*([\w#!^+&<>*~$]+)\s*\([^)]*\)\s*\{)">
+				mainExpr="\/\*\s*\n?((?:(?=.*\|).*?\n?)*?)\*\/|(^[ \t]*#HotIf\s+\w*\(.*\))|(^[ \t]*([\w#!^+&<>*~$]+)\([^)]*\)[ \t]*\{)">
 				<functionName>
-					<nameExpr expr="\|.*\w*|#HotIf\s+\w*\(.*\)|(^[ \t]*([\w#!^+&<>*~$]+)\s*\([^)]*\)\s*\{)"/>
+					<nameExpr expr="\|.*\w*|#HotIf\s+\w*\(.*\)|(^[ \t]*([\w#!^+&<>*~$]+)\([^)]*\)[ \t]\{)"/>
 				</functionName>
 			</function>
 		</parser>
