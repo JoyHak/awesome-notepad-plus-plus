@@ -2998,6 +2998,30 @@ ItemName:
                <Param name="[OmitChars]"/>
             </Overload>
         </KeyWord>
+        <KeyWord name="LTrim" func="no">
+            <Overload retVal="" descr="Continuation section option: Omits all spaces and tabs at the beginning of each line. This is usually unnecessary because of the default smart behaviour.">
+            </Overload>
+        </KeyWord>
+        <KeyWord name="LTrim0" func="no">
+            <Overload retVal="" descr="Continuation section option: Turns off the omission of spaces and tabs from the beginning of each line.">
+            </Overload>
+        </KeyWord>
+        <KeyWord name="RTrim0" func="no">
+            <Overload retVal="" descr="Continuation section option: Turns off the omission of spaces and tabs from the end of each line.">
+            </Overload>
+        </KeyWord>
+        <KeyWord name="Comment" func="no">
+            <Overload retVal="" descr="Continuation section option: Allows semicolon comments inside the continuation section (but not /*..*/). Such comments (along with any spaces and tabs to their left) are entirely omitted from the joined result rather than being treated as literal text. Each comment can appear to the right of a line or on a new line by itself.">
+            </Overload>
+        </KeyWord>
+        <KeyWord name="Comments" func="no">
+            <Overload retVal="" descr="Continuation section option: Allows semicolon comments inside the continuation section (but not /*..*/). Such comments (along with any spaces and tabs to their left) are entirely omitted from the joined result rather than being treated as literal text. Each comment can appear to the right of a line or on a new line by itself.">
+            </Overload>
+        </KeyWord>
+        <KeyWord name="Join" func="no">
+            <Overload retVal="" descr="Continuation section option: Specifies how lines should be connected together. If this option is not used, each line except the last will be followed by a linefeed character (`n). If String is omitted, lines are connected directly to each other without any characters in between.">
+            </Overload>
+        </KeyWord>
         <KeyWord name="Max" func="yes">
             <Overload retVal="{Number}" descr="Returns the highest number from a set of numbers.">
                <Param name="Number1"/>
