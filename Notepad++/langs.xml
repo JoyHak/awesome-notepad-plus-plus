@@ -502,7 +502,6 @@
             <Keywords name="type4"></Keywords>
             <Keywords name="type5"></Keywords>
         </Language>
-        <Language name="registry" ext="reg" commentLine=";;" commentStart="" commentEnd=""/>
         <Language name="rc" ext="rc" commentLine="//" commentStart="/*" commentEnd="*/">
             <Keywords name="instre1">ACCELERATORS ALT AUTO3STATE AUTOCHECKBOX AUTORADIOBUTTON BEGIN BITMAP BLOCK BUTTON CAPTION CHARACTERISTICS CHECKBOX CLASS COMBOBOX CONTROL CTEXT CURSOR DEFPUSHBUTTON DIALOG DIALOGEX DISCARDABLE EDITTEXT END EXSTYLE FONT GROUPBOX ICON LANGUAGE LISTBOX LTEXT MENU MENUEX MENUITEM MESSAGETABLE POPUP PUSHBUTTON RADIOBUTTON RCDATA RTEXT SCROLLBAR SEPARATOR SHIFT STATE3 STRINGTABLE STYLE TEXTINCLUDE VALUE VERSION VERSIONINFO VIRTKEY</Keywords>
             <Keywords name="substyle1"></Keywords>
