@@ -4,16 +4,22 @@ $sevenZip   = "C:\Program Files\7-Zip\7z.exe"     # CLI version; 7zG is GUI vers
 $targetPath = "Notepad++.7z"
 
 function Create-Archive {
+    Copy-Item README.md Notepad++ -force
+    Copy-Item LICENSE.txt Notepad++ -force
+
     $params = @(
         '-t7z',         # .7z archive
-        '-m0=PPMd',     # PPMD compression (best for text/source code files)
+        '-m0=LZMA2',    # LZMA2 compression
         '-mx=9',        # Max compression level
-        '-mmem=31',     # Max memory usage (2GB for performance)
-        '-ms=e',        # Solid (files are grouped together, smaller size)
-        '-x@.gitignore' # Exclude by masks from .gitignore
+        '-md=96m',      # Dictionary 96mb
+        '-ms=on',       # Solid (files are grouped together, smaller size)
+        '-mqs=on',      # Sort by extensions (better compression)
+        '-mmt=on',      # Multi-threading
+        '-xr@.gitignore'  # Exclude by masks from .gitignore
     )
-
-    &$sevenZip a "$targetPath" @params -- Notepad++ README.md LICENSE.txt
+    
+    Remove-Item "$targetPath" -force -ErrorAction SilentlyContinue
+    &$sevenZip a "$targetPath" @params -- Notepad++
 }
 
 function Get-ArchiveFiles {
@@ -38,7 +44,7 @@ function Get-ArchiveFiles {
 }
 
 function Verify-Exclusions {
-    $ignored  = git check-ignore Get-ArchiveFiles
+    $ignored  = Get-ArchiveFiles | git check-ignore --stdin
     $exitCode = $LastExitCode
 
     if ($exitCode -ne 0 -and $exitCode -ne 1) {
