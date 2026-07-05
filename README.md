@@ -35,8 +35,6 @@ Click on any hyperlink to quickly open related paragraph about this feature. See
 
 - [Offline documentation](Notepad++\helpDocumentation) search from context menu: AutoHotkey, Xyplorer, MSDN (WinApi, useful for DllCalls).
 
-  <img src="images/help.gif" title="" alt="" width="697">
-
 - [Buttons](#buttons) to build and run any scripts.
 
   - AutoHotkey scripts can be compiled via "compile" button if [Ahk2Exe directives](https://www.autohotkey.com/docs/v1/misc/Ahk2ExeDirectives.htm#Bin) are presented in the file. [Here's an example](https://github.com/JoyHak/QuickSwitch?tab=readme-ov-file#compiling).
@@ -130,7 +128,7 @@ Syntax highlighting is designed so that the most important things are slightly c
 
 Everything can be configured through the intuitive interface of the installed plugins (the `Plugins` menu at the top) or through various configs, links to which are provided below. Please read the comments at the beginning of each config to understand how it works.
 
-<a href="syntax"></a>
+<a name="syntax"></a>
 
 - [Internal syntax highlighting](Notepad++\userDefineLangs) of basic keywords, operators, and functions is found in the files here. *[Here](https://npp-user-manual.org/docs/user-defined-language-system/) you can read how to configure internal syntax highlighting using user-defines languages.* 
 - [RegEx syntax highlighting](Notepad++\plugins\Config\EnhanceAnyLexer\EnhanceAnyLexerConfig.ini) for any expression/complex keyword. *Read comments about syntax at the beginning or [see the docs](https://github.com/Ekopalypse/EnhanceAnyLexer).*
@@ -157,7 +155,7 @@ Everything can be configured through the intuitive interface of the installed pl
 
 </details>
 
-<a href="toolbar"></a>
+<a name="toolbar"></a>
 
 - Toolbar buttons can be [changed and re-ordered here](Notepad++\plugins\Config\CustomizeToolbar.btn). *Read comments about syntax at the beginning.*
 - All the icons [can be found here](Notepad++\plugins\Config\icons). You can [download more icons here](https://drive.google.com/drive/folders/12Zp8vIvtqpUsaJbYuWgyfNvbjYEuOzjt).
@@ -196,7 +194,7 @@ Plugins,NppExec,Run,,,icons\run.ico
 
 </details>
 
-<a href="menu"></a>
+<a name="menu"></a>
 
 - [Context menu](Notepad++\contextMenu.xml) actions are [NppExec scripts](https://github.com/d0vgan/nppexec).
 
@@ -211,7 +209,7 @@ Plugins,NppExec,Run,,,icons\run.ico
 
 </details>
 
-<a href="buttons"></a>
+<a name="buttons"></a>
 
 - Run and compile buttons is configured using the [NppExec](https://github.com/d0vgan/nppexec) in [this txt config](Notepad++\plugins\Config\npes_saved.txt). *Please [read the documentation](Notepad++\plugins\NppExec\doc\NppExec\NppExec_HelpAll.txt) to add new buttons.*
 - There are [separate NppExec scripts](Notepad++\plugins\Config\NppExecScripts) to run individual file extensions. "Run" is defined in [npes_saved](Notepad++\plugins\Config\npes_saved.txt). If the extension of the current opened file matches the name of one of the `.exec` scripts in [this directory](Notepad++\plugins\Config\NppExecScripts), this script will be launched to proceed opened file. *If I am working with a `.ahk` file and want to run it, "Run" will search for a file named `.ahk.exec` in [this directory](Notepad++\plugins\Config\NppExecScripts).*
@@ -262,7 +260,7 @@ goto $(ARGV)
 
 </details>
 
-<a href="scripts"></a>
+<a name="scripts"></a>
 
 - Some of the [features](#features) are [NppExec scripts](Notepad++\plugins\Config\npes_saved.txt) with [additional `.ahk` helpers](Notepad++\AutoHotkey):
 
@@ -271,7 +269,7 @@ goto $(ARGV)
   - [Translate selected text](Notepad++\AutoHotkey\GetTranslation.ahk)
   - [Magic numbers](Notepad++\AutoHotkey\MagicNumbers\IniReadFuzzy.ahk)
 
-<a href="completion"></a>
+<a name="completion"></a>
 
 - [Auto-completetion dir](Notepad++\autoCompletion) contains files with docs/syntax/parameters for each function, command or keyword. Each `.xml` file will be used to display auto-completion menu, calltip (function hint) and docs popup. [Read about schema and syntax here](https://npp-user-manual.org/docs/auto-completion).
 
@@ -385,9 +383,9 @@ This type of keywords will be displayed in auto-completion list only.
 
 <img src="images/ahk/hint.gif" title="" alt="" width="697">
 
-  <a href="calltips"></a>
+  <a name="calltips"></a>
   Documentation popup is done via [Python script](Notepad++\plugins\Config\PythonScript\scripts\calltips.py).
-  <a href="snippets"></a>
+  <a name="snippets"></a>
   Auto-completion menu also includes [code snippets](Notepad++\plugins\Config\QuickText.ini). Open `Plugins - QuickText - Settings` to add new snippet.
 
 <details><summary>Details</summary>
