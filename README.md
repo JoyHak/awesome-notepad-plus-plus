@@ -411,7 +411,7 @@ As you can see, [NppExec](https://github.com/d0vgan/nppexec) is very useful to m
 
 - [Auto-completetion dir](Notepad++/autoCompletion) contains files with docs/syntax/parameters for each function, command or keyword. Each `.xml` file will be used to display auto-completion menu, calltip (function hint) and docs popup ([see demo here](#calltips-shortcuts)). [Read about schema and syntax here](https://npp-user-manual.org/docs/auto-completion).
 
-<details><summary>Schema</summary>
+<details><summary>Auto-completetion syntax</summary>
 
 Each `<KeyWord>` can contain different structure.
 
@@ -499,30 +499,7 @@ Each `<Overload>` tag essentially represents a page. Users can switch the page u
   
   </details>
 
-
 If a function accepts only one set of parameters, such as `ControlClick` in example above, **you must duplicate the `<param>` tag in all `<Overload>` tags! Otherwise, each page will contain a different set of parameters—that is, different function signatures—which can confuse the reader.
-
-It’s better to specify the return value (if any) in the `retVal` attribute:
-
-```html
-        <KeyWord name="DateAdd" func="yes">
-            <Overload retVal="{Date}" descr="Adds or subtracts time from a date-time value.">
-               <Param name="DateTime"/>
-               <Param name="Time"/>
-               <Param name="TimeUnits"/>
-            </Overload>
-            <Overload retVal="{Date}" descr=" DateTime = YYYYMMDDHH24MISS format
-     Time = Integer or float.
-TimeUnits = Seconds (S), Minutes (M), Hours (H), Days (D)
-Year (if used) must be on or after 1601.">
-               <Param name="DateTime"/>
-               <Param name="Time"/>
-               <Param name="TimeUnits"/>
-            </Overload>
-        </KeyWord>
-```
-
-Each `<Overload retVal="{Date}"...` should display consistent function signature: `{Date} DateAdd(DateTime, Time, TimeUnits)` on each page.
 
 Functions may have different sets of optional parameters, and the description varies depending on these parameters.
   
@@ -576,6 +553,87 @@ Functions may have different sets of optional parameters, and the description va
                 <Param name="Section"/>
                 <Param name="Key"/>
                 </Overload>
+            </KeyWord>
+  ```
+  
+  </details>
+
+It’s better to specify the return value (if any) in the `retVal` attribute:
+
+```html
+        <KeyWord name="DateAdd" func="yes">
+            <Overload retVal="{Date}" descr="Adds or subtracts time from a date-time value.">
+               <Param name="DateTime"/>
+               <Param name="Time"/>
+               <Param name="TimeUnits"/>
+            </Overload>
+            <Overload retVal="{Date}" descr=" DateTime = YYYYMMDDHH24MISS format
+     Time = Integer or float.
+TimeUnits = Seconds (S), Minutes (M), Hours (H), Days (D)
+Year (if used) must be on or after 1601.">
+               <Param name="DateTime"/>
+               <Param name="Time"/>
+               <Param name="TimeUnits"/>
+            </Overload>
+        </KeyWord>
+```
+
+Each `<Overload retVal="{Date}"...` should display consistent function signature: `{Date} DateAdd(DateTime, Time, TimeUnits)` on each page.
+
+### Command
+
+Some languages, such as Xyplorer or PowerShell, support command syntax. In this case, you can specify `func="no"` attribute to remove parentheses from signature in the docs popup; or `func="yes"` to have the description and parameters appear after typing `(` following the command name (if applicable).
+
+```html
+        <!-- Xyplorer commands, but displayed as functions -->
+        <KeyWord name="Button" func="yes">
+            <Overload retVal="" descr="Emulates a click on a toolbar button.">
+               <Param name="key"/>
+               <Param name="[action=1 (1|2|8|256)]"/>
+            </Overload>
+        </KeyWord>
+        <KeyWord name="Run" func="yes">
+            <Overload retVal="" descr="Works (almost) identical to Windows Start | Run, i.e. you can start executables, open documents with the OS-asociated applications, open websites, and much more.">
+               <Param name="[command]"/>
+               <Param name="[directory]"/>
+               <Param name="[wait=0 (0|1|2)]"/>
+               <Param name="[show=1 (0|1|2|3)]"/>
+            </Overload>
+        </KeyWord>
+```
+Since the `<Param name=".."`  isn't required to contain only a *name*, you can specify default values and any text that will help the reader of the documentation.
+
+  <details><summary>Example</summary>
+    
+  ```html
+            <KeyWord name="SaveThumb" func="yes">
+                <Overload retVal="" descr="Saves the thumbnail of a file to a file.">
+                <Param name="[file=<curitem>]"/>
+                <Param name="[thumbnail_file='*_thumb']"/>
+                <Param name="[widthbox=500]"/>
+                <Param name="[heightbox=500]"/>
+                <Param name="[format=jpg (jpg|png|gif|bmp|tif)]]"/>
+                <Param name="[border_width]"/>
+                <Param name="[flags (1|2|4)]"/>
+                <Param name="[transparency=2 (-1|0|1|2|3|4)]"/>
+                <Param name="[color_canvas]"/>
+                </Overload>
+            </KeyWord>
+  ```
+  ```html
+            <KeyWord name="InStr" func="yes">
+                <Overload retVal="{Integer}" descr="Searches for a given occurrence of a string, from the left or the right.">
+                    <Param name="Haystack"/>
+                    <Param name="Needle"/>
+                    <Param name="[CaseSense (0|1)]"/>
+                    <Param name="[StartingPos (-1|1|...)]"/>
+                    <Param name="[Occurrence]"/>
+                </Overload>
+            </KeyWord>
+            <KeyWord name="HotString" func="yes">
+                <Overload retVal="" descr="Changes hotstring options.">
+                    <Param name="NewOptions (*|?|C|O|T|X|Z|KN|PN|S|SI|SP|SE)"/>
+                </Overload> 
             </KeyWord>
   ```
   
