@@ -1,11 +1,12 @@
 $MyInvocation.MyCommand.Path | Split-Path -Parent | Set-Location
 
-$sevenZip   = "C:\Program Files\7-Zip\7z.exe"     # CLI version; 7zG is GUI version
-$targetPath = "Notepad++.7z"
+$sevenZip = "C:\Program Files\7-Zip\7z.exe"     # CLI version; 7zG is GUI version
+$archive  = "Notepad++.7z"
+$sourcePath = "Notepad++"
 
 function Create-Archive {
-    Copy-Item README.md Notepad++ -force
-    Copy-Item LICENSE.txt Notepad++ -force
+    Copy-Item README.md $sourcePath -force
+    Copy-Item LICENSE.txt $sourcePath -force
 
     $params = @(
         '-t7z',         # .7z archive
@@ -18,15 +19,15 @@ function Create-Archive {
         '-xr@.gitignore'  # Exclude by masks from .gitignore
     )
     
-    Remove-Item "$targetPath" -force -ErrorAction SilentlyContinue
-    &$sevenZip a "$targetPath" @params -- Notepad++
+    Remove-Item "$archive" -force -ErrorAction SilentlyContinue
+    &$sevenZip a "$archive" @params -- "$sourcePath"
 }
 
 function Get-ArchiveFiles {
     # list, output detailed info
-    $lines = &$sevenZip l -slt -- $targetPath
+    $lines = &$sevenZip l -slt -- $archive
     if ($LastExitCode -ne 0) {
-        throw "Failed to list archive: $targetPath"
+        throw "Failed to list archive: $archive"
     }
 
     $result = [System.Collections.Generic.List[string]]@()
@@ -37,7 +38,7 @@ function Get-ArchiveFiles {
     }
 
     if (!$result.Count) {
-        throw "Archive is empty: $targetPath"
+        throw "Archive is empty: $archive"
     }
 
     return $result
@@ -53,12 +54,23 @@ function Verify-Exclusions {
 
     if ($ignored.Count -gt 0) {
         Write-Host "Archive contains excluded files" -f red
-        $ignored | Sort-Object -Unique | ForEach-Object { Write-Host $_ }
-    } else {
-        Write-Host "Archive does not contain excluded files" -f green
+        $ignored | Sort-Object -unique | ForEach { Write-Host $_ }
+    }
+}
+
+function Verify-Hash {
+    $paths = @(
+       "$archive", 
+       "$sourcePath/notepad++.exe" 
+    )
+    
+    Write-Host "`nSHA256 Digest:"
+    foreach ($path in $paths) {
+        Write-Host ((Get-FileHash $path SHA256).hash + '  ' + $path)
     }
 }
 
 
-Create-Archive
+# Create-Archive
 Verify-Exclusions
+Verify-Hash
