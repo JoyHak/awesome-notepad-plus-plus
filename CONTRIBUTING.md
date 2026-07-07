@@ -1,5 +1,3 @@
-# Contributing
-
 ***Ask not what Notepad++ can do for you - ask what you can do for Notepad++***
 
 ## Reporting Issues
@@ -15,15 +13,14 @@ Before reporting a security issue, please read [Security Policy](SECURITY.md) fi
 ## Pull Requests
 If you have something to offer, and your pull requests are welcome.<br/>
 
-You can improve this modification by expanding syntax highlighting for existing languages, adding new words to AutoComplete, adding new tags for quick navigation, expanding code snippets, or improving existing plugin configurations.
+You can improve this modification by extending [syntax highlighting](https://github.com/JoyHak/awesome-notepad-plus-plus#syntax) for existing languages, adding new keywords and functions to [auto-completion and docs popup](https://github.com/JoyHak/awesome-notepad-plus-plus#completion), expanding [code snippets](https://github.com/JoyHak/awesome-notepad-plus-plus#snippets), or improving [existing feature](https://github.com/JoyHak/awesome-notepad-plus-plus#features).
 
-You can also suggest new toolbar icon designs to complement the current Fluent pack or to replace the old icons.
+You can also suggest [new toolbar icon](https://github.com/JoyHak/awesome-notepad-plus-plus#toolbar) design to complement the current Fluent pack or to replace the old icons.
 
 ### Guidelines for pull requests
 
 1. Keep your code readable and well-structured. All configuration files are written with care and attention to detail so that anyone can read them. 
-
->    If yoг're writing a new RegEx, try to make it readable by using comments `(?#)`, named groups `(?<name>)`, and spaces with `(?x)` flag.
+If you want to [extend syntax highlighting with regex](https://github.com/JoyHak/awesome-notepad-plus-plus/blob/main/Notepad++/plugins/Config/EnhanceAnyLexer/EnhanceAnyLexerConfig.ini), please make it readable by using comments `(?#)`, named groups `(?<name>)`, and spaces with `(?x)` flag.
 
 1. Create a new branch for each PR. **Make sure your branch name wasn't used before** - you can add date (for example `patch3_20200528`) to ensure its uniqueness.
 2. Single feature or bug-fix per PR. If you've modified the configuration files - one PR per plugin. If you've added a new languages - one PR with all required files.
