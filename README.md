@@ -62,21 +62,21 @@ Click on any hyperlink to quickly open related paragraph about this feature. See
 
   - Find [magic number](#scripts) (CLSID, WinApi macro/constant, DllCall values).
 
-    <img title="" src="images/find_magic.gif" alt="" width="458">
+    <img title="" src="images/find_magic.gif" alt="magic-numbers" width="458">
 
   - Add [separators](#scripts) with text.
 
-    <img src="images/separator.png" title="" alt="" width="708">
+    <img src="images/separator.png" alt="separators" width="708">
 
   - Align text vertically.
 
-    <img src="images/align.avif" width="700">
+    <img src="images/align.gif" alt="align" width="700">
 
   - Change text case.
 
 - New search/replace dialog design with bigger font
 
-  <img title="" src="images/find1.png" alt="" width="626">
+  <img title="" src="images/find1.png" alt="dialog" width="626">
 
   Press `Ctrl+E` to search for all calls of the function under caret.
   ![](images/ahk/find_usages.gif)
