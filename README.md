@@ -171,7 +171,7 @@ Everything can be configured through the intuitive interface of the installed pl
 
 </details>
 
-- [RegEx syntax highlighting](Notepad++/plugins/Config/EnhanceAnyLexer/EnhanceAnyLexerConfig.ini) for any expression/complex keyword. *Read comments about syntax at the beginning or [see the docs](https://github.com/Ekopalypse/EnhanceAnyLexer).*
+- [RegEx syntax highlighting](Notepad++/plugins/Config/EnhanceAnyLexer/EnhanceAnyLexerConfig.ini) for any expression/complex keyword. *Read comments about syntax at the beginning!*
 
 <details><summary>RegEx examples</summary>
 
@@ -241,14 +241,14 @@ Plugins,NppExec,Run,,,icons\run.ico
 <details><summary>Add new script</summary>
 <br>
 
-0. Enable [NppExec syntax highlighting](#readable-nppexec).
-1. [Write a new scipt here](Notepad++/plugins/Config/npes_saved.txt). See the docs about [NppExec language syntax](Notepad++/plugins/NppExec/doc/NppExec/NppExec_HelpAll.txt) *(open via Notepad++, select `Language - NppExec` at the top for better readability.*.
-2. Open `Plugins - NppExec - Advanced Options` at the top.
-3. Select your new script and press `Add`. 
+1. [Open NppExec scripts](Notepad++/plugins/Config/npes_saved.txt) file. [Enable syntax highlighting](#readable-nppexec).
+2. Append new script. See the docs about [NppExec syntax](Notepad++/plugins/NppExec/doc/NppExec/NppExec_HelpAll.txt).
+3. Open `Plugins - NppExec - Advanced Options` at the top.
+4. Select your new script and press `Add`. 
 <img alt="add-nppexec-script" src="https://github.com/user-attachments/assets/e97a4622-14da-4cf2-bc19-a072d8119644" />
 
-4. Restart Notepad++.
-5. Open [context menu config](Notepad++/contextMenu.xml) and add new script. *See other menu actions syntax*.
+5. Restart Notepad++.
+6. Open [context menu config](Notepad++/contextMenu.xml) and add new script. *See other menu actions syntax*.
   <details><summary>Menu example</summary>
 
   ```html
@@ -261,15 +261,16 @@ Plugins,NppExec,Run,,,icons\run.ico
   </details>
 6. Restart Notepad++.
 
-<br><br>
+<br>
 </details>
 
 <a name="buttons"></a>
 
-- Run and compile buttons is configured using the [NppExec](https://github.com/d0vgan/nppexec) in [this txt config](Notepad++/plugins/Config/npes_saved.txt). *Please [read the documentation](Notepad++/plugins/NppExec/doc/NppExec/NppExec_HelpAll.txt) to add new buttons.*
-- There are [separate NppExec scripts](Notepad++/plugins/Config/NppExecScripts) to run individual file extensions. "Run" is defined in [npes_saved](Notepad++/plugins/Config/npes_saved.txt). If the extension of the current opened file matches the name of one of the `.exec` scripts in [this directory](Notepad++/plugins/Config/NppExecScripts), this script will be launched to proceed opened file. *If I am working with a `.ahk` file and want to run it, "Run" will search for a file named `.ahk.exec` in [this directory](Notepad++/plugins/Config/NppExecScripts).*
+- "Run" and "Compile" buttons are configured via [NppExec scripts](Notepad++/plugins/Config/npes_saved.txt). [Read more about scripts above](#menu).
+Each button launches the corresponding [extension-like script](Notepad++/plugins/Config/NppExecScripts). If the extension of the current opened file matches the name of one of the `.exec` scripts, this `.exec` script will be launched to proceed opened file. *E.g. if I am working with an `.ahk` file and I want to run it, "Run" will search for a file named `.ahk.exec` in [this directory](Notepad++/plugins/Config/NppExecScripts).*
 
 <details><summary>Buttons scripts</summary>
+  
 Depending on the selected button, NppExec script will be launched with arguments. For example, the `run` button will pass the `-run` argument to the file.
 
 ```javascript
@@ -281,7 +282,7 @@ Depending on the selected button, NppExec script will be launched with arguments
         NPP_EXEC $(CONFIG) -run
 ```
 
-Further, these arguments can be processed as desired in the file. I chose the option of [jumping](https://en.wikipedia.org/wiki/Goto) to the args:
+Further, these arguments can be processed in the NppExec script. It uses [goto label](https://github.com/JoyHak/awesome-notepad-plus-plus/blob/b68963e8e5155dfa6da122e82d57514221d4693c/Notepad%2B%2B/plugins/NppExec/doc/NppExec/NppExec_HelpAll.txt#L2173) because there are no functions:
 
 ```javascript
 // .ahk.exec
@@ -310,7 +311,7 @@ goto $(ARGV)
         set exists ~ fileexists $(OUTPUTL)
         if $(exists) == 1 then
             NPP_RUN $(OUTPUTL)
-        ...
+        //...
 ```
 
 </details>
@@ -327,6 +328,7 @@ goto $(ARGV)
 Read [how to add new script](#menu). See [how to enable NppExec syntax highlighting](#readable-nppexec).
 
 <details><summary>Script example</summary>
+  
 If you open [NppExec scripts](Notepad++/plugins/Config/npes_saved.txt), you'll see that some of them serve as wrappers to launch [AutoHotkey scripts](Notepad++/AutoHotkey). NppExec lets you add new menu items and output the message to the console. AutoHotkey lets you write complex algorithms and logic for menu items.
 
 ```javascript
@@ -360,7 +362,7 @@ If you open [NppExec scripts](Notepad++/plugins/Config/npes_saved.txt), you'll s
 ::Find Win32 constant
     npp_exec _find_magic_number "$(NPP_DIRECTORY)\AutoHotkey\MagicNumbers\Database\win32.ini"
 ```
-As you can see, [NppExec](https://github.com/d0vgan/nppexec) is very useful to manipulate arguments before launching any logic. It's also very useful to retrieve information from current editor:
+As you can see, [NppExec](https://github.com/d0vgan/nppexec) is very useful to manipulate arguments before running any logic. It's also very useful to retrieve information from current editor:
 ```javascript
     // found result will be stored in $(OUTPUT) var
     $(NPP_DIRECTORY)\AutoHotkey\MagicNumbers\IniReadFuzzy.exe $(ARGV) "$(SELECTED_TEXT)"
