@@ -134,16 +134,48 @@ Syntax highlighting is designed so that the most important things are slightly c
 
 Everything can be configured through the intuitive interface of the installed plugins (the `Plugins` menu at the top) or through various configs, links to which are provided below. Please read the comments at the beginning of each config to understand how it works.
 
+<a name="readable-nppexec"></a>
+
+> [!TIP]
+> To make NppExec scripts (`.exec` or `npes_saved`) readable, open them in Notepad++ and select `Language - NppExec` from the top menu.
+> <img alt="readable-nppexec" src="https://github.com/user-attachments/assets/f9fbe371-4bab-4663-bfa9-d060c220f9cf" />
+> All configs below has syntax highlighting for Notepad++. Prefer to use it over GitHub preview.
+
 <a name="syntax"></a>
 
 - [Internal syntax highlighting](Notepad++/userDefineLangs) of basic keywords, operators, and functions is found in the files here. *[Here](https://npp-user-manual.org/docs/user-defined-language-system/) you can read how to configure internal syntax highlighting using user-defines languages.* 
-- [RegEx syntax highlighting](Notepad++/plugins/Config/EnhanceAnyLexer/EnhanceAnyLexerConfig.ini) for any expression/complex keyword. *Read comments about syntax at the beginning or [see the docs](https://github.com/Ekopalypse/EnhanceAnyLexer).*
-- [Theme and syntax highlighting for other languages](Notepad++/themes/Colorful%20dark.xml).
 
-<details><summary>Details</summary>
+<details><summary>UDL example</summary>
+
+```html
+<NotepadPlus>
+<UserLang name="AutoHotkey" ext="ahk AHK ahk2" udlVersion="2.1">
+    <Settings>
+        <Global caseIgnored="yes" allowFoldOfComments="yes" foldCompact="yes" forcePureLC="0" decimalSeparator="0" />
+        <Prefix Keywords1="no" Keywords2="no" Keywords3="no" Keywords4="no" Keywords5="no" Keywords6="no" Keywords7="no" Keywords8="yes" />
+    </Settings>
+    <KeywordLists>
+        <Keywords name="Operators2">?? ? + ^ ~ %</Keywords>
+        <Keywords name="Keywords1">Ceil Chr Click ClipWait ClipboardAll</Keywords>
+        <Keywords name="Keywords2">break false reload ExitApp exit Pause throw</Keywords>
+        <Keywords name="Keywords3">super ErrorLevel true this A_AhkPath A_AhkVersion</Keywords>
+        </KeywordLists>
+    <Styles>
+        <WordsStyle name="DEFAULT" fgColor="21E8FE" bgColor="1E1E21" colorStyle="1" fontName="Maple Mono NF CN" fontStyle="0" nesting="0" />
+        <WordsStyle name="COMMENTS" fgColor="808080" bgColor="1E1E21" colorStyle="1" fontName="Maple Mono NF CN" fontStyle="0" nesting="72" />
+    </Styles>
+</UserLang>
+</NotepadPlus>
+
+```
+
+</details>
+
+- [RegEx syntax highlighting](Notepad++/plugins/Config/EnhanceAnyLexer/EnhanceAnyLexerConfig.ini) for any expression/complex keyword. *Read comments about syntax at the beginning or [see the docs](https://github.com/Ekopalypse/EnhanceAnyLexer).*
+
+<details><summary>RegEx examples</summary>
 
 ```fsharp
-
 // Each configured lexer must have a section with its name
 //  followed by one or more lines with the syntax
 //  color[optional whitelist] = regular expression.
@@ -161,12 +193,14 @@ Everything can be configured through the intuitive interface of the installed pl
 
 </details>
 
+- [Theme and syntax highlighting for other languages](Notepad++/themes/Colorful%20dark.xml).
+
 <a name="toolbar"></a>
 
 - Toolbar buttons can be [changed and re-ordered here](Notepad++/plugins/Config/CustomizeToolbar.btn). *Read comments about syntax at the beginning.*
 - All the icons [can be found here](Notepad++/plugins/Config/icons). You can [download more icons here](https://drive.google.com/drive/folders/12Zp8vIvtqpUsaJbYuWgyfNvbjYEuOzjt).
 
-<details><summary>Details</summary>
+<details><summary>Toolbar example</summary>
 
 ```ini
 ; Each custom button definiton comprises 7 comma separated fields:
@@ -204,15 +238,30 @@ Plugins,NppExec,Run,,,icons\run.ico
 
 - [Context menu](Notepad++/contextMenu.xml) actions are [NppExec scripts](https://github.com/d0vgan/nppexec).
 
-<details><summary>Add new action</summary>
+<details><summary>Add new script</summary>
+<br>
 
+0. Enable [NppExec syntax highlighting](#readable-nppexec).
 1. [Write a new scipt here](Notepad++/plugins/Config/npes_saved.txt). See the docs about [NppExec language syntax](Notepad++/plugins/NppExec/doc/NppExec/NppExec_HelpAll.txt) *(open via Notepad++, select `Language - NppExec` at the top for better readability.*.
 2. Open `Plugins - NppExec - Advanced Options` at the top.
-3. Select your new scripts and press `Add`. 
+3. Select your new script and press `Add`. 
+<img alt="add-nppexec-script" src="https://github.com/user-attachments/assets/e97a4622-14da-4cf2-bc19-a072d8119644" />
+
 4. Restart Notepad++.
 5. Open [context menu config](Notepad++/contextMenu.xml) and add new script. *See other menu actions syntax*.
+  <details><summary>Menu example</summary>
+
+  ```html
+        <Item FolderName="Translate"    PluginEntryName="NppExec"               PluginCommandItemName="Translate selected"              ItemNameAs="Selected"/>
+        <Item FolderName="Translate"    PluginEntryName="NppExec"               PluginCommandItemName="Translation variants"            ItemNameAs="Show variants"/>
+        <Item FolderName="Find magic number"    PluginEntryName="NppExec"       PluginCommandItemName="Find CLSID constant"             ItemNameAs="{CLSID} (win folder)"/>
+        <Item FolderName="Find magic number"    PluginEntryName="NppExec"       PluginCommandItemName="Find shell constant"             ItemNameAs="Shell:: (internal explorer path)"/>
+        <Item FolderName="Find magic number"    PluginEntryName="NppExec"       PluginCommandItemName="Find Win32 constant"             ItemNameAs="Win32/DllCall/Message/Macros"/>
+  ```
+  </details>
 6. Restart Notepad++.
 
+<br><br>
 </details>
 
 <a name="buttons"></a>
@@ -220,8 +269,8 @@ Plugins,NppExec,Run,,,icons\run.ico
 - Run and compile buttons is configured using the [NppExec](https://github.com/d0vgan/nppexec) in [this txt config](Notepad++/plugins/Config/npes_saved.txt). *Please [read the documentation](Notepad++/plugins/NppExec/doc/NppExec/NppExec_HelpAll.txt) to add new buttons.*
 - There are [separate NppExec scripts](Notepad++/plugins/Config/NppExecScripts) to run individual file extensions. "Run" is defined in [npes_saved](Notepad++/plugins/Config/npes_saved.txt). If the extension of the current opened file matches the name of one of the `.exec` scripts in [this directory](Notepad++/plugins/Config/NppExecScripts), this script will be launched to proceed opened file. *If I am working with a `.ahk` file and want to run it, "Run" will search for a file named `.ahk.exec` in [this directory](Notepad++/plugins/Config/NppExecScripts).*
 
-<details><summary>Details</summary>
-Depending on the selected button, the file will start with arguments. For example, the `run` button will pass the `-run` argument to the file.
+<details><summary>Buttons scripts</summary>
+Depending on the selected button, NppExec script will be launched with arguments. For example, the `run` button will pass the `-run` argument to the file.
 
 ```javascript
 // npes_saves.txt
@@ -274,6 +323,86 @@ goto $(ARGV)
   - [Find usages](Notepad++/plugins/Config/npes_saved.txt)
   - [Translate selected text](Notepad++/AutoHotkey/GetTranslation.ahk)
   - [Magic numbers](Notepad++/AutoHotkey/MagicNumbers/IniReadFuzzy.ahk)
+
+Read [how to add new script](#menu). See [how to enable NppExec syntax highlighting](#readable-nppexec).
+
+<details><summary>Script example</summary>
+If you open [NppExec scripts](Notepad++/plugins/Config/npes_saved.txt), you'll see that some of them serve as wrappers to launch [AutoHotkey scripts](Notepad++/AutoHotkey). NppExec lets you add new menu items and output the message to the console. AutoHotkey lets you write complex algorithms and logic for menu items.
+
+```javascript
+::Find references
+    npp_sendmsg NPPM_LAUNCHFINDINFILESDLG "$(CURRENT_DIRECTORY)" "*$(EXT_PART)"
+    $(NPP_DIRECTORY)\AutoHotkey\FindReferences.exe $(CURRENT_WORD)  
+
+
+::Translate selected 
+    // setup stuff....
+    $(NPP_DIRECTORY)\AutoHotkey\GetTranslation.exe -from "auto" -to "en" $(ARGV) "$(SELECTED_TEXT)"
+    sci_sendmsg SCI_ANNOTATIONSETTEXT $(line) 0
+    
+    // Replace selected text with translation
+    sel_settext $(OUTPUT)
+                     
+::Translation variants                                                             
+    npp_exec "Translate selected" -variants  // pass $(ARGV) to the script above
+
+::_find_magic_number
+    $(NPP_DIRECTORY)\AutoHotkey\MagicNumbers\IniReadFuzzy.exe $(ARGV) "$(SELECTED_TEXT)"
+    // replace selection.....
+
+// pass database to script above
+::Find CLSID constant
+    npp_exec _find_magic_number "$(NPP_DIRECTORY)\AutoHotkey\MagicNumbers\Database\clsid.ini"
+
+::Find shell constant
+    npp_exec _find_magic_number "$(NPP_DIRECTORY)\AutoHotkey\MagicNumbers\Database\shell.ini"
+
+::Find Win32 constant
+    npp_exec _find_magic_number "$(NPP_DIRECTORY)\AutoHotkey\MagicNumbers\Database\win32.ini"
+```
+As you can see, [NppExec](https://github.com/d0vgan/nppexec) is very useful to manipulate arguments before launching any logic. It's also very useful to retrieve information from current editor:
+```javascript
+    // found result will be stored in $(OUTPUT) var
+    $(NPP_DIRECTORY)\AutoHotkey\MagicNumbers\IniReadFuzzy.exe $(ARGV) "$(SELECTED_TEXT)"
+    
+    :error
+    if $(EXITCODE) != 0 then
+        npp_console on
+        exit
+    endif
+    
+    // Insert the result below and comment it
+    // npp_sendmsg WM_COMMAND IDM_EDIT_BLANKLINEBELOWCURRENT
+    sci_sendmsg SCI_LINEENDWRAP
+    sci_sendmsg SCI_NEWLINE
+    
+    if "$(OUTPUT1)" == "$(OUTPUTL)" then
+        // One-line result
+        sel_settext $(OUTPUT)
+    else
+        // Select inserted text
+        sci_sendmsg SCI_GETSELECTIONSTART
+        set sel_start = $(MSG_RESULT)
+        
+        sel_settext $(OUTPUT)
+        
+        sci_sendmsg SCI_GETSELECTIONSTART
+        set sel_end = $(MSG_RESULT)
+        
+        sci_sendmsg SCI_SETSELECTIONSTART $(sel_start)
+        sci_sendmsg SCI_SETSELECTIONEND $(sel_end)
+    endif
+
+    // comment region
+    npp_sendmsg WM_COMMAND IDM_EDIT_BLOCK_COMMENT
+    
+    // Restore selection
+    sci_sendmsg SCI_SETSELECTIONSTART $(original_sel_start)
+    sci_sendmsg SCI_SETSELECTIONEND $(original_sel_end)
+```
+![](/images/find_magic.gif)
+
+</details>
 
 <a name="completion"></a>
 
