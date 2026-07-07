@@ -33,8 +33,6 @@ Click on any hyperlink to quickly open related paragraph about this feature. See
 
   <img src="images/ahk/docs2.gif" title="" alt="" width="697">
 
-- [Offline documentation](Notepad++\helpDocumentation) search from context menu: AutoHotkey, Xyplorer, MSDN (WinApi, useful for DllCalls).
-
 - [Buttons](#buttons) to build and run any scripts.
 
   - AutoHotkey scripts can be compiled via "compile" button if [Ahk2Exe directives](https://www.autohotkey.com/docs/v1/misc/Ahk2ExeDirectives.htm#Bin) are presented in the file. [Here's an example](https://github.com/JoyHak/QuickSwitch?tab=readme-ov-file#compiling).
@@ -54,17 +52,25 @@ Click on any hyperlink to quickly open related paragraph about this feature. See
 
 - Useful [context menu actions](#menu):
 
+  - [Offline documentation](Notepad++\helpDocumentation) search from context menu: AutoHotkey, Xyplorer, MSDN (WinApi, useful for DllCalls).
+
+    <img src="images/help.avif" width="700">
+
   - [Translate selected text](#scripts), get alternative translation variants.
 
-    <img src="images/translate.gif" title="" alt="" width="708">
+    <img src="images/translate.avif" width="700">
 
-  - Search for [magic number](#scripts) (CLSID, WinApi macro/constant, DllCall values).
+  - Find [magic number](#scripts) (CLSID, WinApi macro/constant, DllCall values).
 
     <img title="" src="images/find_magic.gif" alt="" width="458">
 
   - Add [separators](#scripts) with text.
 
     <img src="images/separator.png" title="" alt="" width="708">
+
+  - Align text vertically.
+
+    <img src="images/align.avif" width="700">
 
   - Change text case.
 
