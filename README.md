@@ -21,10 +21,10 @@ Click on any hyperlink to quickly open related paragraph about this feature. See
 
 - [Documentation popup](#calltips) and function parameters popup.
 
-  <img src="images/ahk/docs4.gif" title="" alt="" width="697">
-  <img src="images/ahk/hint.gif" title="" alt="" width="697">
-  <img src="images/xy/Array.gif" title="" alt="" width="697">
-  <img src="images/xy/foreach.gif" title="" alt="" width="697">
+  <img src="images/ahk/docs4.gif">
+  <img src="images/ahk/hint.gif" width="800">
+  <img src="images/xy/Array.gif" width="800">
+  <img src="images/xy/foreach.gif" width="800">
 
   Type `(` after function name or press `Ctrl+Shift+O` to see calltip (function parameters hint); `Ctrl+J` - next page, `Ctrl+U` - previous page. 
   Hover your mouse on function/keyword to see documentation popup; click on it to open next page.
