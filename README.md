@@ -48,11 +48,11 @@ Click on any hyperlink to quickly open related paragraph about this feature. See
 
   <img src="images/icons.png" alt="icons" width="643">
 
-  [All icons can be found here](Notepad++\plugins\Config\icons). You can [override or change them](#toolbar).
+  [All icons can be found here](Notepad++/plugins/Config/icons). You can [override or change them](#toolbar).
 
 - Useful [context menu actions](#menu):
 
-  - [Offline documentation](Notepad++\helpDocumentation) search from context menu: AutoHotkey, Xyplorer, MSDN (WinApi, useful for DllCalls).
+  - [Offline documentation](Notepad++/helpDocumentation) search from context menu: AutoHotkey, Xyplorer, MSDN (WinApi, useful for DllCalls).
 
     <img src="images/help.avif" width="700">
 
@@ -83,7 +83,7 @@ Click on any hyperlink to quickly open related paragraph about this feature. See
 
 ## Syntax highltighting
 
-Syntax highltighting can be configured via [basic language file](Notepad++\userDefineLangs) and powerful [EnhanceAnyLexer config](Notepad++\plugins\Config\EnhanceAnyLexer\EnhanceAnyLexerConfig.ini). See demo in [/Images](/images). [Read how to configure it](#syntax).
+Syntax highltighting can be configured via [basic language file](Notepad++/userDefineLangs) and powerful [EnhanceAnyLexer config](Notepad++/plugins/Config/EnhanceAnyLexer/EnhanceAnyLexerConfig.ini). See demo in [/Images](/images). [Read how to configure it](#syntax).
 
 Syntax highlighting is designed so that the most important things are slightly contrasting; negation/error throwing are bright red; operators and comments do not distract from reading; everything else is soft colors that are slightly different from each other.
 
@@ -136,9 +136,9 @@ Everything can be configured through the intuitive interface of the installed pl
 
 <a name="syntax"></a>
 
-- [Internal syntax highlighting](Notepad++\userDefineLangs) of basic keywords, operators, and functions is found in the files here. *[Here](https://npp-user-manual.org/docs/user-defined-language-system/) you can read how to configure internal syntax highlighting using user-defines languages.* 
-- [RegEx syntax highlighting](Notepad++\plugins\Config\EnhanceAnyLexer\EnhanceAnyLexerConfig.ini) for any expression/complex keyword. *Read comments about syntax at the beginning or [see the docs](https://github.com/Ekopalypse/EnhanceAnyLexer).*
-- [Theme and syntax highlighting for other languages](Notepad++\themes\Colorful%20dark.xml).
+- [Internal syntax highlighting](Notepad++/userDefineLangs) of basic keywords, operators, and functions is found in the files here. *[Here](https://npp-user-manual.org/docs/user-defined-language-system/) you can read how to configure internal syntax highlighting using user-defines languages.* 
+- [RegEx syntax highlighting](Notepad++/plugins/Config/EnhanceAnyLexer/EnhanceAnyLexerConfig.ini) for any expression/complex keyword. *Read comments about syntax at the beginning or [see the docs](https://github.com/Ekopalypse/EnhanceAnyLexer).*
+- [Theme and syntax highlighting for other languages](Notepad++/themes/Colorful%20dark.xml).
 
 <details><summary>Details</summary>
 
@@ -163,8 +163,8 @@ Everything can be configured through the intuitive interface of the installed pl
 
 <a name="toolbar"></a>
 
-- Toolbar buttons can be [changed and re-ordered here](Notepad++\plugins\Config\CustomizeToolbar.btn). *Read comments about syntax at the beginning.*
-- All the icons [can be found here](Notepad++\plugins\Config\icons). You can [download more icons here](https://drive.google.com/drive/folders/12Zp8vIvtqpUsaJbYuWgyfNvbjYEuOzjt).
+- Toolbar buttons can be [changed and re-ordered here](Notepad++/plugins/Config/CustomizeToolbar.btn). *Read comments about syntax at the beginning.*
+- All the icons [can be found here](Notepad++/plugins/Config/icons). You can [download more icons here](https://drive.google.com/drive/folders/12Zp8vIvtqpUsaJbYuWgyfNvbjYEuOzjt).
 
 <details><summary>Details</summary>
 
@@ -177,7 +177,7 @@ Everything can be configured through the intuitive interface of the installed pl
 ;   after the last visible SubmenuN, the SubmenuN+1 fields become optional 
 ;  
 ; If .bmp or .ico file names are present, the files must be located 
-; in the Notepad++ configuration sub-folder: ..\plugins\config
+; in the Notepad++ configuration sub-folder: ../plugins/config
 ;  
 ;  
 ; Quick codes can be used instead of file names: *color:label 
@@ -202,23 +202,23 @@ Plugins,NppExec,Run,,,icons\run.ico
 
 <a name="menu"></a>
 
-- [Context menu](Notepad++\contextMenu.xml) actions are [NppExec scripts](https://github.com/d0vgan/nppexec).
+- [Context menu](Notepad++/contextMenu.xml) actions are [NppExec scripts](https://github.com/d0vgan/nppexec).
 
 <details><summary>Add new action</summary>
 
-1. [Write a new scipt here](Notepad++\plugins\Config\npes_saved.txt). See the docs about [NppExec language syntax](Notepad++\plugins\NppExec\doc\NppExec\NppExec_HelpAll.txt) *(open via Notepad++, select `Language - NppExec` at the top for better readability.*.
+1. [Write a new scipt here](Notepad++/plugins/Config/npes_saved.txt). See the docs about [NppExec language syntax](Notepad++/plugins/NppExec/doc/NppExec/NppExec_HelpAll.txt) *(open via Notepad++, select `Language - NppExec` at the top for better readability.*.
 2. Open `Plugins - NppExec - Advanced Options` at the top.
 3. Select your new scripts and press `Add`. 
 4. Restart Notepad++.
-5. Open [context menu config](Notepad++\contextMenu.xml) and add new script. *See other menu actions syntax*.
+5. Open [context menu config](Notepad++/contextMenu.xml) and add new script. *See other menu actions syntax*.
 6. Restart Notepad++.
 
 </details>
 
 <a name="buttons"></a>
 
-- Run and compile buttons is configured using the [NppExec](https://github.com/d0vgan/nppexec) in [this txt config](Notepad++\plugins\Config\npes_saved.txt). *Please [read the documentation](Notepad++\plugins\NppExec\doc\NppExec\NppExec_HelpAll.txt) to add new buttons.*
-- There are [separate NppExec scripts](Notepad++\plugins\Config\NppExecScripts) to run individual file extensions. "Run" is defined in [npes_saved](Notepad++\plugins\Config\npes_saved.txt). If the extension of the current opened file matches the name of one of the `.exec` scripts in [this directory](Notepad++\plugins\Config\NppExecScripts), this script will be launched to proceed opened file. *If I am working with a `.ahk` file and want to run it, "Run" will search for a file named `.ahk.exec` in [this directory](Notepad++\plugins\Config\NppExecScripts).*
+- Run and compile buttons is configured using the [NppExec](https://github.com/d0vgan/nppexec) in [this txt config](Notepad++/plugins/Config/npes_saved.txt). *Please [read the documentation](Notepad++/plugins/NppExec/doc/NppExec/NppExec_HelpAll.txt) to add new buttons.*
+- There are [separate NppExec scripts](Notepad++/plugins/Config/NppExecScripts) to run individual file extensions. "Run" is defined in [npes_saved](Notepad++/plugins/Config/npes_saved.txt). If the extension of the current opened file matches the name of one of the `.exec` scripts in [this directory](Notepad++/plugins/Config/NppExecScripts), this script will be launched to proceed opened file. *If I am working with a `.ahk` file and want to run it, "Run" will search for a file named `.ahk.exec` in [this directory](Notepad++/plugins/Config/NppExecScripts).*
 
 <details><summary>Details</summary>
 Depending on the selected button, the file will start with arguments. For example, the `run` button will pass the `-run` argument to the file.
@@ -268,16 +268,16 @@ goto $(ARGV)
 
 <a name="scripts"></a>
 
-- Some of the [features](#features) are [NppExec scripts](Notepad++\plugins\Config\npes_saved.txt) with [additional `.ahk` helpers](Notepad++\AutoHotkey):
+- Some of the [features](#features) are [NppExec scripts](Notepad++/plugins/Config/npes_saved.txt) with [additional `.ahk` helpers](Notepad++/AutoHotkey):
 
-  - [Add separators with text](Notepad++\plugins\Config\npes_saved.txt)
-  - [Find usages](Notepad++\plugins\Config\npes_saved.txt)
-  - [Translate selected text](Notepad++\AutoHotkey\GetTranslation.ahk)
-  - [Magic numbers](Notepad++\AutoHotkey\MagicNumbers\IniReadFuzzy.ahk)
+  - [Add separators with text](Notepad++/plugins/Config/npes_saved.txt)
+  - [Find usages](Notepad++/plugins/Config/npes_saved.txt)
+  - [Translate selected text](Notepad++/AutoHotkey/GetTranslation.ahk)
+  - [Magic numbers](Notepad++/AutoHotkey/MagicNumbers/IniReadFuzzy.ahk)
 
 <a name="completion"></a>
 
-- [Auto-completetion dir](Notepad++\autoCompletion) contains files with docs/syntax/parameters for each function, command or keyword. Each `.xml` file will be used to display auto-completion menu, calltip (function hint) and docs popup. [Read about schema and syntax here](https://npp-user-manual.org/docs/auto-completion).
+- [Auto-completetion dir](Notepad++/autoCompletion) contains files with docs/syntax/parameters for each function, command or keyword. Each `.xml` file will be used to display auto-completion menu, calltip (function hint) and docs popup. [Read about schema and syntax here](https://npp-user-manual.org/docs/auto-completion).
 
 <details><summary>Schema</summary>
 
@@ -390,9 +390,9 @@ This type of keywords will be displayed in auto-completion list only.
 <img src="images/ahk/hint.gif" title="" alt="" width="697">
 
   <a name="calltips"></a>
-  Documentation popup is done via [Python script](Notepad++\plugins\Config\PythonScript\scripts\calltips.py).
+  Documentation popup is done via [Python script](Notepad++/plugins/Config/PythonScript/scripts/calltips.py).
   <a name="snippets"></a>
-  Auto-completion menu also includes [code snippets](Notepad++\plugins\Config\QuickText.ini). Open `Plugins - QuickText - Settings` to add new snippet.
+  Auto-completion menu also includes [code snippets](Notepad++/plugins/Config/QuickText.ini). Open `Plugins - QuickText - Settings` to add new snippet.
 
 <details><summary>Details</summary>
 Dollar sign `$` is placeholder for caret after applying code snippet. Press `Ctrl+L` to jump caret to the next placeholder. *For user languages (udf) like AutoHotkey or PowerShell you must use `[15]` section only! You cannot define separate snippets for user languages.
