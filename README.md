@@ -26,6 +26,7 @@ Click on any hyperlink to quickly open related paragraph about this feature. See
   <img src="images/xy/Array.gif" alt="array" width="800">
   <img src="images/xy/foreach.gif" alt="foreach" width="800">
 
+  <a name="calltips-shortcuts"></a>
   Type `(` after function name or press `Ctrl+Shift+O` to see calltip (function parameters hint); `Ctrl+J` - next page, `Ctrl+U` - previous page. 
   Hover your mouse on function/keyword to see documentation popup; click on it to open next page.
 
@@ -408,7 +409,7 @@ As you can see, [NppExec](https://github.com/d0vgan/nppexec) is very useful to m
 
 <a name="completion"></a>
 
-- [Auto-completetion dir](Notepad++/autoCompletion) contains files with docs/syntax/parameters for each function, command or keyword. Each `.xml` file will be used to display auto-completion menu, calltip (function hint) and docs popup. [Read about schema and syntax here](https://npp-user-manual.org/docs/auto-completion).
+- [Auto-completetion dir](Notepad++/autoCompletion) contains files with docs/syntax/parameters for each function, command or keyword. Each `.xml` file will be used to display auto-completion menu, calltip (function hint) and docs popup ([see demo here](#calltips-shortcuts)). [Read about schema and syntax here](https://npp-user-manual.org/docs/auto-completion).
 
 <details><summary>Schema</summary>
 
@@ -416,53 +417,92 @@ Each `<KeyWord>` can contain different structure.
 
 ### 1. Function
 
-`<KeyWord>` tag with `func="yes"` atrribute. Can contain 1+ `<Overload>` tags with 1+ `<Param>` tags:
+Function is `<KeyWord>` tag with `func="yes"` atrribute. It can contain 1+ `<Overload>` tags with 1+ `<Param>` tags:
 
 ```html
-        <KeyWord name="ControlClick" func="yes">
-            <Overload retVal="" descr="Sends a mouse button or mouse wheel event to a control.">
-               <Param name="[ControlOrPos]"/>
-               <Param name="[WinTitle]"/>
-               <Param name="[WinText]"/>
-               <Param name="[Button]"/>
-               <Param name="[ClickCount]"/>
-               <Param name="[Options]"/>
-               <Param name="[NotInTitle]"/>
-               <Param name="[NotInText]"/>
-            </Overload>
-            <Overload retVal="" descr="Control-or-pos:
-    ControlClick 'x100 y200', ...
-    ControlClick Var, ... (where Var is ClassNN, text, HWND, or an obj with 'hwnd' property)
-Button: 
-  Left (L), Right (R), Middle (M), X1, X2, WheelUp (WU), WheelDown (WD)
+        <!-- signature: {Func} GetMethod(Value, [Name], [ParamCount]) -->
+        <KeyWord name="GetMethod" func="yes">
+            <!-- Page 1: signature, brief description -->
+            <Overload retVal="{Func}" descr="Retrieves the implementation function of a method.">
+               <Param name="Value"/>   <!-- required -->
+               <Param name="[Name]"/>  <!-- optional -->
+               <Param name="[ParamCount]"/>  <!-- optional -->
+            </Overload>   
+            <!-- Page 2: same signature (same <param> tags), detailed description -->
+            <Overload retVal="{Func}" descr="Can be used to check if Name is the function:
+IsFunc(callback) => GetMethod(callback)
 
-ClickCount: 
-  Default = 1
-
-Options:
- NA = possible reliability improvement
-  D = press and hold mouse button
-  U = release specified mouse button
-Pos = use only 'x y' for Control-or-pos param
- Xn = where to click, relative to control top left (default is center)
- Yn = where to click, relative to control top left (default is center)">
-               <Param name="[ControlOrPos]"/>
-               <Param name="[WinTitle]"/>
-               <Param name="[WinText]"/>
-               <Param name="[Button]"/>
-               <Param name="[ClickCount]"/>
-               <Param name="[Options]"/>
-               <Param name="[NotInTitle]"/>
-               <Param name="[NotInText]"/>
+If the function/method is not found or cannot be retrieved 
+without invoking a property getter,  
+a MethodError is thrown.">
+               <Param name="Value"/>
+               <Param name="[Name]"/>
+               <Param name="[ParamCount]"/>
             </Overload>
         </KeyWord>
+        <!-- 2 pages total -->
 ```
 
-Each `<Overload>` tag is basically the page. User can list pages by `Ctrl+J/U` or by click on docs popup. If you have one large `<Overload>`, it may not fit inot user's screen, so it's better to split long overloads into multiple tags. Rule of thumb: 1st page for parameters only (function signature) and brief description; 2nd page for detailed information; other pages for different kind of information about function.
+Each `<Overload>` tag essentially represents a page. Users can switch the page using the `Ctrl+J/U` shortcut or by [clicking on the documentation pop-up window](#calltips-shortcuts). If you have a single large `<Overload>` tag, it may not fit on the user's screen, so it's best to split long *overloads* into multiple tags. 
 
-If function accepts inly one group of params like `ControlClick` above, **you must duplicate `<param>` tag in all `<Overload>` tags! Otherwise each page will contain different parameters set, i.e. different function signature that may distract the reader.
+**A rule of thumb:**
+- the 1st page is for *params* (the function signature) and a brief description;<br>
+- the 1nd page is for detailed information;<br>
+- the remaining pages are for various types of information about the function.<br>
 
-It's better to specify return value (if any) in `retVal` attribute:
+  <details><summary>Example</summary>
+  
+  ```html
+          <KeyWord name="ControlClick" func="yes">
+             <!-- Page 1: long signature, brief description. -->
+             <!-- Detailed description and long signature may not fit into the screen!  -->
+              <Overload retVal="" descr="Sends a mouse button or mouse wheel event to a control.">
+                 <Param name="[ControlOrPos]"/>
+                 <Param name="[WinTitle]"/>
+                 <Param name="[WinText]"/>
+                 <Param name="[Button]"/>
+                 <Param name="[ClickCount]"/>
+                 <Param name="[Options]"/>
+                 <Param name="[NotInTitle]"/>
+                 <Param name="[NotInText]"/>
+              </Overload>
+              <!-- Page 2: same signature (same <param> tags), detailed description -->
+              <Overload retVal="" descr="Control-or-pos:
+      ControlClick 'x100 y200', ...
+      ControlClick Var, ... (where Var is ClassNN, text, HWND, or an obj with 'hwnd' property)
+  Button: 
+    Left (L), Right (R), Middle (M), X1, X2, WheelUp (WU), WheelDown (WD)
+  
+  ClickCount: 
+    Default = 1
+  
+  Options:
+   NA = possible reliability improvement
+    D = press and hold mouse button
+    U = release specified mouse button
+  Pos = use only 'x y' for Control-or-pos param
+   Xn = where to click, relative to control top left (default is center)
+   Yn = where to click, relative to control top left (default is center)">
+                 <Param name="[ControlOrPos]"/>
+                 <Param name="[WinTitle]"/>
+                 <Param name="[WinText]"/>
+                 <Param name="[Button]"/>
+                 <Param name="[ClickCount]"/>
+                 <Param name="[Options]"/>
+                 <Param name="[NotInTitle]"/>
+                 <Param name="[NotInText]"/>
+              </Overload>
+          </KeyWord>
+        <!-- 2 pages total -->
+        <!-- retVal="" means "returns nothing", i.e. {Void} function -->
+  ```
+  
+  </details>
+
+
+If a function accepts only one set of parameters, such as `ControlClick` in example above, **you must duplicate the `<param>` tag in all `<Overload>` tags! Otherwise, each page will contain a different set of parameters—that is, different function signatures—which can confuse the reader.
+
+It’s better to specify the return value (if any) in the `retVal` attribute:
 
 ```html
         <KeyWord name="DateAdd" func="yes">
@@ -482,15 +522,73 @@ Year (if used) must be on or after 1601.">
         </KeyWord>
 ```
 
-Each <Overload retVal="{Date}"...` should display consistent function signature: `{Date} DateAdd(DateTime, Time, TimeUnits)` on each page.
+Each `<Overload retVal="{Date}"...` should display consistent function signature: `{Date} DateAdd(DateTime, Time, TimeUnits)` on each page.
+
+Functions may have different sets of optional parameters, and the description varies depending on these parameters.
+  
+  <details><summary>Example</summary>
+  
+  ```html
+            <KeyWord name="IniRead" func="yes">
+                <Overload retVal="{String}" descr="Reads a value from a standard format .ini file.">
+                <Param name="Filename"/>
+                <Param name="Section"/>
+                <Param name="Key"/>
+                <Param name="[Default]"/>
+                </Overload>
+                <Overload retVal="{String}" descr="Reads a section from a standard format .ini file.">
+                <Param name="Filename"/>
+                <Param name="Section"/>
+                <Param name="[Default]"/>
+                </Overload>
+                <Overload retVal="{String}" descr="Reads a list of section names from a standard format .ini file.">
+                <Param name="Filename"/>
+                <Param name="[Default]"/>
+                </Overload>
+            </KeyWord>
+            <KeyWord name="IniWrite" func="yes">
+                <Overload retVal="" descr="Writes a value to the .ini file.">
+                <Param name="Value"/>
+                <Param name="Filename"/>
+                <Param name="Section"/>
+                <Param name="Key"/>
+                </Overload>
+                <Overload retVal="" descr="Overwrites section in the .ini file.">
+                <Param name="Value"/>
+                <Param name="Filename"/>
+                <Param name="Section"/>
+                </Overload>
+                <Overload retVal="" descr="Can be used to create a shortcut to a URL (instead of FileCreateShortcut):
+    IniWrite('https://www.google.com', 'C:\My Shortcut.url', 'InternetShortcut', 'URL')
+    
+    The following may be optionally added to assign an icon to the above:
+    IniWrite(&gt;IconFile&gt;,  'C:\My Shortcut.url', 'InternetShortcut', 'IconFile')
+    IniWrite(&gt;IconIndex&gt;, 'C:\My Shortcut.url', 'InternetShortcut', 'IconIndex')  
+    Replace &gt;IconIndex&gt; with the index of the icon (0 is the first icon). 
+    
+    Replace &gt;IconFile&gt; with a URL, EXE, DLL, or ICO file. 
+    Examples = 
+    'C:\Icons.dll' 
+    'C:\App.exe'
+    'https://www.somedomain.com/ShortcutIcon.ico'">
+                <Param name="Target"/>
+                <Param name="LinkFile"/>
+                <Param name="Section"/>
+                <Param name="Key"/>
+                </Overload>
+            </KeyWord>
+  ```
+  
+  </details>
 
 ### Keyword with Description
 
-You can specify keyword the will be visible in auto-completion list after typing its name; in docs popup after mouse hover. Just specify
+You can specify keyword the will be visible in auto-completion list after typing its name; in docs popup after mouse hover. Just specify `<Keyword> ` tag with `func="no"` attribute.
 
-```
+```html
         <KeyWord name="for" func="no">
-            <Overload retVal="" descr="Repeats one or more statements once for each key-value pair in an object.
+            <Overload retVal="" descr="
+Repeats one or more statements once for each key-value pair in an object.
 for value in &lt;expression&gt; {
     ...
 }
@@ -500,11 +598,9 @@ for value in &lt;expression&gt; {
 for index , value in &lt;expression&gt; {
     ...
 }
-
-Supports more than 2 variables for classes with __Enum(n) method."/>
         </KeyWord> 
-
-Description will be displayed in docs popup only!
+```
+Description will be displayed in docs popup only! It is best to avoid using leading spaces and tabs at the beginning of lines (like, for example, in the continuation section in AutoHotkey), since they are not removed from docs popup, which may break description appearance.
 
 ### Keyword Only
 
@@ -518,15 +614,13 @@ This type of keywords will be displayed in auto-completion list only.
 
 </details>
 
-<img src="images/ahk/hint.gif" title="" alt="" width="697">
-
   <a name="calltips"></a>
   Documentation popup is done via [Python script](Notepad++/plugins/Config/PythonScript/scripts/calltips.py).
   <a name="snippets"></a>
   Auto-completion menu also includes [code snippets](Notepad++/plugins/Config/QuickText.ini). Open `Plugins - QuickText - Settings` to add new snippet.
 
 <details><summary>Details</summary>
-Dollar sign `$` is placeholder for caret after applying code snippet. Press `Ctrl+L` to jump caret to the next placeholder. *For user languages (udf) like AutoHotkey or PowerShell you must use `[15]` section only! You cannot define separate snippets for user languages.
+The dollar sign `$` is a placeholder for the cursor after a code snippet is applied. Press `Ctrl+L` to move the cursor to the next placeholder. *For user-defined languages (UDFs), such as AutoHotkey or PowerShell, you must use only section `[15]`! You cannot define separate code snippets for user-defined languages.
 
 ```ini
 [15]
