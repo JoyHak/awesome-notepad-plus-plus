@@ -138,7 +138,7 @@ Everything can be configured through the intuitive interface of the installed pl
 
 - [Internal syntax highlighting](Notepad++\userDefineLangs) of basic keywords, operators, and functions is found in the files here. *[Here](https://npp-user-manual.org/docs/user-defined-language-system/) you can read how to configure internal syntax highlighting using user-defines languages.* 
 - [RegEx syntax highlighting](Notepad++\plugins\Config\EnhanceAnyLexer\EnhanceAnyLexerConfig.ini) for any expression/complex keyword. *Read comments about syntax at the beginning or [see the docs](https://github.com/Ekopalypse/EnhanceAnyLexer).*
-- [Theme and syntax highlighting for other languages](Notepad++\themes\Colorful dark.xml).
+- [Theme and syntax highlighting for other languages](Notepad++\themes\Colorful%20dark.xml).
 
 <details><summary>Details</summary>
 
