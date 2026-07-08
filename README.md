@@ -4,7 +4,11 @@ Awesome Notepad++ is a customized version of the famous text editor with various
 
 <img src="images/ahk/syntax.png" title="" alt="" width="629">
 
-You can always contribute to the project or add new features for yourself. [Read how customize everything and where to find configs here](#customization).
+> [!WARNING]
+> This is not [official version of Notepad++](https://notepad-plus-plus.org)! It is a modification that does not alter the source code. All changes have been made to publicly accessible files (configs).
+> [Author and developer](https://notepad-plus-plus.org/author/) is Don Ho: [don.h@free.fr](mailto:don.h@free.fr)
+
+The main goal of this mod is to extend Notepad++ with new features and [allow you to customize it yourself](#customization).
 
 ## Features
 
