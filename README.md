@@ -1,14 +1,14 @@
 ![](images/banner.png)
 
-Awesome Notepad++ is a bundle if plugins and configs for Notepad++ with various features out of the box. Write code with beautiful syntax highlighting, launch scripts and translate comments inside the editor. [You can download it here](https://github.com/JoyHak/awesome-notepad-plus-plus/releases ). **For a better experience, please download the [Maple Mono NF CN](https://github.com/subframe7536/maple-font) font or [install it from the repo](MapleMono-NF-CN-Regular.ttf).**
-
-<img src="images/ahk/syntax.png" title="" alt="" width="629">
+Awesome Notepad++ is a bundle of plugins and configs for Notepad++ with various features out of the box. Write code with beautiful syntax highlighting, launch scripts and translate comments inside the editor. [You can download it here](https://github.com/JoyHak/awesome-notepad-plus-plus/releases ).
 
 > [!WARNING]
-> This is not [official version of Notepad++](https://notepad-plus-plus.org)! It is a modification that does not alter the source code. All changes have been made to publicly accessible files (configs).
+> This is not [official Notepad++](https://notepad-plus-plus.org)! It is a modification that does not alter the source code. All changes have been made to publicly accessible files (configs).
 > [Author and developer](https://notepad-plus-plus.org/author/) is Don Ho: [don.h@free.fr](mailto:don.h@free.fr)
 
-The main goal of this mod is to extend Notepad++ with new features and [allow you to customize it yourself](#customization).
+<img src="images/ahk/syntax.png" width="629">
+
+For a better experience, please download the [Maple Mono NF CN](https://github.com/subframe7536/maple-font) font or [install it from the repo](MapleMono-NF-CN-Regular.ttf).
 
 ## Features
 
