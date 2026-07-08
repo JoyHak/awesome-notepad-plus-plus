@@ -1,6 +1,6 @@
 ![](images/banner.png)
 
-Awesome Notepad++ is a customized version of the famous text editor with various features out of the box. Write code with beautiful syntax highlighting, launch scripts and translate comments directly from Notepad++. [You can download it here](https://github.com/JoyHak/awesome-notepad-plus-plus/releases ). **For a better experience, please download the [Maple Mono NF CN](https://github.com/subframe7536/maple-font) font or [install it from the repo](MapleMono-NF-CN-Regular.ttf).**
+Awesome Notepad++ is a bundle if plugins and configs for Notepad++ with various features out of the box. Write code with beautiful syntax highlighting, launch scripts and translate comments inside the editor. [You can download it here](https://github.com/JoyHak/awesome-notepad-plus-plus/releases ). **For a better experience, please download the [Maple Mono NF CN](https://github.com/subframe7536/maple-font) font or [install it from the repo](MapleMono-NF-CN-Regular.ttf).**
 
 <img src="images/ahk/syntax.png" title="" alt="" width="629">
 
