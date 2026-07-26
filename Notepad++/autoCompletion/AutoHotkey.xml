@@ -4972,7 +4972,7 @@ while true {
             </Overload>
         </KeyWord>
         <KeyWord name="WinActive" func="yes">
-            <Overload retVal="" descr="Checks if the specified window is active and returns its unique ID (HWND).">
+            <Overload retVal="{Integer}" descr="Checks if the specified window is active and returns its unique ID (HWND).">
                <Param name="[WinTitle]"/>
                <Param name="[WinText]"/>
                <Param name="[NotInTitle]"/>
@@ -4989,7 +4989,7 @@ while true {
             </Overload>
         </KeyWord>
         <KeyWord name="WinExist" func="yes">
-            <Overload retVal="" descr="Checks if the specified window exists and returns the unique ID (HWND) of the first matching window.">
+            <Overload retVal="{Integer}" descr="Checks if the specified window exists and returns the unique ID (HWND) of the first matching window.">
                <Param name="[WinTitle]"/>
                <Param name="[WinText]"/>
                <Param name="[NotInTitle]"/>
@@ -5404,7 +5404,7 @@ and reduce usage of system resources.">
                <Param name="[NotInTitle]"/>
                <Param name="[NotInText]"/>
             </Overload>
-            <Overload retVal="{Integer}" descr="TimeoutSec: Integer or float.  If omitted, waits indefinitely.">
+            <Overload retVal="{Integer}" descr="TimeoutSec: Integer or float. If omitted, waits indefinitely.">
                <Param name="[WinTitle]"/>
                <Param name="[WinText]"/>
                <Param name="[TimeoutSec]"/>
