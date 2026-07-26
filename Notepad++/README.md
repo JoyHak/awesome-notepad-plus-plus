@@ -1,10 +1,14 @@
 ![](images/banner.png)
 
-Awesome Notepad++ is a customized version of the famous text editor with various features out of the box. Write code with beautiful syntax highlighting, launch scripts and translate comments directly from Notepad++. [You can download it here](https://github.com/JoyHak/awesome-notepad-plus-plus/releases ). **For a better experience, please download the [Maple Mono NF CN](https://github.com/subframe7536/maple-font) font or [install it from the repo](MapleMono-NF-CN-Regular.ttf).**
+Awesome Notepad++ is a bundle of plugins and configs for Notepad++ with various features out of the box. Write code with beautiful syntax highlighting, launch scripts and translate comments inside the editor. [You can download it here](https://github.com/JoyHak/awesome-notepad-plus-plus/releases ).
 
-<img src="images/ahk/syntax.png" title="" alt="" width="629">
+> [!WARNING]
+> This is not [official Notepad++](https://notepad-plus-plus.org)! It is a modification that does not alter the source code. All changes have been made to publicly accessible files (configs).
+> [Author and developer](https://notepad-plus-plus.org/author/) is Don Ho: [don.h@free.fr](mailto:don.h@free.fr)
 
-You can always contribute to the project or add new features for yourself. [Read how customize everything and where to find configs here](#customization).
+<img src="images/ahk/syntax.png" width="629">
+
+For a better experience, please download the [Maple Mono NF CN](https://github.com/subframe7536/maple-font) font or [install it from the repo](MapleMono-NF-CN-Regular.ttf).
 
 ## Features
 
@@ -702,3 +706,20 @@ VSCode is quite popular, but it uses the Electron framework, which is written in
 Notepad++ is written entirely in C++. It is low-level (compiled) the language that makes Notepad++ fast and compact. It is very useful on weak machines and laptops.
 
 The main drawback of Notepad++ is its out-of-the-box appearance: it doesn't look as attractive as VSCode, it doesn't have the necessary plugins and powerful syntax highlighting. I tried to solve these problems and give every programmer the tools that Notepad++ lacks so much.
+
+## Credits
+
+Huge **thank you** to the
+- @Ekopalypse for [EnhanceAnyLexer](https://github.com/Ekopalypse/EnhanceAnyLexer) plugin
+- @d0vgan for [NppExec](https://github.com/d0vgan/nppexec) plugin
+- @bruderstein for the [Python Script](https://github.com/bruderstein/PythonScript) plugin
+- [Lexikos](https://www.autohotkey.com/boards/memberlist.php?mode=viewprofile&u=77) for AutoHotkey maintenance
+
+Credits:
+- @donho - [Notepad++](https://github.com/notepad-plus-plus/notepad-plus-plus)
+- @cpmcgrath - [Code Alignment](https://github.com/cpmcgrath/codealignment)
+- @pnedev - [Compare Plus](https://github.com/pnedev/comparePlus)
+- @dave-user - [Customize Toolbar](https://sourceforge.net/projects/npp-customize)
+- @francostellari - [Language Help](https://github.com/francostellari/NppPlugins)
+- @vinsworldcom - [Quick Color Picker](https://github.com/vinsworldcom/nppQCP) and [Quick Text](https://github.com/vinsworldcom/nppQuickText)
+- @ufo - [Source Cookifier](https://github.com/ufo/sourcecookifier)

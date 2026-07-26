@@ -71,6 +71,6 @@ function Verify-Hash {
 }
 
 
-# Create-Archive
+Create-Archive
 Verify-Exclusions
 Verify-Hash
